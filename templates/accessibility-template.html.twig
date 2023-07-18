@@ -1,147 +1,187 @@
-<p lang="en">
-    Public authorities are obliged to make websites and mobile applications accessible in accordance with Directive (EU)
-    2016/2102 of the European Parliament and the Council. The following accessibility statement documents the implementation
-    status of this website in accordance with the &nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true">applicable
-    legislation</a>.&nbsp;
-</p>
-<p>
-    This accessibility statement belongs to the following website(s):
-    <strong>&nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a></strong></strong>
-</p>
+<div lang="en">
 
-
-<h2>Compliance status</h2>
-
-
-    {% if status == 'Completely compliant' %}
-        <div class="alert alert-secondary" role="alert">
-            <p lang="en">{{ status }}: The content is fully compliant with the accessibility standard without exceptions</p>
-        </div>
-    {% endif %}
-
-    {% if status == 'Partially compliant' %}
-        <div class="alert alert-warning>
-            <p lang="en">{{ status }}: Some parts of the content are not fully compliant with the accessibility standard</p>
-        </div>
-    {% endif %}
-
-    <p lang="en">
-        <strong>Methodology:</strong> {{ methodology_en }}
-    </p>
-    <p lang="en">
-        <strong>Date of Creation:</strong> {{ creation_date }}
-    </p>
-    <p lang="en">
-        <strong>Last Revision:</strong> {{ last_revis_date }}
-    </p>
-    {% if report_url %}
-        <p lang="en">
-            <strong>Report:</strong> <a href="{{ report_url }}">{{ report_url }}</a>
-        </p>
-    {% endif %}
-    <p lang="en">
-        &nbsp;
-    </p>
-
-
-<h2>Known accessibility issues</h2>
-
-    <p lang="en">
-        Enumeration and explanation of problems with the implementation of accessibility standards with this application:
-    </p>
-
-
-
-<h3>Content that is not barrier-free</h3>
-    {% if known_issues %}
-        <p lang="en">
-            <ul>
-                {% for issue in issues_array_en %}
-                    <li>{{ issue }}</li>
-                {% endfor %}
-            </ul>
-        </p>
-
-        {% if statement_array_de %}
-            <h3>Explanatory statement</h3>
-            <p lang="en">
-                <ul>
-                    {% for statement in statement_array_en %}
-                        <li>{{ statement }}</li>
-                    {% endfor %}
-                </ul>
-            </p>
-    {% endif %}
-
-
-    {% if alternatives_en %}
-        <h3>Alternative access routes</h3>
-            <p lang="en">
-                <ul>
-                    {% for alternative in alternatives_array_en %}
-                        <li>{{ alternative }}</li>
-                    {% endfor %}
-                </ul>
-    {% endif %}
-
-{% else %}
+    <div>
         <p>
-            All contents are accessible.
+            Public authorities are obliged to make websites and mobile applications accessible in accordance with EU Directive 2016/2102 of the European Parliament and the Council.
+            The following accessibility statement documents the implementation status of this website in accordance with the
+            <a href="https://www.gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">applicable legislation</a>.
         </p>
-    {% endif %}
-
-<h3>Help and contact in case of problems</h3>
-
-    <p lang="en">
-        In case you encounter shortcomings in meeting accessibility requirements or information for which a barrier-free presentation
-        is not mandatory, you may request a barrier-free version. To do so, please direct your queries to the following contacts.
-    </p>
-
-    <h4>Contact person</h4>
-
-        <p lang="en">
-            <a href="{{ pub_inst_url }}">{{ pub_institute_en }}</a> <br />
-            {{ pub_name }}<br />
-            {{ pub_address }}<br />
-            {{ pub_plz }} - {{ pub_city_en }}<br />
-            <a href="mailto:{{ pub_email }}">{{ pub_email }}</a><br />
+        <p>
+            This accessibility statement applies to the following website(s):
+            <strong>
+                &nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a>
+            </strong>
         </p>
-        <p lang="en">
-            <a href="{{ sup_url }}">{{ sup_institute_en }} </a> <br />
-            {{ sup_address }}<br />
-            {{ sup_plz }} - {{ sup_city_en }}<br />
-            <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+    </div>
+
+    <h2>Compliance status</h2>
+
+    <div>
+        {% if status == 'Completely compliant' %}
+            <div class="alert alert-secondary" aria-role="alert">
+                <p>{{ status }}: The content is fully compliant with the accessibility standard without exceptions</p>
+            </div>
+        {% endif %}
+
+        {% if status == 'Partially compliant' %}
+            <div class="alert alert-warning" aria-role="alert">
+                <p>{{ status }}: Some parts of the content are not fully compliant with the accessibility standard</p>
+            </div>
+        {% endif %}
+
+        <p>
+            <strong>Methodology:</strong>
+            {{ methodology_en }}
         </p>
-        <p>&nbsp;</p>
+
+        <p>
+            <strong>Date of Creation:</strong>
+            {{ creation_date }}
+        </p>
+
+        <p>
+            <strong>Last Revision:</strong>
+            {{ last_revis_date }}
+        </p>
+
+        {% if report_url %}
+            <p>
+                <strong>Report:</strong>
+                <a href="{{ report_url }}" target="_blank" rel="noopener noreferer">{{ report_url }}</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <h2>Known accessibility issues</h2>
+
+    <div>
+        <p>
+            Enumeration and explanation of problems with the implementation of accessibility standards with this application:
+        </p>
+
+        <h3>Content that has accessiblilty restrictions</h3>
+
+        {% if known_issues %}
+            <div>
+                <p>
+                    <ul>
+                        {% for issue in issues_array_en %}
+                            <li>{{ issue }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+
+            {% if statement_array_de %}
+                <h3>Explanatory statement</h3>
+
+                <div>
+                    <p>
+                        <ul>
+                            {% for statement in statement_array_en %}
+                                <li>{{ statement }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+            {% endif %}
 
 
-<h2>Enforcement procedures</h2>
-    <p lang="en">
-        If a request via the contacts mentioned herein remains without reply within six weeks, the competent supervisory authority
-        shall examine, at the request of the user, whether measures are necessary within the scope of monitoring vis-à-vis the
-        obligated party.
-    </p>
+            {% if alternatives_en %}
+                <h3>Alternative access methods</h3>
+                
+                <div>
+                    <p>
+                        <ul>
+                            {% for alternative in alternatives_array_en %}
+                            <li>{{ alternative }}</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                </div>
+            {% endif %}
 
-    <p lang="en">Contact information of the enforcement oversight body:</p>
+        {% else %}
+        <div>
+            <p>
+                All contents are accessible.
+            </p>
+        </div>
+        {% endif %}
 
-    <p lang="en">
-        <strong>{{ overs_name_en }}</strong>
-        <br>{{ overs_dpt_en }}
-    </p>
-    <p lang="en">
-        <div>{{ overs_address }}</div>
-        <div>{{ overs_plz }} {{ overs_city_en }}</div>
-    </p>
-    <p lang="en">
-        <div>Phone: {{ overs_phone }}</div>
-        <div>E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a></div>
-        <div>Website: <a href="{{ overs_url }}">{{ overs_url }}</a></div>
-    </p>
-<br/>
-<br/>
-<div>
-    <p lang="de">
-        Last updated on: {{ date }}
-    </p>
-</div>
+    </div>
 
+    <h3>Help and contact in case of problems</h3>
+
+    <div>
+        <p>
+            In case you encounter shortcomings in meeting accessibility requirements or information for which a barrier-free presentation
+            is not mandatory, you may request a barrier-free version.
+            To do so, please direct your queries to the following contacts.
+        </p>
+    
+        <h4>Contact person</h4>
+
+        <div>
+            <p>
+                <a href="{{ pub_inst_url }}">{{ pub_institute_en }}</a>
+                <br />
+
+                {{ pub_name }}<br />
+                {{ pub_address }}<br />
+                {{ pub_plz }}
+
+                <hr />
+
+                {{ pub_city_en }}<br />
+                <a href="mailto:{{ pub_email }}">{{ pub_email }}</a>
+            </p>
+
+            <p>
+                <a href="{{ sup_url }}">{{ sup_institute_en }}</a>
+                <br />
+
+                {{ sup_address }}<br />
+                {{ sup_plz }}
+
+                <hr />
+
+                {{ sup_city_en }}<br />
+                <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+            </p>
+        </div>
+    
+    </div>
+    
+    <h2>Enforcement procedures</h2>
+    
+    <div>
+        <p>
+            If a request via the contacts mentioned herein remains without reply within six weeks, the supervisory authority shall examine, at the request of the user, whether additional measures are necessary.
+        </p>
+
+        <p>Contact information of the supervisory authority:</p>
+
+        <p>
+            <strong>{{ overs_name_en }}</strong>
+            <br>{{ overs_dpt_en }}
+        </p>
+
+        <p>
+            <div>{{ overs_address }}</div>
+            <div>{{ overs_plz }} {{ overs_city_en }}</div>
+        </p>
+        
+        <p>
+            <div>Phone: {{ overs_phone }}</div>
+            <div>E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a></div>
+            <div>Website: <a href="{{ overs_url }}">{{ overs_url }}</a></div>
+        </p>
+    </div>
+
+    <div>
+        <p>
+            Last updated on:
+            {{ date }}
+        </p>
+    </div>
