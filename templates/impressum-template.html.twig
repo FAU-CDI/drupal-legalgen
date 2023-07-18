@@ -23,9 +23,11 @@
 
 <h3>Kontaktperson für den Inhalt</h3>
     <p lang="de">
-        {{ contact_name }}<br/>
-        {{ contact_phone }}<br/>
-        <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br/>
+        Die inhaltliche Bereitstellung erfolgt durch:<br />
+
+        {{ contact_name }}<br />
+        {{ contact_phone }}<br />
+        <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br />
     <br/>
     </p>
 
@@ -37,7 +39,7 @@
         (WissKI)
         (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
     </p>
-    <br/><br/>
+    <br/><br />
 
     <h4>Betreuung und Hosting:</h4>
     <p lang="de">
@@ -57,10 +59,10 @@
 <br/>
 
 <div>
-{{ include("modules/wisski_impressum/templates/aufsichtsbehoerde-template.html.twig") }}
+{{ include("modules/wisski_impressum/templates/legalnotice-template/controlling-authority-template_de.html.twig") }}
 </div>
 <div>
-{{ include('modules/wisski_impressum/templates/sicherheitsvorfälle-template.html.twig') }}
+{{ include('modules/wisski_impressum/templates/legalnotice-template/misuse-resources-template_de.html.twig') }}
 </div>
 
 <br/>
