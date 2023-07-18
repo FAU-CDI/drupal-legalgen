@@ -11,14 +11,14 @@ We give no guarantee and assume no liability for the topicality and legal correc
 </br>
 
 ## Customization
-A limited number of customization options are available (see table below). Further changes or adaptations should be made via the edit operation in WissKI.
+A limited number of customization options are available (see table below).
 
 </br>
 </br>
 
 ## Service: WisskiLegalGenerator
 
-The three types of legal statements can each be generated through one of the following functions. The English and the German language version are generated simultaneously.
+Each of the three legal statements can be generated through one of the following functions. The English and the German language version are generated simultaneously.
 
 
 <span style="color:PapayaWhip">generateImpressum</span><span style="color:Gold">(</span><span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$data</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$title</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$title_en</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$alias</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$alias_en</span><span style="color:Gold">)</span><br/>
