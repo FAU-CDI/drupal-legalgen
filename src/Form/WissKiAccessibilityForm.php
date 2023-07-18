@@ -117,7 +117,7 @@ class WissKiAccessibilityForm extends FormBase {
 
             $form['General']['table1']['R1.3']['Leg_Notice_URL_EN'] = array(
               '#type'          => 'textfield',
-              '#title'         => t('Legal Notie URL'),
+              '#title'         => t('Legal Notice URL'),
               '#default_value' => t('https://mehrdad.wisski.data.fau.de/legalnotice'),
               '#required'      => true,
               );

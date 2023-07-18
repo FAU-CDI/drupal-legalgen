@@ -285,14 +285,14 @@ class WissKiImpressumForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('Competence Unit Research Data and Information der Friedrich-Alexander-Universität Erlangen-Nürnberg'),
+          '#default_value' => t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('Competence Unit Research Data and Information of the Friedrich-Alexander-Universität Erlangen-Nürnberg'),
+          '#default_value' => t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
