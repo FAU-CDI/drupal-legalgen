@@ -46,7 +46,7 @@ class WissKiDatenschutzForm extends FormBase {
     $form['text_header'] = array(
       '#prefix' => '<p><strong>',
       '#suffix' => '</strong></p>',
-      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.<br/> Bitte beachten Sie außerdem, dass eine Neugenerierung die bestehende Seite komplett überschreibt.'),
+      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
       '#weight' => -100,
       );
 

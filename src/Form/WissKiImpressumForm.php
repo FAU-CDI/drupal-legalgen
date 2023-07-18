@@ -47,7 +47,7 @@ class WissKiImpressumForm extends FormBase {
     $form['text_header'] = array(
       '#prefix' => '<p><strong>',
       '#suffix' => '</strong></p>',
-      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.<br/> Bitte beachten Sie außerdem, dass eine Neugenerierung die bestehende Seite komplett überschreibt.'),
+      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
       '#weight' => -100,
       );
 
@@ -133,14 +133,14 @@ class WissKiImpressumForm extends FormBase {
         $form['Publisher']['table2']['R2.1']['Pub_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Kunstgeschichte'),
+          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
           '#required'      => true,
           );
 
         $form['Publisher']['table2']['R2.1']['Pub_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institute of Art History'),
+          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institute'),
           '#required'      => true,
           );
 
@@ -150,7 +150,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => t('Mehrdad Tabrizi'),
+          '#default_value' => t('Herausgebende'),
           '#required'      => true,
           );
 
@@ -312,7 +312,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Mitarbeitende ("; " als Separator - e.g. "Alan Angestellter; Beatrice Beispiel;...") / Staff ("; " as separator - e.g. "Eda Employee; Sujin Staff;...")'),
-          '#default_value' => t('Mehrdad Tabrizi; Laura Albers'),
+          '#default_value' => t('MA1; MA2'),
           '#required'      => true,
           );
 

@@ -48,7 +48,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['text_header'] = array(
       '#prefix' => '<p><strong>',
       '#suffix' => '</strong></p>',
-      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.<br/> Bitte beachten Sie außerdem, dass eine Neugenerierung die bestehende Seite komplett überschreibt.'),
+      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
       '#weight' => -100,
       );
 
@@ -310,14 +310,14 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Publisher']['table4']['R4.1']['Pub_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Kunstgeschichte'),
+          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.1']['Pub_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut für Kunstgeschichte'),
+          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
           '#required'      => true,
           );
 
@@ -327,14 +327,14 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Institut / Homepage institute'),
-          '#default_value' => t('https://www.kunstgeschichte.phil.fau.de/'),
+          '#default_value' => t('https://www._.fau.de/'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.3']['Pub_Name'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => t('Prof. Dr. Heidrun Stein-Kecks'),
+          '#default_value' => t('Prof. Dr. Herausgebende'),
           '#required'      => true,
           );
 
@@ -378,7 +378,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Herausgebende / E-mail publisher'),
-          '#default_value' => t('heidrun.stein-kecks@fau.de'),
+          '#default_value' => t('herausgebende@fau.de'),
           '#required'      => true,
           );
 
@@ -388,7 +388,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Herausgebende / Homepage publisher'),
-          '#default_value' => t('https://www.kunstgeschichte.phil.fau.de/institut/team/stein-kecks/'),
+          '#default_value' => t('https://www._.fau.de/institut/team/name'),
           '#required'      => true,
           );
 
@@ -408,14 +408,14 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('Competence Unit Research Data and Information der Friedrich-Alexander-Universität Erlangen-Nürnberg'),
+          '#default_value' => t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('Competence Unit Research Data and Information of the Friedrich-Alexander-Universität Erlangen-Nürnberg'),
+          '#default_value' => t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
@@ -497,7 +497,7 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Oversight Body']['table6']['R6.1']['Oversight_Agency_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of oversight agency'),
-          '#default_value' => t('Agency for Digitisation, High-Speed Internet and Surveying'),
+          '#default_value' => t('Agency for Digitalisation, High-Speed Internet and Surveying'),
           '#required'      => true,
           );
 
@@ -511,7 +511,7 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Oversight Body']['table6']['R6.2']['Oversight_Agency_Dept_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of department'),
-          '#default_value' => t('IT Service Center of the Free State of Bavaria Enforcement and monitoring body for barrier-free information technology'),
+          '#default_value' => t('IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology'),
           '#required'      => true,
           );
 
