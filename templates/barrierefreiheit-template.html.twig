@@ -51,7 +51,7 @@
 
 
 <h3>Nicht barrierefrei zugängliche Inhalte</h3>
-    {% if known_issues %}
+    {% if known_issues_de %}
 
             <p lang="de">
                 <ul>
@@ -65,7 +65,7 @@
         <h3>Begründung</h3>
             <p lang="de">
                 <ul>
-                    {% for statement in statement_array %}
+                    {% for statement in statement_array_de %}
                         <li>{{ statement }}</li>
                     {% endfor %}
                 </ul>
