@@ -1,0 +1,239 @@
+<h2>Website owner</h2>
+
+    <p lang="en">
+        {{ pub_institute_en }}<br/>
+        {{ pub_name }}<br/>
+        {{ pub_address }}<br/>
+        {{ pub_plz }} {{ pub_city_en }}<br/>
+        <a href="mailto:{{ pub_email }}">{{ pub_email }}</a>
+    </p>
+    <br/>
+    {% if cust_legal_form_en == '' %}
+        <h3>Legal form and representation</h3>
+                <p lang="en">
+                    The <a href="https://www.fau.eu/">Friedrich-Alexander-Universität Erlangen-Nürnberg</a> (FAU)
+                    is a state institution and also a legal personality under public law according to
+                    Art. 4 Para. 1 BayHIG. It is legally represented by the President.
+                </p>
+    {% else %}
+        <p>
+            {{ cust_legal_form_en }}
+        </p>
+    {% endif %}
+
+
+<h3>Contact person for the content</h3>
+    <p lang="en">
+        {{ contact_name }}<br/>
+        {{ contact_phone }}<br/>
+        <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br/>
+    <br/>
+    </p>
+
+
+<h3>Technical implementation of the virtual research environment (VRE) {{ project_name_en }}</h3>
+
+    <p lang="en">
+        This VRE is based on the software „Wissenschaftliche KommunikationsInfrastruktur"
+        (WissKI, short for scientific communication infrastructure) (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
+    </p>
+    <br/><br/>
+    <h4>Support and hosting:</h4>
+
+        <p lang="en">
+            {{ sup_institute_en }}<br/>
+            <a href="{{ sup_url }}">{{ sup_url  }}</a><br/>
+            <a href="mailto:{{ sup_email }}">{{ sup_email }}</a><br/><br/>
+            <br/>
+            <br/>
+            Staff: <ul>
+                        {% for staff in sup_staff_array %}
+                        <li>{{ staff }}</li>
+                        {% endfor %}
+                   </ul>
+        </p>
+<br/>
+<br/>
+<div>
+{{ include('modules/wisski_impressum/templates/en-controlling-authority-template.html.twig') }}
+</div>
+<div>
+    {{ include('modules/wisski_impressum/templates/en-misuse-resources-template.html.twig') }}
+</div>
+
+
+<br/>
+
+<!-- Collapsibles: Start -->
+<details>
+   <summary>
+    Copyright
+   </summary>
+   <div>
+        <h2>Copyright</h2>
+            {% if no_default_txt %}
+                <p lang="en">
+                    {{ cust_licence_txt_en }}
+                </p>
+
+            {% else %}
+                <p lang="en">
+                    Unless specified otherwise, all pages of this application are protected by copyright.
+                    This applies in particular to texts, images, charts, and files containing style, sound,
+                    video, or animation data.
+
+                {% if use_fau_temp == true %}
+                    And also includes the design of the website.
+                </p>
+                    <p lang="en">
+                        This website uses the official FAU design templates (with some modifications). For usage
+                        rights and further information, please see the project website.<br/>
+                        Reproduction or use of the web pages or parts thereof in electronic or printed form and their
+                        publication (including on the Internet) is subject to prior consent.<br/>
+                        Press releases, publications, scripts and information on lectures may be reprinted and
+                        evaluated provided that the source is referened. Furthermore, images, charts, and files
+                        containing text or other information, may, in part or in their entirety, be subject to
+                        the copyright of third parties.
+                {% endif %}
+                </p>
+
+                {% if licence_title_en %}
+                <p lang="en">
+                    <strong>License:</strong> {{ licence_title_en }}<br/>
+                    <a href="{{ licence_url }}">{{ licence_url }}</a>
+                </p>
+                {% endif %}
+
+                {% if cust_licence_txt_en %}
+                    <p lang="en">
+                        {{ cust_licence_txt_en }}
+                    </p>
+                {% endif %}
+
+                <p lang="de">
+                   Furthermore, texts, images, graphics, and other files may, in whole or in part, be subject to the copyright of third parties.
+                   Those responsible for the content may provide you with more detailed information about the existence of possible rights of
+                   third parties, provided these rights have not already been identified by corresponding references on the website.
+                </p>
+            {% endif %}
+            <p lang="en">
+                Not protected by copyright under <a href="https://www.gesetze-im-internet.de/englisch_urhg/englisch_urhg.html#p0018">§ 5 Act on Copyright and Related Rights</a>
+                (<abrr title="<Urheberrechtsgesetz>">UrhG</abbr>) are:
+            </p>
+            <ul>
+                <li>
+                    Laws, legal ordinances, official decrees and announcements as well as decisions and officially drafted guidelines on decisions and
+                </li>
+                <li>
+                    other official works that have been published in the official interest for general information, with the restriction that the
+                    provisions on the prohibition of changes and the indication of sources in § 62 paragraphs 1 to 3 and § 63 paragraphs 1 and 2 <abrr title="<Urheberrechtsgesetz>">UrhG</abbr>
+                    are to be applied accordingly.
+                </li>
+            </ul>
+
+            <p lang="en">
+                As a private individual, you may use copyrighted material for private and other personal use within the framework of
+                <a href="https://www.gesetze-im-internet.de/englisch_urhg/englisch_urhg.html#p0018">§ 53 UrhG</a>.
+                Reproduction or use of these pages or parts thereof in other electronic or printed publications and their publication is only permitted with our
+                consent. This consent is given upon request by those responsible for the content. The reprint and evaluation of press releases and speeches are
+                generally permitted provided the source is acknowledged.
+
+            </p>
+
+   </div>
+</details>
+<details>
+   <summary>
+    Exclusions
+   </summary>
+   <div>
+        <h2>Exclusion of liability</h2>
+        <p lang="en">
+            This legal notice only applies to the following website:<br /><a href="{{ wisski_url }}"
+            title="{{ wisski_url }}"> {{ wisski_url }} </a>
+        </p>
+        <p lang="en">
+            The website owner is not responsible for other websites, that are not listed above.
+        </p>
+
+        <p lang="en">
+            The operator has compiled and verified all information provided with great care. However,
+            we cannot assume liability or furnish a guarantee that the data is correct, complete, or
+            up-to-date, or regarding the quality or constant availability of the information provided.
+            A contractual relationship with the users of the website is not concluded.
+
+        </p>
+        <p lang="en">
+            We will not be liable for any damages arising from the use of this application.
+        </p>
+        <p lang="de>
+            This exclusion of liability does not apply insofar as the provisions of <a href="https://www.gesetze-im-internet.de/englisch_bgb/">§ 839 German Civil Code</a>
+            (liability for breach of official duties) are applicable. We will not be liable for any damages arising from computer viruses or the installation and
+            use of software when accessing or downloading data from this website.<br/>
+        </p>
+        <p lang="de">
+            Websites credited to an author reflect the opinions and insights of that author.<br/>
+            As a service provider, we are responsible for our content on these pages according to § 7 Abs.1
+            <abbr title="German Telemedia Act">TMG</abbr>. According to §§ 8 to 10 <abbr title="German Telemedia Act">
+            TMG</abbr>, however, we as a service provider are not obliged to monitor transmitted or stored third-party
+            information or to investigate circumstances that indicate illegal activity.<br>
+            Obligations to remove or block the use of information under general law remain unaffected.
+            Any liability in this regard, however, is contingent upon the point in time at which we became aware of a
+            concrete legal infringement. Upon notification of a violation, we will promptly remove the corresponding
+            content.<br/>
+            The operator expressly reserves the right to change, amend or delete individual web pages, services, or the
+            entire application or to cease the publication temporarily or permanently without prior notice.
+        </p>
+        {% if cust_exclusion_en %}
+        <p lang="de">
+            {{ cust_exclusion_en }}
+        </p>
+        {% endif %}
+   </div>
+</details>
+
+{% if show_disclaim == false %}
+<details>
+    <summary>
+        Disclaimer
+    </summary>
+    <div>
+        <h2>Links and references (disclaimer)</h2>
+        {% if cust_disclaim_en %}
+            <p lang="de">
+                {{ cust_disclaim_en }}
+            </p>
+        {% else %}
+            <p lang="en">
+                The operator is only responsible for the original content provided in accordance with the
+                applicable laws. This original content is to be distinguished from links to the websites
+                of other operators. Through these references marked as ‘external links’, the operator
+                enables visitors to access ‘third-party content’.<br/>
+                The operator is not responsible for this third-party content as the operator neither
+                initiates the data transmission nor chooses the recipient of the information or selects
+                or has any influence on the information transmitted. The methods used to provide access
+                and link to this third-party information also do not involve any automatic short-term
+                storage, resulting in a complete exclusion of any liability for third-party content on the
+                operator’s part.<br/>
+                When links to these websites were first incorporated, however, the authors of the relevant
+                websites or the operator’s editors reviewed the external content to ascertain whether it
+                would possibly entail liability under civil or criminal law. Should the operator become
+                aware or be made aware by others that the content of a website linked from this site could
+                constitute a civil or criminal law violation, then the link will be immediately removed if
+                this is technically feasible and within reasonable expectation.<br/>
+                Liability for illegal, inaccurate, or incomplete content and damages resulting from the use
+                or non-use of the information provided by third parties shall lie exclusively with the
+                respective operators of the linked sites.
+            </p>
+        {% endif %}
+    </div>
+</details>
+{% endif %}
+<!-- Collapsibles: End -->
+<br/>
+<br/>
+<div>
+    <p lang="en">
+        Last updated on: {{ date }}
+    </p>
+</div>

@@ -1,0 +1,143 @@
+<p lang="de">
+    Der Anbieter dieses Webangebots (<a href="{{ pub_url }}">{{ pub_name }}</a>&nbsp;,&nbsp;<a href="{{ pub_inst_url }}">{{ pub_institute_de }}</a>) &nbsp;
+    ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true">gültigen Gesetzgebung</a>&nbsp;
+    barrierefrei zugänglich zu machen.
+</p>
+<p lang="de">
+    Diese Erklärung zur Barrierefreiheit gilt für den Webauftritt unter <strong>&nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a></strong>
+</p>
+
+
+<h2>Stand der Vereinbarkeit mit den Anforderungen ("Konformitätsstatus")</h2>
+
+
+    {% if status == 'Completely compliant' %}
+        <div class="alert alert-secondary" role="alert">
+            <p lang="de">Vollständig konform: Der Inhalt entspricht ohne Ausnahmen vollständig dem Standard für Barrierefreiheit</p>
+        </div>
+    {% endif %}
+
+    {% if status == 'Partially compliant' %}
+        <div class="alert alert-warning>
+            <p lang="de">Teilweise konform: Einige Teile des Inhalts entsprechen nicht vollständig dem Standard für Barrierefreiheit</p>
+        </div>
+    {% endif %}
+
+    <p lang="de">
+        <strong>Methodik der Prüfung:</strong> {{ methodology_de }}
+    </p>
+    <p lang="de">
+        <strong>Erstellungsdatum:</strong> {{ creation_date }}
+    </p>
+    <p lang="de">
+        <strong>Letzte Überprüfung:</strong> {{ last_revis_date }}
+    </p>
+    {% if report_url %}
+        <p lang="de">
+            <strong>Bericht:</strong> <a href="{{ report_url }}">{{ report_url }}</a>
+        </p>
+    {% endif %}
+    <p lang="de">
+        &nbsp;
+    </p>
+
+
+<h2>Bekannte Probleme bei der Barrierefreiheit</h2>
+
+    <p lang="de">
+        Auflistung und Erläuterung der Probleme bei der Umsetzung der Barrierefreiheit dieses Webauftritts:
+    </p>
+
+
+
+<h3>Nicht barrierefrei zugängliche Inhalte</h3>
+    {% if known_issues %}
+
+            <p lang="de">
+                <ul>
+                    {% for issue in issues_array_de %}
+                        <li>{{ issue }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+
+        {% if statement_array_de %}
+        <h3>Begründung</h3>
+            <p lang="de">
+                <ul>
+                    {% for statement in statement_array %}
+                        <li>{{ statement }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        {% endif %}
+
+        {% if alternatives_de %}
+            <h3>Alternative Zugangswege</h3>
+                <p lang="de">
+                    <ul>
+                        {% for alternative in alternatives_array_de %}
+                            <li>{{ alternative }}</li>
+                        {% endfor %}
+                    </ul>
+        {% endif %}
+    {% else %}
+        <p>
+            Alle Inhalte sind barrierefrei zugänglich.
+        </p>
+    {% endif %}
+
+<h3>Hilfe und Kontaktaufnahme bei Problemen</h3>
+
+    <p lang="de">
+        Sie können Mängel bei der Einhaltung der Anforderungen an die Barrierefreiheit mitteilen oder Informationen, die nicht
+        barrierefrei dargestellt werden müssen, barrierefrei anfordern.
+    </p>
+
+
+    <h4>Kontakt</h4>
+
+        <p lang="de">
+            <a href="{{ pub_inst_url }}">{{ pub_institute_de }}</a> <br />
+            {{ pub_name }}<br />
+            {{ pub_address }}<br />
+            {{ pub_plz }} - {{ pub_city_de }}<br />
+            <a href="mailto:{{ pub_email }}">{{ pub_email }}</a><br />
+        </p>
+        <p lang="de">
+            <a href="{{ sup_url }}">{{ sup_institute_de }} </a> <br />
+            {{ sup_address }}<br />
+            {{ sup_plz }} - {{ sup_city_de }}<br />
+            <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+        </p>
+        <p>&nbsp;</p>
+
+
+<h2>Durchsetzungsverfahren</h2>
+    <p lang="de">
+        Bleibt eine Anfrage über die Kontaktmöglichkeit innerhalb von sechs Wochen ganz oder teilweise unbeantwortet, prüft die zuständige Aufsichtsbehörde auf Antrag des Nutzers, ob im Rahmen der Überwachung gegenüber dem Verpflichteten Maßnahmen erforderlich sind.
+    </p>
+    <p lang="de">
+        Kontaktinformation der für das Durchsetzungsverfahren zuständigen Aufsicht:
+    </p>
+
+    <p lang="de">
+        <strong>{{ overs_name_de }}</strong>
+        <br>{{ overs_dept_de }}
+    </p>
+    <p lang="de">
+        <div>{{ overs_address }}</div>
+        <div>{{ overs_plz }} {{overs_city_de }}</div>
+    </p>
+    <p lang="de">
+        <div>Telefon: {{ overs_phone }}</div>
+        <div>E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a></div>
+        <div>Webseite: <a href="{{ overs_url }}">{{ overs_url }}</a></div>
+    </p>
+<br/>
+<br/>
+<div>
+    <p lang="de">
+        Stand: {{ date }}
+    </p>
+</div>

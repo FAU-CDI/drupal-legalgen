@@ -1,0 +1,9 @@
+wisski.wisski_impressum:
+  title: 'WissKI Impressum'
+  description: 'Generate legal notice, accessibility statement, and privacy policy'
+  parent: wisski.content
+  # the route name of the route that should be accessed when clicking the menu link
+  route_name: wisski.wisski_impressum.impressum
+  weight: 100 
+
+

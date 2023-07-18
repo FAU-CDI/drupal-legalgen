@@ -1,0 +1,35 @@
+# path name
+wisski.wisski_impressum.impressum:
+  # URL suffix of the path that will be accessed by the user
+  path: '/admin/wisski/impressum'
+  defaults:
+    # handler that is called when accessing the path above
+    _form: '\Drupal\wisski_impressum\Form\WissKiImpressumForm'
+    # page title
+    _title: "Impressum"
+  requirements:
+    _permission: 'administer wisski'
+
+# path name
+wisski.wisski_impressum.accessibility:
+  # URL suffix of the path that will be accessed by the user
+  path: '/admin/wisski/accessibility'
+  defaults:
+    # handler that is called when accessing the path above
+    _form: '\Drupal\wisski_impressum\Form\WissKiAccessibilityForm'
+    # page title
+    _title: "Barrierefreiheit"
+  requirements:
+    _permission: 'administer wisski'
+
+# path name
+wisski.wisski_impressum.datenschutz:
+  # URL suffix of the path that will be accessed by the user
+  path: '/admin/wisski/datenschutz'
+  defaults:
+    # handler that is called when accessing the path above
+    _form: '\Drupal\wisski_impressum\Form\WissKiDatenschutzForm'
+    # page title
+    _title: "Datenschutz"
+  requirements:
+    _permission: 'administer wisski'
