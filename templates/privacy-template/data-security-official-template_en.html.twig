@@ -1,13 +1,22 @@
-<h2>Name and address of the {{ sec_off_title_en }}</h2>
-	<p>
-		{{ sec_off_title_en }}<br/>
-		{{ sec_off_name }}<br/>
-		{{ sec_off_add_en }}<br/>
-		{{ sec_off_address }}<br/>
-		{{ sec_off_plz }} {{ sec_off_city_en }}<br/>
-		Phone: {{ sec_off_phone }}<br/>
-		{%  if sec_off_fax %}
-			Fax: {{ sec_off_fax }}<br/>
-		{% endif %}
-		E-Mail: <a href="mailto:{{ sec_off_email }}">{{ sec_off_email }}</a>
-	</p>
+<div lang="en">
+	<h2>Name and address of the {{ sec_off_title_en }}</h2>
+
+	<div>
+		<p>
+			{{ sec_off_title_en }}<br/>
+			{{ sec_off_name }}<br/>
+			{{ sec_off_add_en }}<br/>
+			{{ sec_off_address }}<br/>
+			{{ sec_off_plz }}
+
+			<hr / >
+
+			{{ sec_off_city_en }}<br/>
+			Phone: {{ sec_off_phone }}<br/>
+			{%  if sec_off_fax %}
+				Fax: {{ sec_off_fax }}<br/>
+			{% endif %}
+			E-Mail: <a href="mailto:{{ sec_off_email }}">{{ sec_off_email }}</a>
+		</p>
+	</div>
+</div>

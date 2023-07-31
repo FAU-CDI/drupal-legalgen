@@ -1,13 +1,22 @@
-<h2>Name und Anschrift {{ sec_off_title_de }}</h2>
-	<p>
-		{{ sec_off_title_de }}<br/>
-		{{ sec_off_name }}<br/>
-		{{ sec_off_add_de }}<br/>
-		{{ sec_off_address }}<br/>
-		{{ sec_off_plz }} {{ sec_off_city_de }}<br/>
-		Telefon: {{ sec_off_phone }}<br/>
-		{%  if sec_off_fax %}
-			Fax: {{ sec_off_fax }}<br/>
-		{% endif %}
-		E-Mail: <a href="mailto:{{ sec_off_email }}">{{ sec_off_email }}</a>
-	</p>
+<div lang="de">
+	<h2>Name und Anschrift {{ sec_off_title_de }}</h2>
+
+	<div>
+		<p>
+			{{ sec_off_title_de }}<br/>
+			{{ sec_off_name }}<br/>
+			{{ sec_off_add_de }}<br/>
+			{{ sec_off_address }}<br/>
+			{{ sec_off_plz }}
+
+			<hr />
+
+			{{ sec_off_city_de }}<br/>
+			Telefon: {{ sec_off_phone }}<br/>
+			{%  if sec_off_fax %}
+				Fax: {{ sec_off_fax }}<br/>
+			{% endif %}
+			E-Mail: <a href="mailto:{{ sec_off_email }}">{{ sec_off_email }}</a>
+		</p>
+	</div>
+</div>
