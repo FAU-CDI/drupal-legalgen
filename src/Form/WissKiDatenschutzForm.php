@@ -455,7 +455,7 @@ class WissKiDatenschutzForm extends FormBase {
     $html = \Drupal::service('renderer')->renderPlain($template);
 
     $this->generateNode($title, $html, $alias);
-
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">German privacy declaration</a> created'), 'status', TRUE);
 
     $template_en = [
       '#theme'                 => 'privacy_template',
@@ -489,6 +489,7 @@ class WissKiDatenschutzForm extends FormBase {
     $html_en = \Drupal::service('renderer')->renderPlain($template_en);
 
     $this->generateNode($title_en, $html_en, $alias_en);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">English privacy declaration</a> created'), 'status', TRUE);
 
   }
 

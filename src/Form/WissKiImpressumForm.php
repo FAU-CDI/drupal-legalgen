@@ -658,6 +658,8 @@ class WissKiImpressumForm extends FormBase {
     $html = \Drupal::service('renderer')->renderPlain($template);
 
     $this->generateNode($title, $html, $alias);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">German legal notice</a> created'), 'status', TRUE);
+
 
 
     $template_en = [
@@ -703,7 +705,7 @@ class WissKiImpressumForm extends FormBase {
     $body_en = $html_en;
 
     $this->generateNode($title_en, $html_en, $alias_en);
-
+     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">English legal notice</a> created'), 'status', TRUE);
 
   }
 
