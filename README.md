@@ -85,8 +85,6 @@ Respectively, all keys with the suffix "_en" refer to values in English and will
 |||||||
 |||||||
 |**<span style="color:LightSlateGray"><u>Accessibility</u></span>**|**General**|String|wisski_url|WissKI URL|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|leg_notice_url_de|URL to legal notice|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|leg_notice_url_en|do.|<span style="color:DarkCyan">&#x2611;</span>|
 |||String|project_name_de|Name WissKI|<span style="color:DarkCyan">&#x2611;</span>|
 |||String|project_name_en|do.|<span style="color:DarkCyan">&#x2611;</span>|
 ||**Conformity**|String|status|Dropdown: Either <span style="color:Aquamarine">"Completely compliant"</span> or <span style="color:Aquamarine">"Partially compliant"</span>|<span style="color:DarkCyan">&#x2611;</span>|

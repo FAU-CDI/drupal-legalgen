@@ -122,24 +122,15 @@ class WissKiAccessibilityForm extends FormBase {
               '#required'      => true,
               );
 
-            $form['General']['table1']['R1.3']['Leg_Notice_URL'] = array(
-              '#type'          => 'textfield',
-            	'#wrapper_attributes' => [
-              'colspan' =>  2,
-              ],
-              '#title'         => t('Impressum URL'),
-              '#default_value' => t('https://mehrdad.wisski.data.fau.de/impressum'),
-              '#required'      => true,
-              );
 
-            $form['General']['table1']['R1.4']['alias'] = array(
+            $form['General']['table1']['R1.3']['alias'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Seiten-Alias'),
               '#default_value' => (!empty($storedValues['alias']))? $storedValues['alias'] : t('barrierefreiheit'),
               '#required'      => true,
               );
 
-            $form['General']['table1']['R1.4']['alias_EN'] = array(
+            $form['General']['table1']['R1.3']['alias_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Page alias'),
               '#default_value' => (!empty($storedValues['alias_en']))? $storedValues['alias_en'] : t('accessibility'),
@@ -147,14 +138,14 @@ class WissKiAccessibilityForm extends FormBase {
               );
 
 
-            $form['General']['table1']['R1.5']['Project_Name_DE'] = array(
+            $form['General']['table1']['R1.4']['Project_Name_DE'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Projektname'),
               '#default_value' => (!empty($storedValues['project_name_de']))? $storedValues['project_name_de'] : t('Mehrdad'),
               '#required'      => true,
               );
 
-            $form['General']['table1']['R1.5']['Project_Name_EN'] = array(
+            $form['General']['table1']['R1.4']['Project_Name_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Project name'),
               '#default_value' => (!empty($storedValues['project_name_en']))? $storedValues['project_name_en'] : t('Mehrdad'),
@@ -646,12 +637,11 @@ return $form;
 
     $title_en            = $values['table1']['R1.1']['Title_EN'];
     $title               = $values['table1']['R1.1']['title'];
-    $alias               = $values['table1']['R1.4']['alias'];
-    $alias_en            = $values['table1']['R1.4']['alias_EN'];
     $wisski_url          = $values['table1']['R1.2']['WissKI_URL'];
-    $leg_notice_url      = $values['table1']['R1.3']['Leg_Notice_URL'];
-    $project_name_de     = $values['table1']['R1.5']['Project_Name_DE'];
-    $project_name_en     = $values['table1']['R1.5']['Project_Name_EN'];
+    $alias               = $values['table1']['R1.3']['alias'];
+    $alias_en            = $values['table1']['R1.3']['alias_EN'];
+    $project_name_de     = $values['table1']['R1.4']['Project_Name_DE'];
+    $project_name_en     = $values['table1']['R1.4']['Project_Name_EN'];
     $status              = $values['table2']['R2.1']['Conformity_Status'];
     $methodology_de      = $values['table2']['R2.2']['Assessment_Methodology_DE'];
     $methodology_en      = $values['table2']['R2.2']['Assessment_Methodology_EN'];
@@ -708,7 +698,6 @@ return $form;
     $template = [
       '#theme'                 => 'barrierefreiheit_template',
       '#wisski_url'               => $wisski_url,
-      '#leg_notice_url'           => $leg_notice_url,
       '#project_name_de'          => $project_name_de,
       '#status'                   => $status,
       '#methodology_de'           => $methodology_de,
@@ -760,7 +749,6 @@ return $form;
     $template_en = [
       '#theme'                 => 'accessibility_template',
       '#wisski_url'               => $wisski_url,
-      '#leg_notice_url'           => $leg_notice_url,
       '#project_name_en'          => $project_name_en,
       '#status'                   => $status,
       '#methodology_en'           => $methodology_en,

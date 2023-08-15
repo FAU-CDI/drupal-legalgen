@@ -84,7 +84,6 @@ function wisski_impressum_theme($existing, $type, $theme, $path){
     'barrierefreiheit_template' => [
       'variables' => [
         'wisski_url'             => NULL,
-        'leg_notice_url_de'      => NULL,
         'project_name_de'        => NULL,
         'status'                 => NULL,
         'methodology_de'         => NULL,
@@ -126,7 +125,6 @@ function wisski_impressum_theme($existing, $type, $theme, $path){
     'accessibility_template' => [
       'variables' => [
         'wisski_url'              => NULL,
-        'leg_notice_url_en'       => NULL,
         'project_name_en'         => NULL,
         'status'                  => NULL,
         'methodology_en'          => NULL,
