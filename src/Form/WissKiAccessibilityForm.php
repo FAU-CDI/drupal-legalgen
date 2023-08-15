@@ -4,6 +4,7 @@ namespace Drupal\wisski_impressum\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\wisski_impressum\Generator\WisskiLegalGenerator;
 
 
@@ -33,6 +34,18 @@ class WissKiAccessibilityForm extends FormBase {
     return self::class;
   }
 
+  public function getState(){
+    return \Drupal::state();
+  }
+
+  public function getStateValues(){
+    if(!empty(\Drupal::state()->get('wisski_impressum.accessibility'))){
+      return \Drupal::state()->get('wisski_impressum.accessibility');
+    }else{
+      return NULL;
+    }
+  }
+
 
   /**
    * {@inheritdoc}
@@ -43,6 +56,7 @@ class WissKiAccessibilityForm extends FormBase {
     // type of render array element
     // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
+    $storedValues = $this->getStateValues();
 
     // Disclaimer
     $form['text_header'] = array(
@@ -87,14 +101,14 @@ class WissKiAccessibilityForm extends FormBase {
             $form['General']['table1']['R1.1']['title'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Seitentitel'),
-              '#default_value' => t('Barrierefreiheit'),
+              '#default_value' => (!empty($storedValues['title']))? $storedValues['title'] : t('Barrierefreiheit'),
               '#required'      => true,
               );
 
             $form['General']['table1']['R1.1']['Title_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Page title'),
-              '#default_value' => t('Accessibility'),
+              '#default_value' => (!empty($storedValues['title_en']))? $storedValues['title_en'] : t('Accessibility'),
               '#required'      => true,
               );
 
@@ -104,35 +118,31 @@ class WissKiAccessibilityForm extends FormBase {
                 'colspan' =>  2,
               ],
               '#title'         => t('WissKI URL'),
-              '#default_value' => t('https://mehrdad.wisski.data.fau.de/'),
+              '#default_value' => (!empty($storedValues['wisski_url']))? $storedValues['wisski_url'] : t('https://mehrdad.wisski.data.fau.de/'),
               '#required'      => true,
               );
 
-            $form['General']['table1']['R1.3']['Leg_Notice_URL_DE'] = array(
+            $form['General']['table1']['R1.3']['Leg_Notice_URL'] = array(
               '#type'          => 'textfield',
+            	'#wrapper_attributes' => [
+              'colspan' =>  2,
+              ],
               '#title'         => t('Impressum URL'),
               '#default_value' => t('https://mehrdad.wisski.data.fau.de/impressum'),
-              '#required'      => true,
-              );
-
-            $form['General']['table1']['R1.3']['Leg_Notice_URL_EN'] = array(
-              '#type'          => 'textfield',
-              '#title'         => t('Legal Notice URL'),
-              '#default_value' => t('https://mehrdad.wisski.data.fau.de/legalnotice'),
               '#required'      => true,
               );
 
             $form['General']['table1']['R1.4']['alias'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Seiten-Alias'),
-              '#default_value' => t('barrierefreiheit'),
+              '#default_value' => (!empty($storedValues['alias']))? $storedValues['alias'] : t('barrierefreiheit'),
               '#required'      => true,
               );
 
             $form['General']['table1']['R1.4']['alias_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Page alias'),
-              '#default_value' => t('accessibility'),
+              '#default_value' => (!empty($storedValues['alias_en']))? $storedValues['alias_en'] : t('accessibility'),
               '#required'      => true,
               );
 
@@ -140,14 +150,14 @@ class WissKiAccessibilityForm extends FormBase {
             $form['General']['table1']['R1.5']['Project_Name_DE'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Projektname'),
-              '#default_value' => t('Mehrdad'),
+              '#default_value' => (!empty($storedValues['project_name_de']))? $storedValues['project_name_de'] : t('Mehrdad'),
               '#required'      => true,
               );
 
             $form['General']['table1']['R1.5']['Project_Name_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Project name'),
-              '#default_value' => t('Mehrdad'),
+              '#default_value' => (!empty($storedValues['project_name_en']))? $storedValues['project_name_en'] : t('Mehrdad'),
               '#required'      => true,
               );
 
@@ -180,30 +190,31 @@ class WissKiAccessibilityForm extends FormBase {
       );
 
         $form['Conformity']['table2']['R2.1']['Conformity_Status'] = array(
-          '#type'         => 'select',
+          '#type'          => 'select',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
-          '#title'        => t('Konformitätsstatus / Conformity status'),
-          '#required'     => true,
-          '#options'      => [
+          '#title'         => t('Konformitätsstatus / Conformity status'),
+          '#required'      => true,
+          '#options'       => [
             'Completely compliant' => $this->t('Completely compliant'),
             'Partially compliant'   => $this->t('Partially compliant'),
           ],
+          '#default_value' => (!empty($storedValues['status']))? $storedValues['status'] : t('Completely compliant'),
           );
 
 
         $form['Conformity']['table2']['R2.2']['Assessment_Methodology_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Methodik der Prüfung'),
-          '#default_value' => t('Selbstbewertung'),
+          '#default_value' => (!empty($storedValues['methodology_de']))? $storedValues['methodology_de'] : t('Selbstbewertung'),
           '#required'      => true,
           );
 
         $form['Conformity']['table2']['R2.2']['Assessment_Methodology_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Assessment methodology'),
-          '#default_value' => t('Self-assessment'),
+          '#default_value' => (!empty($storedValues['methodology_en']))? $storedValues['methodology_en'] : t('Self-assessment'),
           '#required'      => true,
           );
 
@@ -213,7 +224,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Erstellungsdatum Bericht / Report Creation Date'),
-          '#default_value' => t('TT.MM.JJJJ'),
+          '#default_value' => (!empty($storedValues['creation_date']))? $storedValues['creation_date'] : t('TT.MM.JJJJ'),
           '#required'      => true,
           );
 
@@ -223,7 +234,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Datum letzte Prüfung / Date of last revision'),
-          '#default_value' => t('TT.MM.JJJJ'),
+          '#default_value' => (!empty($storedValues['last_revis_date']))? $storedValues['last_revis_date'] : t('TT.MM.JJJJ'),
           '#required'      => true,
           );
 
@@ -233,7 +244,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Bericht URL / Report URL'),
-          '#default_value' => t('https://wave.webaim.org/report#/cdi.fau.de'),
+          '#default_value' => (!empty($storedValues['report_url']))? $storedValues['report_url'] : t('https://wave.webaim.org/report#/cdi.fau.de'),
           '#required'      => false,
           );
 
@@ -254,42 +265,42 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Issues']['table3']['R3.1']['Known_Issues_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Nicht barrierefrei zugängliche Inhalte ("; " als Separator für Probleme)'),
-          '#default_value'  => t('Aufzählung; von; nicht; barrierefreien; Inhalten'),
+          '#default_value'  => (!empty($storedValues['known_issues_de']))? $storedValues['known_issues_de'] : t('Aufzählung; von; nicht; barrierefreien; Inhalten'),
           '#required'       => false,
           );
 
         $form['Issues']['table3']['R3.1']['Known_Issues_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Content that is not accessible to all ("; " as separator for problems)'),
-          '#default_value'  => t('List; of; contents; which; are; not; barrier-free'),
+          '#default_value'  => (!empty($storedValues['known_issues_en']))? $storedValues['known_issues_en'] : t('List; of; contents; which; are; not; barrier-free'),
           '#required'       => false,
           );
 
         $form['Issues']['table3']['R3.2']['Justification_Statement_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Begründung ("; " als Separator für Unterpunkte)'),
-          '#default_value'  => t('Aufzählung; verschiedener; Begründungen'),
+          '#default_value'  => (!empty($storedValues['statement_de']))? $storedValues['statement_de'] : t('Aufzählung; verschiedener; Begründungen'),
           '#required'       => false,
           );
 
         $form['Issues']['table3']['R3.2']['Justification_Statement_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Justification ("; " as separator for subitems)'),
-          '#default_value'  => t('list; of; individual; justifactions'),
+          '#default_value'  => (!empty($storedValues['statement_en']))? $storedValues['statement_en'] : t('list; of; individual; justifactions'),
           '#required'       => false,
           );
 
         $form['Issues']['table3']['R3.3']['Alternative_Access_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Alternative Zugangswege ("; " als Separator für Unterpunkte)'),
-          '#default_value'  => t('Auflistung; von; Alternativen'),
+          '#default_value'  => (!empty($storedValues['alternatives_de']))? $storedValues['alternatives_de'] : t('Auflistung; von; Alternativen'),
           '#required'       => false,
           );
 
         $form['Issues']['table3']['R3.3']['Alternative_Access_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Alternative access paths ("; " as separator for subitems)'),
-          '#default_value'  => t('List; of; alternatives'),
+          '#default_value'  => (!empty($storedValues['alternatives_en']))? $storedValues['alternatives_en'] : t('List; of; alternatives'),
           '#required'       => false,
           );
 
@@ -310,14 +321,14 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Publisher']['table4']['R4.1']['Pub_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
+          '#default_value' => (!empty($storedValues['pub_institute_de']))? $storedValues['pub_institute_de'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.1']['Pub_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
+          '#default_value' => (!empty($storedValues['pub_institute_en']))? $storedValues['pub_institute_en'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
           '#required'      => true,
           );
 
@@ -327,14 +338,14 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Institut / Homepage institute'),
-          '#default_value' => t('https://www._.fau.de/'),
+          '#default_value' => (!empty($storedValues['pub_inst_url']))? $storedValues['pub_inst_url'] : t('https://www._.fau.de/'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.3']['Pub_Name'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => t('Prof. Dr. Herausgebende'),
+          '#default_value' => (!empty($storedValues['pub_name']))? $storedValues['pub_name'] : t('Prof. Dr. Herausgebende'),
           '#required'      => true,
           );
 
@@ -344,7 +355,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => t('Schlossgarten 1 - Orangerie'),
+          '#default_value' => (!empty($storedValues['pub_address']))? $storedValues['pub_address'] : t('Schlossgarten 1 - Orangerie'),
           '#required'      => true,
           );
 
@@ -354,21 +365,21 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => t('91054'),
+          '#default_value' => (!empty($storedValues['pub_plz']))? $storedValues['pub_plz'] : t('91054'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.6']['Pub_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => t('Erlangen'),
+          '#default_value' => (!empty($storedValues['pub_city_de']))? $storedValues['pub_city_de'] : t('Erlangen'),
           '#required'      => true,
           );
 
         $form['Publisher']['table4']['R4.6']['Pub_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => t('Erlangen'),
+          '#default_value' => (!empty($storedValues['pub_city_en']))? $storedValues['pub_city_en'] : t('Erlangen'),
           '#required'      => true,
           );
 
@@ -378,7 +389,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Herausgebende / E-mail publisher'),
-          '#default_value' => t('herausgebende@fau.de'),
+          '#default_value' => (!empty($storedValues['pub_email']))? $storedValues['pub_email'] : t('herausgebende@fau.de'),
           '#required'      => true,
           );
 
@@ -388,7 +399,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Herausgebende / Homepage publisher'),
-          '#default_value' => t('https://www._.fau.de/institut/team/name'),
+          '#default_value' => (!empty($storedValues['pub_url']))? $storedValues['pub_url'] : t('https://www._.fau.de/institut/team/name'),
           '#required'      => true,
           );
 
@@ -408,14 +419,14 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => (!empty($storedValues['sup_institute_de']))? $storedValues['sup_institute_de'] : t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => (!empty($storedValues['sup_institute_en']))? $storedValues['sup_institute_en'] : t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
@@ -425,7 +436,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Betreuung / E-mail support and hosting'),
-          '#default_value' => t('cdi-wisski-support@fau.de'),
+          '#default_value' => (!empty($storedValues['sup_email']))? $storedValues['sup_email'] : t('cdi-wisski-support@fau.de'),
           '#required'      => true,
           );
 
@@ -435,7 +446,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => t('Werner-von-Siemens-Straße 61'),
+          '#default_value' => (!empty($storedValues['sup_address']))? $storedValues['sup_address'] : t('Werner-von-Siemens-Straße 61'),
           '#required'      => true,
           );
 
@@ -445,21 +456,21 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => t('91052'),
+          '#default_value' => (!empty($storedValues['sup_plz']))? $storedValues['sup_plz'] : t('91052'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.5']['Sup_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => t('Erlangen'),
+          '#default_value' => (!empty($storedValues['sup_city_de']))? $storedValues['sup_city_de'] : t('Erlangen'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.5']['Sup_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => t('Erlangen'),
+          '#default_value' => (!empty($storedValues['sup_city_en']))? $storedValues['sup_city_en'] : t('Erlangen'),
           '#required'      => true,
           );
 
@@ -469,7 +480,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage-Betreuung URL / URL support and hosting'),
-          '#default_value' => t('https://www.cdi.fau.de/'),
+          '#default_value' => (!empty($storedValues['sup_url']))? $storedValues['sup_url'] : t('https://www.cdi.fau.de/'),
           '#required'      => true,
           );
 
@@ -490,28 +501,28 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Oversight Body']['table6']['R6.1']['Oversight_Agency_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name der Behörde'),
-          '#default_value' => t('Landesamt für Digitalisierung, Breitband und Vermessung'),
+          '#default_value' => (!empty($storedValues['overs_name_de']))? $storedValues['overs_name_de'] : t('Landesamt für Digitalisierung, Breitband und Vermessung'),
           '#required'      => true,
           );
 
         $form['Oversight Body']['table6']['R6.1']['Oversight_Agency_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of oversight agency'),
-          '#default_value' => t('Agency for Digitalisation, High-Speed Internet and Surveying'),
+          '#default_value' => (!empty($storedValues['overs_name_en']))? $storedValues['overs_name_en'] : t('Agency for Digitalisation, High-Speed Internet and Surveying'),
           '#required'      => true,
           );
 
         $form['Oversight Body']['table6']['R6.2']['Oversight_Agency_Dept_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name der Abteilung'),
-          '#default_value' => t('IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik'),
+          '#default_value' => (!empty($storedValues['overs_dept_de']))? $storedValues['overs_dept_de'] : t('IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik'),
           '#required'      => true,
           );
 
         $form['Oversight Body']['table6']['R6.2']['Oversight_Agency_Dept_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of department'),
-          '#default_value' => t('IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology'),
+          '#default_value' => (!empty($storedValues['overs_dept_en']))? $storedValues['overs_dept_en'] : t('IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology'),
           '#required'      => true,
           );
 
@@ -521,7 +532,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => t('St.-Martin-Straße 47'),
+          '#default_value' => (!empty($storedValues['overs_address']))? $storedValues['overs_address'] : t('St.-Martin-Straße 47'),
           '#required'      => true,
         );
 
@@ -531,21 +542,21 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal Code'),
-          '#default_value' => t('81541'),
+          '#default_value' => (!empty($storedValues['overs_plz']))? $storedValues['overs_plz'] : t('81541'),
           '#required'      => true,
           );
 
         $form['Oversight Body']['table6']['R6.5']['Oversight_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => t('München'),
+          '#default_value' => (!empty($storedValues['overs_city_de']))? $storedValues['overs_city_de'] : t('München'),
           '#required'      => true,
           );
 
         $form['Oversight Body']['table6']['R6.5']['Oversight_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => t('Munich'),
+          '#default_value' => (!empty($storedValues['overs_city_en']))? $storedValues['overs_city_en'] : t('Munich'),
           '#required'      => true,
           );
 
@@ -555,7 +566,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Telefon Aufsichtsbehörde/ Phone oversight agency'),
-          '#default_value' => t('+49 89 2129-1111'),
+          '#default_value' => (!empty($storedValues['overs_phone']))? $storedValues['overs_phone'] : t('+49 89 2129-1111'),
           '#required'      => true,
           );
 
@@ -565,7 +576,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Aufsichtsbehörde / E-mail oversight agency'),
-          '#default_value' => t('bitv@bayern.de'),
+          '#default_value' => (!empty($storedValues['overs_email']))? $storedValues['overs_email'] : t('bitv@bayern.de'),
           '#required'      => true,
           );
 
@@ -575,7 +586,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Webseite / Website '),
-          '#default_value' => t('https://www.ldbv.bayern.de/digitalisierung/bitv.html'),
+          '#default_value' => (!empty($storedValues['overs_url']))? $storedValues['overs_url'] : t('https://www.ldbv.bayern.de/digitalisierung/bitv.html'),
           '#required'      => true,
           );
 
@@ -602,7 +613,27 @@ class WissKiAccessibilityForm extends FormBase {
         '#value' => t('Erstellen / Generate'),
         );
 
-    return $form;
+
+// Reset Form Contents to Default
+$form['reset_button'] = array(
+  '#class' => 'button',
+  '#type' => 'submit',
+  '#value' => t('Zurücksetzen / Reset to default'),
+  '#submit' => [[$this, 'resetAllValues']],
+  );
+
+return $form;
+}
+
+
+  /**
+   * Called when user hits reset button
+   * {@inheritdoc}
+   */
+  public function resetAllValues(array &$valuesStoredInState, FormStateInterface $form_state) {
+    if(!empty(\Drupal::state()->get('wisski_impressum.accessibility'))){
+      \Drupal::state()->delete('wisski_impressum.accessibility');
+    }
   }
 
 
@@ -618,8 +649,7 @@ class WissKiAccessibilityForm extends FormBase {
     $alias               = $values['table1']['R1.4']['alias'];
     $alias_en            = $values['table1']['R1.4']['alias_EN'];
     $wisski_url          = $values['table1']['R1.2']['WissKI_URL'];
-    $leg_notice_url_de   = $values['table1']['R1.3']['Leg_Notice_URL_DE'];
-    $leg_notice_url_en   = $values['table1']['R1.3']['Leg_Notice_URL_EN'];
+    $leg_notice_url      = $values['table1']['R1.3']['Leg_Notice_URL'];
     $project_name_de     = $values['table1']['R1.5']['Project_Name_DE'];
     $project_name_en     = $values['table1']['R1.5']['Project_Name_EN'];
     $status              = $values['table2']['R2.1']['Conformity_Status'];
@@ -673,10 +703,12 @@ class WissKiAccessibilityForm extends FormBase {
     $alternatives_array_en = explode('; ', $alternatives_en);
     $statement_array_en = explode('; ', $statement_en);
 
+
+
     $template = [
       '#theme'                 => 'barrierefreiheit_template',
       '#wisski_url'               => $wisski_url,
-      '#leg_notice_url_de'        => $leg_notice_url_de,
+      '#leg_notice_url'           => $leg_notice_url,
       '#project_name_de'          => $project_name_de,
       '#status'                   => $status,
       '#methodology_de'           => $methodology_de,
@@ -721,12 +753,14 @@ class WissKiAccessibilityForm extends FormBase {
     $html = \Drupal::service('renderer')->renderPlain($template);
 
     $this->generateNode($title, $html, $alias);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">Deutsche Barrierefreiheitserklärung erfolgreich erstellt / German accessibility declaration generated successfully</a>'), 'status', TRUE);
+
 
 
     $template_en = [
       '#theme'                 => 'accessibility_template',
       '#wisski_url'               => $wisski_url,
-      '#leg_notice_url_en'        => $leg_notice_url_en,
+      '#leg_notice_url'           => $leg_notice_url,
       '#project_name_en'          => $project_name_en,
       '#status'                   => $status,
       '#methodology_en'           => $methodology_en,
@@ -771,9 +805,71 @@ class WissKiAccessibilityForm extends FormBase {
     $html_en = \Drupal::service('renderer')->renderPlain($template_en);
 
     $this->generateNode($title_en, $html_en, $alias_en);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Barrierefreiheitserklärung erfolgreich erstellt / English accessibility declaration generated successfully</a>'), 'status', TRUE);
 
+
+    $valuesStoredInState = array('wisski_impressum.accessibility' => array('title' => $title,
+                                                                           'title_en' => $title_en,
+                                                                           'wisski_url' => $wisski_url,
+                                                                           'alias' => $alias,
+                                                                           'alias_en' => $alias_en,
+                                                                           'project_name_de' => $project_name_de,
+                                                                           'project_name_en' => $project_name_en,
+                                                                           'status' => $status,
+                                                                           'methodology_de' => $methodology_de,
+                                                                           'methodology_en' => $methodology_en,
+                                                                           'creation_date' => $creation_date,
+                                                                           'last_revis_date' => $last_revis_date,
+                                                                           'report_url' => $report_url,
+                                                                           'known_issues_de' => $known_issues_de,
+                                                                           'known_issues_en' => $known_issues_en,
+                                                                           'issues_array_de' => $issues_array_de,
+                                                                           'issues_array_en' => $issues_array_en,
+                                                                           'statement_de' => $statement_de,
+                                                                           'statement_array_de' => $statement_array_de,
+                                                                           'alternatives_de' => $alternatives_de,
+                                                                           'statement_array_en' => $statement_array_en,
+                                                                           'alternatives_en' => $alternatives_en,
+                                                                           'alternatives_array_de' => $alternatives_array_de,
+                                                                           'alternatives_array_en' => $alternatives_array_en,
+                                                                           'pub_institute_de' => $pub_institute_de,
+                                                                           'pub_institute_en' => $pub_institute_en,
+                                                                           'pub_inst_url' => $pub_inst_url,
+                                                                           'pub_name' => $pub_name,
+                                                                           'pub_address' => $pub_address,
+                                                                           'pub_plz' => $pub_plz,
+                                                                           'pub_city_de' => $pub_city_de,
+                                                                           'pub_city_en' => $pub_city_en,
+                                                                           'pub_email' => $pub_email,
+                                                                           'pub_url' => $pub_url,
+                                                                           'sup_institute_de' => $sup_institute_de,
+                                                                           'sup_institute_en' => $sup_institute_en,
+                                                                           'sup_email' => $sup_email,
+                                                                           'sup_url' => $sup_url,
+                                                                           'sup_address' => $sup_address,
+                                                                           'sup_plz' => $sup_plz,
+                                                                           'sup_city_de' => $sup_city_de,
+                                                                           'overs_name_de' => $overs_name_de,
+                                                                           'overs_name_en' => $overs_name_en,
+                                                                           'overs_dept_de' => $overs_dept_de,
+                                                                           'overs_dept_en' => $overs_dept_en,
+                                                                           'overs_address' => $overs_address,
+                                                                           'overs_plz' => $overs_plz,
+                                                                           'overs_city_de' => $overs_city_de,
+                                                                           'overs_city_en' => $overs_city_en,
+                                                                           'overs_phone' => $overs_phone,
+                                                                           'overs_email' => $overs_email,
+                                                                           'overs_url' => $overs_url,
+                                                                           'date' => $date,
+
+    )
+    );
+
+      // Store current German and English input in state:
+      \Drupal::state()->setMultiple($valuesStoredInState);
 
   }
+
 
   function generateNode($title, $body, $alias){
     $node = Node::create([

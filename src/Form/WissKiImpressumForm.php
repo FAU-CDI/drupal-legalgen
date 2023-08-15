@@ -38,8 +38,8 @@ class WissKiImpressumForm extends FormBase {
 
 
   public function getStateValues(){
-    if(!empty(\Drupal::state()->get('wisski_impressum.stateValues'))){
-      return \Drupal::state()->get('wisski_impressum.stateValues');
+    if(!empty(\Drupal::state()->get('wisski_impressum.legalNotice'))){
+      return \Drupal::state()->get('wisski_impressum.legalNotice');
     }else{
       return NULL;
     }
@@ -51,14 +51,11 @@ class WissKiImpressumForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-
   // Fields
   // type of render array element
   // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
   $storedValues = $this->getStateValues();
-
-  dpm($storedValues);
 
     // Disclaimer
     $form['text_header'] = array(
@@ -461,6 +458,7 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Verwendung FAU Corporate Design / Use of FAU corporate design'),
+            '#default_value' => (!empty($storedValues['use_fau_temp']))? $storedValues['use_fau_temp'] : (false),
             '#required'      => false,
             );
 
@@ -470,6 +468,7 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('\'Eigene Angaben\' ANSTATT Standardtext in \'Nutzungsbedingungen\' (Text zu nicht urheberrechtlich geschützten Inhalten und Privatgebrauch wird weiterhin angezeigt)'),
+            '#default_value' => (!empty($storedValues['no_default_txt']))? $storedValues['no_default_txt'] : (false),
             '#required'      => false,
             );
 
@@ -535,20 +534,21 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Abschnitt \'Haftung für Links\' soll NICHT angezeigt werden / Section \'Links and references (disclaimer)\' should not be displayed'),
+            '#default_value' => (!empty($storedValues['show_disclaim']))? $storedValues['show_disclaim'] : (false),
             '#required'      => false,
             );
 
           $form['Disclaimer']['table9']['R9.2']['Custom_Disclaimer_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Eigene Angaben zur Haftung für Links (Feld leer lassen, um Standardtext anzuzeigen)'),
-            '#default_value' => (!empty($storedValues['cust_disclaim_de']))? $storedValues['cust_disclaim_de'] : '',
+            '#default_value' => (!empty($storedValues['cust_disclaim_de']))? $storedValues['cust_disclaim_de'] : t(''),
             '#required'      => false,
             );
 
           $form['Disclaimer']['table9']['R9.2']['Custom_Disclaimer_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom information on liability for links (leave empty to display default text)'),
-            '#default_value' => (!empty($storedValues['cust_disclaim_en']))? $storedValues['cust_disclaim_en'] : '',
+            '#default_value' => (!empty($storedValues['cust_disclaim_en']))? $storedValues['cust_disclaim_en'] : t(''),
             '#required'      => false,
             );
 
@@ -560,14 +560,14 @@ class WissKiImpressumForm extends FormBase {
       );
 
         $form['Timestamp']['Date'] = array(
-          '#type'          => 'date',
+          '#type'          => 'textfield',
           '#title'         => t('Erstellungsdatum / Generation Date'),
           '#default_value' => ('2023-08-07'),
           '#required'      => true,
           );
 
 
-// Sumbit Form Contents and Populate Template
+// Sumbit Form and Populate Template
     $form['submit_button'] = array(
         '#type'  => 'submit',
         '#value' => t('Erstellen / Generate'),
@@ -590,8 +590,8 @@ class WissKiImpressumForm extends FormBase {
    * {@inheritdoc}
    */
   public function resetAllValues(array &$valuesStoredInState, FormStateInterface $form_state) {
-    if(!empty(\Drupal::state()->get('wisski_impressum.stateValues'))){
-      \Drupal::state()->delete('wisski_impressum.stateValues');
+    if(!empty(\Drupal::state()->get('wisski_impressum.legalNotice'))){
+      \Drupal::state()->delete('wisski_impressum.legalNotice');
     }
   }
 
@@ -695,7 +695,7 @@ class WissKiImpressumForm extends FormBase {
     $html = \Drupal::service('renderer')->renderPlain($template);
 
     $this->generateNode($title, $html, $alias);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">German legal notice</a> created'), 'status', TRUE);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">Deutsches Impressum erfolgreich erstellt / German legal notice generated successfully</a>'), 'status', TRUE);
 
 
     $template_en = [
@@ -741,10 +741,10 @@ class WissKiImpressumForm extends FormBase {
     $body_en = $html_en;
 
     $this->generateNode($title_en, $html_en, $alias_en);
-     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">English legal notice</a> created'), 'status', TRUE);
+     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englisches Impressum erfolgreich erstellt / English legal notice generated successfully</a>'), 'status', TRUE);
 
 
-     $valuesStoredInState = array('wisski_impressum.stateValues' => array('title'                 => $title,
+     $valuesStoredInState = array('wisski_impressum.legalNotice' => array('title'                 => $title,
                                                                           'title_en'              => $title_en,
                                                                           'wisski_url'            => $wisski_url,
                                                                           'alias'                 => $alias,
@@ -812,5 +812,4 @@ class WissKiImpressumForm extends FormBase {
     ]);
     $node->save();
   }
-
 }
