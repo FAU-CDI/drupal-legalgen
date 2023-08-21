@@ -99,16 +99,9 @@ Respectively, all keys with the suffix "_en" refer to values in English and will
 |||<span style="color:Aquamarine">Array</span>|statement_array_en|do.|<span style="color:IndianRed">&#x2612;</span>|
 |||<span style="color:Aquamarine">Array</span>|alternatives_array_de|<span style="color:Aquamarine">Free text:</span> Alternatives for contents not accessible|<span style="color:IndianRed">&#x2612;</span>|
 |||<span style="color:Aquamarine">Array</span>|alternatives_array_en|do.|<span style="color:IndianRed">&#x2612;</span>|
-||**Publisher**|String|pub_institute_de|Name publisher institute|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_institute_en|do.|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_inst_url|URL publisher institute|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_name|Name publisher|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_address|Address publisher|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_plz|Postal code publisher|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_city_de|City publisher|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_city_en|do.|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_email|E-mail publisher|<span style="color:DarkCyan">&#x2611;</span>|
-|||String|pub_url|URL publisher|<span style="color:DarkCyan">&#x2611;</span>|
+||**Contact Person**|String|contact_access_name|Name contact person accessibility|<span style="color:DarkCyan">&#x2611;</span>|
+|||String|contact_access_phone|Phone number contact person accessibility|<span style="color:DarkCyan">&#x2611;</span>|
+|||String|contact_access_email|E-mail contact person accessibility|<span style="color:DarkCyan">&#x2611;</span>|
 ||**Support and Hosting**|String|sup_institute_de|Name institute support and hosting|<span style="color:DarkCyan">&#x2611;</span>|
 |||String|sup_institute_en|do.|<span style="color:DarkCyan">&#x2611;</span>|
 |||String|sup_email|E-mail support and hosting|<span style="color:DarkCyan">&#x2611;</span>|
