@@ -381,12 +381,15 @@ class WissKiDatenschutzForm extends FormBase {
       '#open'  => true,
       );
 
+        $current_timestamp = \Drupal::time()->getCurrentTime();
+        $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
+
         $form['Timestamp']['Date'] = array(
           '#type'          => 'date',
           '#title'         => t('Erstellungsdatum / Generation Date'),
-          '#default_value' => ('2023-06-23'),
+          '#default_value' => $todays_date,
           '#required'      => true,
-          );
+        );
 
 
 // Submit Form and Populate Template

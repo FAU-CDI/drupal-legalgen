@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\wisski_impressum\Generator\WisskiLegalGenerator;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 use \Drupal\node\Entity\Node;
 
@@ -227,14 +228,14 @@ class WissKiImpressumForm extends FormBase {
 
         $form['Legal_Form_and_Representation']['table3']['R3.1']['Custom_Legal_Form_DE'] = array(
           '#type'          => 'textarea',
-          '#title'         => t('Eigene Angaben (Leer lassen, wenn FAU-spezifischer Text beibehalten werden soll'),
+          '#title'         => t('Eigene Angaben (Leer lassen, wenn FAU-spezifischer Text beibehalten werden soll)'),
           '#required'      => false,
           '#default_value' => (!empty($storedValues['cust_legal_form_de']))? $storedValues['cust_legal_form_de'] : '',
           );
 
         $form['Legal_Form_and_Representation']['table3']['R3.1']['Custom_Legal_Form_EN'] = array(
           '#type'          => 'textarea',
-          '#title'         => t('Custom Information (Leave empty to display FAU specific text'),
+          '#title'         => t('Custom Information (Leave empty to display FAU specific text)'),
           '#default_value' => (!empty($storedValues['cuts_legal_form_en']))? $storedValues['cust_legal_form_en'] : '',
           '#required'      => false,
           );
@@ -559,13 +560,15 @@ class WissKiImpressumForm extends FormBase {
       '#open'  => true,
       );
 
-        $form['Timestamp']['Date'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('Erstellungsdatum / Generation Date'),
-          '#default_value' => ('2023-08-07'),
-          '#required'      => true,
-          );
+        $current_timestamp = \Drupal::time()->getCurrentTime();
+        $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
 
+        $form['Timestamp']['Date'] = array(
+          '#type'          => 'date',
+          '#title'         => t('Erstellungsdatum / Generation Date'),
+          '#default_value' => $todays_date,
+          '#required'      => true,
+        );
 
 // Sumbit Form and Populate Template
     $form['submit_button'] = array(

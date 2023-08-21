@@ -296,101 +296,46 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
 
-    // Fields: Publisher
-    $form['Publisher'] = array(
+    // Fields: Contact Person
+    $form['Contact_Accessibility'] = array(
       '#type'  => 'details',
       '#title' => t('Herausgebende / Publisher'),
       '#open'  => true,
       );
 
-      $form['Publisher']['table4'] = array(
+      $form['Contact_Accessibility']['table4'] = array(
         '#type' => 'table',
         '#title' => 'Publisher',
         '#header' => array('German', 'English'),
       );
 
-        $form['Publisher']['table4']['R4.1']['Pub_Institute_DE'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('Institut'),
-          '#default_value' => (!empty($storedValues['pub_institute_de']))? $storedValues['pub_institute_de'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.1']['Pub_Institute_EN'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('Institute'),
-          '#default_value' => (!empty($storedValues['pub_institute_en']))? $storedValues['pub_institute_en'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.2']['Pub_Inst_URL'] = array(
+        $form['Contact_Content']['table4']['R4.1']['Contact_Access_Name'] = array(
           '#type'          => 'textfield',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
-          '#title'         => t('Homepage Institut / Homepage institute'),
-          '#default_value' => (!empty($storedValues['pub_inst_url']))? $storedValues['pub_inst_url'] : t('https://www._.fau.de/'),
+          '#title'         => t('Name Kontaktperson / Name contact person'),
+          '#default_value' => (!empty($storedValues['contact_access_name']))? $storedValues['contact_access_name'] : t('Name Kontaktperson'),
           '#required'      => true,
           );
 
-        $form['Publisher']['table4']['R4.3']['Pub_Name'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => (!empty($storedValues['pub_name']))? $storedValues['pub_name'] : t('Prof. Dr. Herausgebende'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.4']['Pub_Address'] = array(
+        $form['Contact_Content']['table4']['R4.2']['Contact_Access_Phone'] = array(
           '#type'          => 'textfield',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
-          '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => (!empty($storedValues['pub_address']))? $storedValues['pub_address'] : t('Schlossgarten 1 - Orangerie'),
+          '#title'         => t('Telefonnummer Kontaktperson / Phone contact person'),
+          '#default_value' => (!empty($storedValues['contact_access_phone']))? $storedValues['contact_access_phone'] : t('+49 9131~ '),
           '#required'      => true,
-          );
+        );
 
-        $form['Publisher']['table4']['R4.5']['Pub_PLZ'] = array(
+        $form['Contact_Content']['table4']['R4.3']['Contact_Access_Email'] = array(
           '#type'          => 'textfield',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
-          '#title'         => t('PLZ / Postal code'),
-          '#default_value' => (!empty($storedValues['pub_plz']))? $storedValues['pub_plz'] : t('91054'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.6']['Pub_City_DE'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('Ort'),
-          '#default_value' => (!empty($storedValues['pub_city_de']))? $storedValues['pub_city_de'] : t('Erlangen'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.6']['Pub_City_EN'] = array(
-          '#type'          => 'textfield',
-          '#title'         => t('City'),
-          '#default_value' => (!empty($storedValues['pub_city_en']))? $storedValues['pub_city_en'] : t('Erlangen'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.7']['Pub_Email'] = array(
-          '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('E-Mail Herausgebende / E-mail publisher'),
-          '#default_value' => (!empty($storedValues['pub_email']))? $storedValues['pub_email'] : t('herausgebende@fau.de'),
-          '#required'      => true,
-          );
-
-        $form['Publisher']['table4']['R4.8']['Pub_URL'] = array(
-          '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('Homepage Herausgebende / Homepage publisher'),
-          '#default_value' => (!empty($storedValues['pub_url']))? $storedValues['pub_url'] : t('https://www._.fau.de/institut/team/name'),
+          '#title'         => t('E-Mail Kontaktperson / E-mail contact person'),
+          '#default_value' => (!empty($storedValues['contact_access_email']))? $storedValues['contact_access_email'] : t('email@beispiel.de'),
           '#required'      => true,
           );
 
@@ -589,13 +534,15 @@ class WissKiAccessibilityForm extends FormBase {
       '#open'  => true,
       );
 
+        $current_timestamp = \Drupal::time()->getCurrentTime();
+        $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
+
         $form['Timestamp']['Date'] = array(
           '#type'          => 'date',
-          '#title'         => t(''),
+          '#title'         => t('Erstellungsdatum / Generation Date'),
+          '#default_value' => $todays_date,
           '#required'      => true,
-          '#disabled'      => false,
-          '#default_value' => ('2023-06-11'),
-          );
+        );
 
 
 // Submit Form Contents and Populate Template
@@ -635,55 +582,48 @@ return $form;
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
-    $title_en            = $values['table1']['R1.1']['Title_EN'];
-    $title               = $values['table1']['R1.1']['title'];
-    $wisski_url          = $values['table1']['R1.2']['WissKI_URL'];
-    $alias               = $values['table1']['R1.3']['alias'];
-    $alias_en            = $values['table1']['R1.3']['alias_EN'];
-    $project_name_de     = $values['table1']['R1.4']['Project_Name_DE'];
-    $project_name_en     = $values['table1']['R1.4']['Project_Name_EN'];
-    $status              = $values['table2']['R2.1']['Conformity_Status'];
-    $methodology_de      = $values['table2']['R2.2']['Assessment_Methodology_DE'];
-    $methodology_en      = $values['table2']['R2.2']['Assessment_Methodology_EN'];
-    $creation_date       = $values['table2']['R2.3']['Creation_Date'];
-    $last_revis_date     = $values['table2']['R2.4']['Last_Revision_Date'];
-    $report_url          = $values['table2']['R2.5']['Report_URL'];
-    $known_issues_de     = $values['table3']['R3.1']['Known_Issues_DE'];
-    $known_issues_en     = $values['table3']['R3.1']['Known_Issues_EN'];
-    $statement_de        = $values['table3']['R3.2']['Justification_Statement_DE'];
-    $statement_en        = $values['table3']['R3.2']['Justification_Statement_EN'];
-    $alternatives_de     = $values['table3']['R3.3']['Alternative_Access_DE'];
-    $alternatives_en     = $values['table3']['R3.3']['Alternative_Access_EN'];
-    $pub_institute_de    = $values['table4']['R4.1']['Pub_Institute_DE'];
-    $pub_institute_en    = $values['table4']['R4.1']['Pub_Institute_EN'];
-    $pub_inst_url        = $values['table4']['R4.2']['Pub_Inst_URL'];
-    $pub_name            = $values['table4']['R4.3']['Pub_Name'];
-    $pub_address         = $values['table4']['R4.4']['Pub_Address'];
-    $pub_plz             = $values['table4']['R4.5']['Pub_PLZ'];
-    $pub_city_de         = $values['table4']['R4.6']['Pub_City_DE'];
-    $pub_city_en         = $values['table4']['R4.6']['Pub_City_EN'];
-    $pub_email           = $values['table4']['R4.7']['Pub_Email'];
-    $pub_url             = $values['table4']['R4.8']['Pub_URL'];
-    $sup_institute_de    = $values['table5']['R5.1']['Sup_Institute_DE'];
-    $sup_institute_en    = $values['table5']['R5.1']['Sup_Institute_EN'];
-    $sup_email           = $values['table5']['R5.2']['Sup_Email'];
-    $sup_address         = $values['table5']['R5.3']['Sup_Address'];
-    $sup_plz             = $values['table5']['R5.4']['Sup_PLZ'];
-    $sup_city_de         = $values['table5']['R5.5']['Sup_City_DE'];
-    $sup_city_en         = $values['table5']['R5.5']['Sup_City_EN'];
-    $sup_url             = $values['table5']['R5.6']['Sup_URL'];
-    $overs_name_de       = $values['table6']['R6.1']['Oversight_Agency_Name_DE'];
-    $overs_name_en       = $values['table6']['R6.1']['Oversight_Agency_Name_EN'];
-    $overs_dept_de       = $values['table6']['R6.2']['Oversight_Agency_Dept_DE'];
-    $overs_dept_en       = $values['table6']['R6.2']['Oversight_Agency_Dept_EN'];
-    $overs_address       = $values['table6']['R6.3']['Oversight_Address'];
-    $overs_plz           = $values['table6']['R6.4']['Oversight_PLZ'];
-    $overs_city_de       = $values['table6']['R6.5']['Oversight_City_DE'];
-    $overs_city_en       = $values['table6']['R6.5']['Oversight_City_EN'];
-    $overs_phone         = $values['table6']['R6.6']['Oversight_Phone'];
-    $overs_email         = $values['table6']['R6.7']['Oversight_Email'];
-    $overs_url           = $values['table6']['R6.8']['Oversight_URL'];
-    $date                = $values['Date'];
+    $title_en              = $values['table1']['R1.1']['Title_EN'];
+    $title                 = $values['table1']['R1.1']['title'];
+    $wisski_url            = $values['table1']['R1.2']['WissKI_URL'];
+    $alias                 = $values['table1']['R1.3']['alias'];
+    $alias_en              = $values['table1']['R1.3']['alias_EN'];
+    $project_name_de       = $values['table1']['R1.4']['Project_Name_DE'];
+    $project_name_en       = $values['table1']['R1.4']['Project_Name_EN'];
+    $status                = $values['table2']['R2.1']['Conformity_Status'];
+    $methodology_de        = $values['table2']['R2.2']['Assessment_Methodology_DE'];
+    $methodology_en        = $values['table2']['R2.2']['Assessment_Methodology_EN'];
+    $creation_date         = $values['table2']['R2.3']['Creation_Date'];
+    $last_revis_date       = $values['table2']['R2.4']['Last_Revision_Date'];
+    $report_url            = $values['table2']['R2.5']['Report_URL'];
+    $known_issues_de       = $values['table3']['R3.1']['Known_Issues_DE'];
+    $known_issues_en       = $values['table3']['R3.1']['Known_Issues_EN'];
+    $statement_de          = $values['table3']['R3.2']['Justification_Statement_DE'];
+    $statement_en          = $values['table3']['R3.2']['Justification_Statement_EN'];
+    $alternatives_de       = $values['table3']['R3.3']['Alternative_Access_DE'];
+    $alternatives_en       = $values['table3']['R3.3']['Alternative_Access_EN'];
+    $contact_access_name   = $values['table4']['R4.1']['Contact_Access_Name'];
+    $contact_access_phone  = $values['table4']['R4.2']['Contact_Access_Phone'];
+    $contact_access_email  = $values['table4']['R4.3']['Contact_Access_Email'];
+    $sup_institute_de      = $values['table5']['R5.1']['Sup_Institute_DE'];
+    $sup_institute_en      = $values['table5']['R5.1']['Sup_Institute_EN'];
+    $sup_email             = $values['table5']['R5.2']['Sup_Email'];
+    $sup_address           = $values['table5']['R5.3']['Sup_Address'];
+    $sup_plz               = $values['table5']['R5.4']['Sup_PLZ'];
+    $sup_city_de           = $values['table5']['R5.5']['Sup_City_DE'];
+    $sup_city_en           = $values['table5']['R5.5']['Sup_City_EN'];
+    $sup_url               = $values['table5']['R5.6']['Sup_URL'];
+    $overs_name_de         = $values['table6']['R6.1']['Oversight_Agency_Name_DE'];
+    $overs_name_en         = $values['table6']['R6.1']['Oversight_Agency_Name_EN'];
+    $overs_dept_de         = $values['table6']['R6.2']['Oversight_Agency_Dept_DE'];
+    $overs_dept_en         = $values['table6']['R6.2']['Oversight_Agency_Dept_EN'];
+    $overs_address         = $values['table6']['R6.3']['Oversight_Address'];
+    $overs_plz             = $values['table6']['R6.4']['Oversight_PLZ'];
+    $overs_city_de         = $values['table6']['R6.5']['Oversight_City_DE'];
+    $overs_city_en         = $values['table6']['R6.5']['Oversight_City_EN'];
+    $overs_phone           = $values['table6']['R6.6']['Oversight_Phone'];
+    $overs_email           = $values['table6']['R6.7']['Oversight_Email'];
+    $overs_url             = $values['table6']['R6.8']['Oversight_URL'];
+    $date                  = $values['Date'];
 
     $issues_array_de = explode('; ', $known_issues_de);
     $alternatives_array_de = explode('; ', $alternatives_de);
@@ -710,14 +650,9 @@ return $form;
       '#statement_array_de'       => $statement_array_de,
       '#alternatives_de'          => $alternatives_de,
       '#alternatives_array_de'    => $alternatives_array_de,
-      '#pub_institute_de'         => $pub_institute_de,
-      '#pub_inst_url'             => $pub_inst_url,
-      '#pub_name'                 => $pub_name,
-      '#pub_address'              => $pub_address,
-      '#pub_plz'                  => $pub_plz,
-      '#pub_city_de'              => $pub_city_de,
-      '#pub_email'                => $pub_email,
-      '#pub_url'                  => $pub_url,
+      '#contact_access_name'      => $contact_access_name,
+      '#contact_access_phone'     => $contact_access_phone,
+      '#contact_access_email'     => $contact_access_email,
       '#sup_institute_de'         => $sup_institute_de,
       '#sup_email'                => $sup_email,
       '#sup_url'                  => $sup_url,
@@ -761,14 +696,9 @@ return $form;
       '#statement_array_en'       => $statement_array_en,
       '#alternatives_en'          => $alternatives_en,
       '#alternatives_array_en'    => $alternatives_array_en,
-      '#pub_institute_en'         => $pub_institute_en,
-      '#pub_inst_url'             => $pub_inst_url,
-      '#pub_name'                 => $pub_name,
-      '#pub_address'              => $pub_address,
-      '#pub_plz'                  => $pub_plz,
-      '#pub_city_en'              => $pub_city_en,
-      '#pub_email'                => $pub_email,
-      '#pub_url'                  => $pub_url,
+      '#contact_access_name'      => $contact_access_name,
+      '#contact_access_phone'     => $contact_access_phone,
+      '#contact_access_email'     => $contact_access_email,
       '#sup_institute_en'         => $sup_institute_en,
       '#sup_email'                => $sup_email,
       '#sup_url'                  => $sup_url,
@@ -796,59 +726,52 @@ return $form;
     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Barrierefreiheitserklärung erfolgreich erstellt / English accessibility declaration generated successfully</a>'), 'status', TRUE);
 
 
-    $valuesStoredInState = array('wisski_impressum.accessibility' => array('title' => $title,
-                                                                           'title_en' => $title_en,
-                                                                           'wisski_url' => $wisski_url,
-                                                                           'alias' => $alias,
-                                                                           'alias_en' => $alias_en,
-                                                                           'project_name_de' => $project_name_de,
-                                                                           'project_name_en' => $project_name_en,
-                                                                           'status' => $status,
-                                                                           'methodology_de' => $methodology_de,
-                                                                           'methodology_en' => $methodology_en,
-                                                                           'creation_date' => $creation_date,
-                                                                           'last_revis_date' => $last_revis_date,
-                                                                           'report_url' => $report_url,
-                                                                           'known_issues_de' => $known_issues_de,
-                                                                           'known_issues_en' => $known_issues_en,
-                                                                           'issues_array_de' => $issues_array_de,
-                                                                           'issues_array_en' => $issues_array_en,
-                                                                           'statement_de' => $statement_de,
-                                                                           'statement_array_de' => $statement_array_de,
-                                                                           'alternatives_de' => $alternatives_de,
-                                                                           'statement_array_en' => $statement_array_en,
-                                                                           'alternatives_en' => $alternatives_en,
+    $valuesStoredInState = array('wisski_impressum.accessibility' => array('title'                 => $title,
+                                                                           'title_en'              => $title_en,
+                                                                           'wisski_url'            => $wisski_url,
+                                                                           'alias'                 => $alias,
+                                                                           'alias_en'              => $alias_en,
+                                                                           'project_name_de'       => $project_name_de,
+                                                                           'project_name_en'       => $project_name_en,
+                                                                           'status'                => $status,
+                                                                           'methodology_de'        => $methodology_de,
+                                                                           'methodology_en'        => $methodology_en,
+                                                                           'creation_date'         => $creation_date,
+                                                                           'last_revis_date'       => $last_revis_date,
+                                                                           'report_url'            => $report_url,
+                                                                           'known_issues_de'       => $known_issues_de,
+                                                                           'known_issues_en'       => $known_issues_en,
+                                                                           'issues_array_de'       => $issues_array_de,
+                                                                           'issues_array_en'       => $issues_array_en,
+                                                                           'statement_de'          => $statement_de,
+                                                                           'statement_array_de'    => $statement_array_de,
+                                                                           'alternatives_de'       => $alternatives_de,
+                                                                           'statement_array_en'    => $statement_array_en,
+                                                                           'alternatives_en'       => $alternatives_en,
                                                                            'alternatives_array_de' => $alternatives_array_de,
                                                                            'alternatives_array_en' => $alternatives_array_en,
-                                                                           'pub_institute_de' => $pub_institute_de,
-                                                                           'pub_institute_en' => $pub_institute_en,
-                                                                           'pub_inst_url' => $pub_inst_url,
-                                                                           'pub_name' => $pub_name,
-                                                                           'pub_address' => $pub_address,
-                                                                           'pub_plz' => $pub_plz,
-                                                                           'pub_city_de' => $pub_city_de,
-                                                                           'pub_city_en' => $pub_city_en,
-                                                                           'pub_email' => $pub_email,
-                                                                           'pub_url' => $pub_url,
-                                                                           'sup_institute_de' => $sup_institute_de,
-                                                                           'sup_institute_en' => $sup_institute_en,
-                                                                           'sup_email' => $sup_email,
-                                                                           'sup_url' => $sup_url,
-                                                                           'sup_address' => $sup_address,
-                                                                           'sup_plz' => $sup_plz,
-                                                                           'sup_city_de' => $sup_city_de,
-                                                                           'overs_name_de' => $overs_name_de,
-                                                                           'overs_name_en' => $overs_name_en,
-                                                                           'overs_dept_de' => $overs_dept_de,
-                                                                           'overs_dept_en' => $overs_dept_en,
-                                                                           'overs_address' => $overs_address,
-                                                                           'overs_plz' => $overs_plz,
-                                                                           'overs_city_de' => $overs_city_de,
-                                                                           'overs_city_en' => $overs_city_en,
-                                                                           'overs_phone' => $overs_phone,
-                                                                           'overs_email' => $overs_email,
-                                                                           'overs_url' => $overs_url,
-                                                                           'date' => $date,
+                                                                           'contact_access_name'   => $contact_access_name,
+                                                                           'contact_access_phone'  => $contact_access_phone,
+                                                                           'contact_access_email'  => $contact_access_email,
+                                                                           'sup_institute_de'      => $sup_institute_de,
+                                                                           'sup_institute_en'      => $sup_institute_en,
+                                                                           'sup_email'             => $sup_email,
+                                                                           'sup_url'               => $sup_url,
+                                                                           'sup_address'           => $sup_address,
+                                                                           'sup_plz'               => $sup_plz,
+                                                                           'sup_city_de'           => $sup_city_de,
+                                                                           'overs_name_de'         => $overs_name_de,
+                                                                           'overs_name_en'         => $overs_name_en,
+                                                                           'overs_dept_de'         => $overs_dept_de,
+                                                                           'overs_dept_en'         => $overs_dept_en,
+                                                                           'overs_address'         => $overs_address,
+                                                                           'overs_plz'             => $overs_plz,
+                                                                           'overs_city_de'         => $overs_city_de,
+                                                                           'overs_city_en'         => $overs_city_en,
+                                                                           'overs_phone'           => $overs_phone,
+                                                                           'overs_email'           => $overs_email,
+                                                                           'overs_url'             => $overs_url,
+                                                                           'date'                  => $date,
 
     )
     );
