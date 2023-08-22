@@ -89,7 +89,7 @@ class WissKiAccessibilityForm extends FormBase {
       $form['General'] = array(
           '#type'  => 'details',
           '#title' => t('Allgemein / General'),
-          '#open'  => true,
+          '#open'  => TRUE,
           );
 
           $form['General']['table1'] = array(
@@ -102,14 +102,14 @@ class WissKiAccessibilityForm extends FormBase {
               '#type'          => 'textfield',
               '#title'         => t('Seitentitel'),
               '#default_value' => (!empty($storedValues['title']))? $storedValues['title'] : t('Barrierefreiheit'),
-              '#required'      => true,
+              '#required'      => TRUE,
               );
 
             $form['General']['table1']['R1.1']['Title_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Page title'),
               '#default_value' => (!empty($storedValues['title_en']))? $storedValues['title_en'] : t('Accessibility'),
-              '#required'      => true,
+              '#required'      => TRUE,
               );
 
             $form['General']['table1']['R1.2']['WissKI_URL'] = array(
@@ -119,7 +119,7 @@ class WissKiAccessibilityForm extends FormBase {
               ],
               '#title'         => t('WissKI URL'),
               '#default_value' => (!empty($storedValues['wisski_url']))? $storedValues['wisski_url'] : t('https://mehrdad.wisski.data.fau.de/'),
-              '#required'      => true,
+              '#required'      => TRUE,
               );
 
 
@@ -127,29 +127,29 @@ class WissKiAccessibilityForm extends FormBase {
               '#type'          => 'textfield',
               '#title'         => t('Seiten-Alias'),
               '#default_value' => (!empty($storedValues['alias']))? $storedValues['alias'] : t('barrierefreiheit'),
-              '#required'      => true,
+              '#required'      => TRUE,
               );
 
             $form['General']['table1']['R1.3']['alias_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Page alias'),
               '#default_value' => (!empty($storedValues['alias_en']))? $storedValues['alias_en'] : t('accessibility'),
-              '#required'      => true,
+              '#required'      => TRUE,
               );
 
 
             $form['General']['table1']['R1.4']['Project_Name_DE'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Projektname'),
-              '#default_value' => (!empty($storedValues['project_name_de']))? $storedValues['project_name_de'] : t('Mehrdad'),
-              '#required'      => true,
+              '#default_value' => (!empty($valuesFromLegalNotice['project_name_en']))? $valuesFromLegalNotice['project_name_en'] : '',
+              '#required'      => TRUE,
               );
 
             $form['General']['table1']['R1.4']['Project_Name_EN'] = array(
               '#type'          => 'textfield',
               '#title'         => t('Project name'),
-              '#default_value' => (!empty($storedValues['project_name_en']))? $storedValues['project_name_en'] : t('Mehrdad'),
-              '#required'      => true,
+              '#default_value' => (!empty($valuesFromLegalNotice['project_name_en']))? $valuesFromLegalNotice['project_name_en'] : '',
+              '#required'      => TRUE,
               );
 
 
@@ -171,7 +171,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['Conformity'] = array(
       '#type'        => 'details',
       '#title'       => t('Konformität / Conformity'),
-      '#open'        => true,
+      '#open'        => TRUE,
       );
 
       $form['Conformity']['table2'] = array(
@@ -186,7 +186,7 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Konformitätsstatus / Conformity status'),
-          '#required'      => true,
+          '#required'      => TRUE,
           '#options'       => [
             'Completely compliant' => $this->t('Completely compliant'),
             'Partially compliant'   => $this->t('Partially compliant'),
@@ -199,14 +199,14 @@ class WissKiAccessibilityForm extends FormBase {
           '#type'          => 'textfield',
           '#title'         => t('Methodik der Prüfung'),
           '#default_value' => (!empty($storedValues['methodology_de']))? $storedValues['methodology_de'] : t('Selbstbewertung'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Conformity']['table2']['R2.2']['Assessment_Methodology_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Assessment methodology'),
           '#default_value' => (!empty($storedValues['methodology_en']))? $storedValues['methodology_en'] : t('Self-assessment'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Conformity']['table2']['R2.3']['Creation_Date'] = array(
@@ -216,7 +216,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Erstellungsdatum Bericht / Report Creation Date'),
           '#default_value' => (!empty($storedValues['creation_date']))? $storedValues['creation_date'] : t('TT.MM.JJJJ'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Conformity']['table2']['R2.4']['Last_Revision_Date'] = array(
@@ -226,7 +226,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Datum letzte Prüfung / Date of last revision'),
           '#default_value' => (!empty($storedValues['last_revis_date']))? $storedValues['last_revis_date'] : t('TT.MM.JJJJ'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Conformity']['table2']['R2.5']['Report_URL'] = array(
@@ -244,7 +244,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['Issues'] = array(
       '#type'        => 'details',
       '#title'       => t('Nicht barrierefrei zugängliche Inhalte / Contents Not Accessible to All'),
-      '#open'        => true,
+      '#open'        => TRUE,
       );
 
       $form['Issues']['table3'] = array(
@@ -300,7 +300,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['Contact_Accessibility'] = array(
       '#type'  => 'details',
       '#title' => t('Herausgebende / Publisher'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Contact_Accessibility']['table4'] = array(
@@ -315,8 +315,8 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Kontaktperson / Name contact person'),
-          '#default_value' => (!empty($storedValues['contact_access_name']))? $storedValues['contact_access_name'] : t('Name Kontaktperson'),
-          '#required'      => true,
+          '#default_value' => (!empty($storedValues['contact_access_name']))? $storedValues['contact_access_name'] : $valuesFromLegalNotice['contact_name'],
+          '#required'      => TRUE,
           );
 
         $form['Contact_Content']['table4']['R4.2']['Contact_Access_Phone'] = array(
@@ -325,8 +325,8 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Telefonnummer Kontaktperson / Phone contact person'),
-          '#default_value' => (!empty($storedValues['contact_access_phone']))? $storedValues['contact_access_phone'] : t('+49 9131~ '),
-          '#required'      => true,
+          '#default_value' => (!empty($storedValues['contact_access_phone']))? $storedValues['contact_access_phone'] : $valuesFromLegalNotice['contact_phone'],
+          '#required'      => TRUE,
         );
 
         $form['Contact_Content']['table4']['R4.3']['Contact_Access_Email'] = array(
@@ -335,15 +335,15 @@ class WissKiAccessibilityForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Kontaktperson / E-mail contact person'),
-          '#default_value' => (!empty($storedValues['contact_access_email']))? $storedValues['contact_access_email'] : t('email@beispiel.de'),
-          '#required'      => true,
+          '#default_value' => (!empty($storedValues['contact_access_email']))? $storedValues['contact_access_email'] : $valuesFromLegalNotice['contact_email'],
+          '#required'      => TRUE,
           );
 
     // Fields: Suppport and Hosting
     $form['Support_and_Hosting'] = array(
       '#type'   => 'details',
       '#title'  => t('Betreuung und Hosting / Support and Hosting'),
-      '#open'   => true,
+      '#open'   => TRUE,
       );
 
       $form['Support_and_Hosting']['table5'] = array(
@@ -356,14 +356,14 @@ class WissKiAccessibilityForm extends FormBase {
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
           '#default_value' => (!empty($storedValues['sup_institute_de']))? $storedValues['sup_institute_de'] : t('FAU Competence Center for Research Data and Information'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
           '#default_value' => (!empty($storedValues['sup_institute_en']))? $storedValues['sup_institute_en'] : t('FAU Competence Center for Research Data and Information'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.2']['Sup_Email'] = array(
@@ -373,7 +373,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('E-Mail Betreuung / E-mail support and hosting'),
           '#default_value' => (!empty($storedValues['sup_email']))? $storedValues['sup_email'] : t('cdi-wisski-support@fau.de'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.3']['Sup_Address'] = array(
@@ -383,7 +383,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
           '#default_value' => (!empty($storedValues['sup_address']))? $storedValues['sup_address'] : t('Werner-von-Siemens-Straße 61'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.4']['Sup_PLZ'] = array(
@@ -393,21 +393,21 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('PLZ / Postal code'),
           '#default_value' => (!empty($storedValues['sup_plz']))? $storedValues['sup_plz'] : t('91052'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.5']['Sup_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
           '#default_value' => (!empty($storedValues['sup_city_de']))? $storedValues['sup_city_de'] : t('Erlangen'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.5']['Sup_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
           '#default_value' => (!empty($storedValues['sup_city_en']))? $storedValues['sup_city_en'] : t('Erlangen'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.6']['Sup_URL'] = array(
@@ -417,7 +417,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Homepage-Betreuung URL / URL support and hosting'),
           '#default_value' => (!empty($storedValues['sup_url']))? $storedValues['sup_url'] : t('https://www.cdi.fau.de/'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
 
@@ -425,7 +425,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['Oversight Body'] = array(
       '#type'   => 'details',
       '#title'  => t('Aufsichtsbehörde / Enforcement Oversight Body'),
-      '#open'   => true,
+      '#open'   => TRUE,
       );
 
       $form['Oversight Body']['table6'] = array(
@@ -438,28 +438,28 @@ class WissKiAccessibilityForm extends FormBase {
           '#type'          => 'textfield',
           '#title'         => t('Name der Behörde'),
           '#default_value' => (!empty($storedValues['overs_name_de']))? $storedValues['overs_name_de'] : t('Landesamt für Digitalisierung, Breitband und Vermessung'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.1']['Oversight_Agency_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of oversight agency'),
           '#default_value' => (!empty($storedValues['overs_name_en']))? $storedValues['overs_name_en'] : t('Agency for Digitalisation, High-Speed Internet and Surveying'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.2']['Oversight_Agency_Dept_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name der Abteilung'),
           '#default_value' => (!empty($storedValues['overs_dept_de']))? $storedValues['overs_dept_de'] : t('IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.2']['Oversight_Agency_Dept_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name of department'),
           '#default_value' => (!empty($storedValues['overs_dept_en']))? $storedValues['overs_dept_en'] : t('IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.3']['Oversight_Address'] = array(
@@ -469,7 +469,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
           '#default_value' => (!empty($storedValues['overs_address']))? $storedValues['overs_address'] : t('St.-Martin-Straße 47'),
-          '#required'      => true,
+          '#required'      => TRUE,
         );
 
         $form['Oversight Body']['table6']['R6.4']['Oversight_PLZ'] = array(
@@ -479,21 +479,21 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('PLZ / Postal Code'),
           '#default_value' => (!empty($storedValues['overs_plz']))? $storedValues['overs_plz'] : t('81541'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.5']['Oversight_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
           '#default_value' => (!empty($storedValues['overs_city_de']))? $storedValues['overs_city_de'] : t('München'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.5']['Oversight_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
           '#default_value' => (!empty($storedValues['overs_city_en']))? $storedValues['overs_city_en'] : t('Munich'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.6']['Oversight_Phone'] = array(
@@ -503,7 +503,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Telefon Aufsichtsbehörde/ Phone oversight agency'),
           '#default_value' => (!empty($storedValues['overs_phone']))? $storedValues['overs_phone'] : t('+49 89 2129-1111'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.7']['Oversight_Email'] = array(
@@ -513,7 +513,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('E-Mail Aufsichtsbehörde / E-mail oversight agency'),
           '#default_value' => (!empty($storedValues['overs_email']))? $storedValues['overs_email'] : t('bitv@bayern.de'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
         $form['Oversight Body']['table6']['R6.8']['Oversight_URL'] = array(
@@ -523,7 +523,7 @@ class WissKiAccessibilityForm extends FormBase {
           ],
           '#title'         => t('Webseite / Website '),
           '#default_value' => (!empty($storedValues['overs_url']))? $storedValues['overs_url'] : t('https://www.ldbv.bayern.de/digitalisierung/bitv.html'),
-          '#required'      => true,
+          '#required'      => TRUE,
           );
 
 
@@ -531,7 +531,7 @@ class WissKiAccessibilityForm extends FormBase {
     $form['Timestamp'] = array(
       '#type'  => 'details',
       '#title' => t('Erstellungsdatum / Generation Date'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
         $current_timestamp = \Drupal::time()->getCurrentTime();
@@ -541,7 +541,7 @@ class WissKiAccessibilityForm extends FormBase {
           '#type'          => 'date',
           '#title'         => t('Erstellungsdatum / Generation Date'),
           '#default_value' => $todays_date,
-          '#required'      => true,
+          '#required'      => TRUE,
         );
 
 
