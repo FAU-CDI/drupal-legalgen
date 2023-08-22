@@ -158,6 +158,7 @@ function wisski_impressum_theme($existing, $type, $theme, $path){
       'variables' => [
         'wisski_url'                        => NULL,
         'not_fau_de'                        => NULL,
+        'legal_notice_url_de'               => NULL,
         'sec_off_title_de'                  => NULL,
         'sec_off_name'                      => NULL,
         'sec_off_add_de'                    => NULL,
@@ -183,6 +184,7 @@ function wisski_impressum_theme($existing, $type, $theme, $path){
       'variables' => [
         'wisski_url'                        => NULL,
         'not_fau_en'                        => NULL,
+        'legal_notice_url_en'               => NULL,
         'sec_off_title_en'                  => NULL,
         'sec_off_name'                      => NULL,
         'sec_off_add_en'                    => NULL,
