@@ -58,14 +58,6 @@ class WissKiImpressumForm extends FormBase {
 
   $storedValues = $this->getStateValues();
 
-    // Disclaimer
-    $form['text_header'] = array(
-      '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>',
-      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
-      '#weight' => -100,
-      );
-
     // Fields: General
     $form['General'] = array(
       '#type'  => 'details',
@@ -79,17 +71,17 @@ class WissKiImpressumForm extends FormBase {
         '#header' => array('German', 'English'),
       );
 
-        $form['General']['table1']['R1.1']['title'] = array(
+        $form['General']['table1']['R1.1']['Title_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Seitentitel'),
-          '#default_value' => (!empty($storedValues['title']))? $storedValues['title'] : t('Impressum'),
+          '#default_value' => $storedValues['title_de']?? t('Impressum'),
           '#required'      => true,
           );
 
         $form['General']['table1']['R1.1']['Title_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Page title'),
-          '#default_value' => (!empty($storedValues['title_en']))? $storedValues['title_en'] : t('Legal Notice'),
+          '#default_value' => $storedValues['title_en']?? t('Legal Notice'),
           '#required'      => true,
           );
 
@@ -99,35 +91,35 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('WissKI URL'),
-          '#default_value' => (!empty($storedValues['wisski_url']))? $storedValues['wisski_url'] : t('https://mehrdad.wisski.data.fau.de/'),
+          '#default_value' => $storedValues['wisski_url']?? t('https://mehrdad.wisski.data.fau.de/'),
           '#required'      => true,
           );
 
-        $form['General']['table1']['R1.3']['alias'] = array(
+        $form['General']['table1']['R1.3']['Alias_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Seiten-Alias'),
-          '#default_value' => (!empty($storedValues['alias']))? $storedValues['alias'] : t('impressum'),
+          '#default_value' => $storedValues['alias_de']?? t('impressum'),
           '#required'      => true,
           );
 
-        $form['General']['table1']['R1.3']['alias_EN'] = array(
+        $form['General']['table1']['R1.3']['Alias_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Page alias'),
-          '#default_value' => (!empty($storedValues['alias_en']))? $storedValues['alias_en'] : t('legalnotice'),
+          '#default_value' => $storedValues['alias_en']?? t('legalnotice'),
           '#required'      => true,
           );
 
         $form['General']['table1']['R1.4']['Project_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Projektname'),
-          '#default_value' => (!empty($storedValues['project_name_de']))? $storedValues['project_name_de'] : t('Mehrdad'),
+          '#default_value' => $storedValues['project_name_de']?? t('Mehrdad'),
           '#required'      => true,
           );
 
         $form['General']['table1']['R1.4']['Project_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Project name'),
-          '#default_value' => (!empty($storedValues['project_name_en']))? $storedValues['project_name_en'] : t('Mehrdad'),
+          '#default_value' => $storedValues['project_name_en']?? t('Mehrdad'),
           '#required'      => true,
           );
 
@@ -148,14 +140,14 @@ class WissKiImpressumForm extends FormBase {
         $form['Publisher']['table2']['R2.1']['Pub_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => (!empty($storedValues['pub_institute_de']))? $storedValues['pub_institute_de'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institut'),
+          '#default_value' => $storedValues['pub_institute_de']?? t(''),
           '#required'      => true,
           );
 
         $form['Publisher']['table2']['R2.1']['Pub_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => (!empty($storedValues['pub_institute_en']))? $storedValues['pub_institute_en'] : t('Friedrich-Alexander-Universität Erlangen-Nürnberg, Institute'),
+          '#default_value' => $storedValues['pub_institute_en']?? t(''),
           '#required'      => true,
           );
 
@@ -165,7 +157,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => (!empty($storedValues['pub_name']))? $storedValues['pub_name'] : t('Herausgebende'),
+          '#default_value' => $storedValues['pub_name']?? t(''),
           '#required'      => true,
           );
 
@@ -175,7 +167,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => (!empty($storedValues['pub_address']))? $storedValues['pub_address'] : t('Mustermannstr. 123'),
+          '#default_value' => $storedValues['pub_address']?? t(''),
           '#required'      => true,
           );
 
@@ -185,21 +177,21 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => (!empty($storedValues['pub_plz']))? $storedValues['pub_plz'] : t('91054'),
+          '#default_value' => $storedValues['pub_plz']?? t(''),
           '#required'      => true,
           );
 
         $form['Publisher']['table2']['R2.5']['Pub_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => (!empty($storedValues['pub_city_de']))? $storedValues['pub_city_de'] : t('Erlangen'),
+          '#default_value' => $storedValues['pub_city_de']?? t(''),
           '#required'      => true,
           );
 
         $form['Publisher']['table2']['R2.5']['Pub_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => (!empty($storedValues['pub_city_en']))? $storedValues['pub_city_en'] : t('Erlangen'),
+          '#default_value' => $storedValues['pub_city_en']?? t(''),
           '#required'      => true,
           );
 
@@ -209,7 +201,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Herausgebende / E-mail publisher'),
-          '#default_value' => (!empty($storedValues['pub_email']))? $storedValues['pub_email'] : t('cdi-wisski-support@fau.de'),
+          '#default_value' => $storedValues['pub_email']?? t(''),
           '#required'      => true,
           );
 
@@ -229,15 +221,15 @@ class WissKiImpressumForm extends FormBase {
         $form['Legal_Form_and_Representation']['table3']['R3.1']['Custom_Legal_Form_DE'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Eigene Angaben (Leer lassen, wenn FAU-spezifischer Text beibehalten werden soll)'),
-          '#required'      => false,
-          '#default_value' => (!empty($storedValues['cust_legal_form_de']))? $storedValues['cust_legal_form_de'] : '',
+          '#required'      => FALSE,
+          '#default_value' => $storedValues['cust_legal_form_de']?? t(''),
           );
 
         $form['Legal_Form_and_Representation']['table3']['R3.1']['Custom_Legal_Form_EN'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Custom Information (Leave empty to display FAU specific text)'),
-          '#default_value' => (!empty($storedValues['cuts_legal_form_en']))? $storedValues['cust_legal_form_en'] : '',
-          '#required'      => false,
+          '#default_value' => $storedValues['cust_legal_form_en']?? t(''),
+          '#required'      => FALSE,
           );
 
 
@@ -261,7 +253,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Kontaktperson / Name contact person'),
-          '#default_value' => (!empty($storedValues['contact_name']))? $storedValues['contact_name'] : t('Name Kontaktperson'),
+          '#default_value' => $storedValues['contact_name']?? t('Name Kontaktperson'),
           '#required'      => true,
           );
 
@@ -271,7 +263,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Telefonnummer Kontaktperson / Phone contact person'),
-          '#default_value' => (!empty($storedValues['contact_phone']))? $storedValues['contact_phone'] : t('+49 9131~ '),
+          '#default_value' => $storedValues['contact_phone']?? t('+49 9131~ '),
           '#required'      => true,
         );
 
@@ -281,7 +273,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Kontaktperson / E-mail contact person'),
-          '#default_value' => (!empty($storedValues['contact_email']))? $storedValues['contact_email'] : t('email@beispiel.de'),
+          '#default_value' => $storedValues['contact_email']?? t('email@beispiel.de'),
           '#required'      => true,
           );
 
@@ -302,46 +294,47 @@ class WissKiImpressumForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => (!empty($storedValues['sup_institute_de']))? $storedValues['sup_institute_de'] : t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => $storedValues['sup_institute_de']?? t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => (!empty($storedValues['sup_institute_en']))? $storedValues['sup_institute_en'] : t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => $storedValues['sup_institute_en']?? t('FAU Competence Center for Research Data and Information'),
           '#required'      => true,
           );
 
-        $form['Support_and_Hosting']['table5']['R5.2']['Sup_Email'] = array(
-          '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('E-Mail Betreuung / E-mail support'),
-          '#default_value' => (!empty($storedValues['sup_email']))? $storedValues['sup_email'] : t('cdi-wisski-support@fau.de'),
-          '#required'      => true,
-          );
-
-        $form['Support_and_Hosting']['table5']['R5.3']['Sup_Staff'] = array(
-          '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('Mitarbeitende ("; " als Separator - e.g. "Alan Angestellter; Beatrice Beispiel;...") / Staff ("; " as separator - e.g. "Eda Employee; Sujin Staff;...")'),
-          '#default_value' => (!empty($storedValues['sup_staff']))? $storedValues['sup_staff'] : t('MA1; MA2'),
-          '#required'      => true,
-          );
-
-        $form['Support_and_Hosting']['table5']['R5.4']['Sup_URL'] = array(
+        $form['Support_and_Hosting']['table5']['R5.2']['Sup_URL'] = array(
           '#type'          => 'textfield',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Betreuung / Hompage support'),
-          '#default_value' => (!empty($storedValues['sup_url']))? $storedValues['sup_url'] : t('https://www.cdi.fau.de/'),
+          '#default_value' => $storedValues['sup_url']?? t('https://www.cdi.fau.de/'),
           '#required'      => true,
           );
+
+        $form['Support_and_Hosting']['table5']['R5.3']['Sup_Email'] = array(
+          '#type'          => 'textfield',
+          '#wrapper_attributes' => [
+            'colspan' =>  2,
+          ],
+          '#title'         => t('E-Mail Betreuung / E-mail support'),
+          '#default_value' => $storedValues['sup_email']?? t('cdi-wisski-support@fau.de'),
+          '#required'      => true,
+          );
+
+        $form['Support_and_Hosting']['table5']['R5.4']['Sup_Staff'] = array(
+          '#type'          => 'textfield',
+          '#wrapper_attributes' => [
+            'colspan' =>  2,
+          ],
+          '#title'         => t('Mitarbeitende ("; " als Separator - e.g. "Alan Angestellter; Beatrice Beispiel;...") / Staff ("; " as separator - e.g. "Eda Employee; Sujin Staff;...")'),
+          '#default_value' => $storedValues['sup_staff']?? t(''),
+          '#required'      => true,
+          );
+
 
 
     // Fields: Supervisory Authority
@@ -360,14 +353,14 @@ class WissKiImpressumForm extends FormBase {
         $form['Supervisory_Authority']['table6']['R6.1']['Auth_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Behördenname'),
-          '#default_value' => (!empty($storedValues['auth_name_de']))? $storedValues['auth_name_de'] : t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
+          '#default_value' => $storedValues['auth_name_de']?? t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
           '#required'      => true,
           );
 
         $form['Supervisory_Authority']['table6']['R6.1']['Auth_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name supervisory authority'),
-          '#default_value' => (!empty($storedValues['auth_name_en']))? $storedValues['auth_name_en'] : t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
+          '#default_value' => $storedValues['auth_name_en']?? t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
           '#required'      => true,
           );
 
@@ -377,7 +370,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => (!empty($storedValues['auth_address']))? $storedValues['auth_address'] : t('Salvatorstraße 2'),
+          '#default_value' => $storedValues['auth_address']?? t('Salvatorstraße 2'),
           '#required'      => true,
           );
 
@@ -387,21 +380,21 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => (!empty($storedValues['auth_plz']))? $storedValues['auth_plz'] : t('80327'),
+          '#default_value' => $storedValues['auth_plz']?? t('80327'),
           '#required'      => true,
           );
 
         $form['Supervisory_Authority']['table6']['R6.4']['Auth_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => (!empty($storedValues['auth_city_de']))? $storedValues['auth_city_de'] : t('München'),
+          '#default_value' => $storedValues['auth_city_de']?? t('München'),
           '#required'      => true,
           );
 
         $form['Supervisory_Authority']['table6']['R6.4']['Auth_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => (!empty($storedValues['auth_city_en']))? $storedValues['auth_city_en'] : t('Munich'),
+          '#default_value' => $storedValues['auth_city_en']?? t('Munich'),
           '#required'      => true,
           );
 
@@ -411,7 +404,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('URL Behörde / URL Supervisory Authority'),
-          '#default_value' => (!empty($storedValues['auth_url']))? $storedValues['auth_url'] : t('www.stmwk.bayern.de'),
+          '#default_value' => $storedValues['auth_url']?? t('www.stmwk.bayern.de'),
           '#required'      => true,
           );
 
@@ -432,15 +425,15 @@ class WissKiImpressumForm extends FormBase {
           $form['Copyright']['table7']['R7.1']['Licence_Title_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Nutzungsrechte / Lizenztitel'),
-            '#default_value' => (!empty($storedValues['licence_title_de']))? $storedValues['licence_title_de'] : t('CC BY-NC-SA 4.0'),
-            '#required'      => false,
+            '#default_value' => $storedValues['licence_title_de']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.1']['Licence_Title_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Right of use / License title'),
-            '#default_value' => (!empty($storedValues['licence_title_en']))? $storedValues['licence_title_en'] : t('CC BY-NC-SA 4.0'),
-            '#required'      => false,
+            '#default_value' => $storedValues['licence_title_en']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.2']['Licence_URL'] = array(
@@ -449,8 +442,8 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Lizenz URL / Licence URL'),
-            '#default_value' => (!empty($storedValues['licence_url']))? $storedValues['licence_url'] : t('https://creativecommons.org/licenses/by-nc-sa/4.0/'),
-            '#required'      => false,
+            '#default_value' => $storedValues['licence_url']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.3']['Use_FAU_Design_Template'] = array(
@@ -459,8 +452,8 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Verwendung FAU Corporate Design / Use of FAU corporate design'),
-            '#default_value' => (!empty($storedValues['use_fau_temp']))? $storedValues['use_fau_temp'] : (false),
-            '#required'      => false,
+            '#default_value' => $storedValues['use_fau_temp']?? (FALSE),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.4']['No_Default_Text'] = array(
@@ -469,22 +462,22 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('\'Eigene Angaben\' ANSTATT Standardtext in \'Nutzungsbedingungen\' (Text zu nicht urheberrechtlich geschützten Inhalten und Privatgebrauch wird weiterhin angezeigt)'),
-            '#default_value' => (!empty($storedValues['no_default_txt']))? $storedValues['no_default_txt'] : (false),
-            '#required'      => false,
+            '#default_value' => $storedValues['no_default_txt']?? (FALSE),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.5']['Custom_Licence_Text_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Eigene Angaben'),
-            '#default_value' => (!empty($storedValues['cust_licence_txt_de']))? $storedValues['cust_licence_txt_de'] : t('<<Text mit eigenen Angaben zum Urheberrecht.>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_licence_txt_de']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Copyright']['table7']['R7.5']['Custom_Licence_Text_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom Information'),
-            '#default_value' => (!empty($storedValues['cust_licence_txt_en']))? $storedValues['cust_licence_txt_en'] : t('<<Text with custom information on copyright.>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_licence_txt_en']?? t(''),
+            '#required'      => FALSE,
             );
 
 
@@ -504,15 +497,15 @@ class WissKiImpressumForm extends FormBase {
           $form['Exclusion_Liab']['table8']['R8.1']['Custom_Exclusion_Liab_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Eigene Angaben zum Haftungsausschluss'),
-            '#default_value' => (!empty($storedValues['cust_exclusion_de']))? $storedValues['cust_exclusion_de'] : t('<<Text mit eigenen Angaben>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_exclusion_de']?? t('<<Text mit eigenen Angaben>>'),
+            '#required'      => FALSE,
             );
 
           $form['Exclusion_Liab']['table8']['R8.1']['Custom_Exclusion_Liab_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom information on liability exclusion'),
-            '#default_value' => (!empty($storedValues['cust_exclusion_en']))? $storedValues['cust_exclusion_en'] : t('<<Text with own information>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_exclusion_en']?? t('<<Text with own information>>'),
+            '#required'      => FALSE,
             );
 
 
@@ -535,22 +528,22 @@ class WissKiImpressumForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Abschnitt \'Haftung für Links\' soll NICHT angezeigt werden / Section \'Links and references (disclaimer)\' should not be displayed'),
-            '#default_value' => (!empty($storedValues['show_disclaim']))? $storedValues['show_disclaim'] : (false),
-            '#required'      => false,
+            '#default_value' => $storedValues['show_disclaim']?? (FALSE),
+            '#required'      => FALSE,
             );
 
           $form['Disclaimer']['table9']['R9.2']['Custom_Disclaimer_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Eigene Angaben zur Haftung für Links (Feld leer lassen, um Standardtext anzuzeigen)'),
-            '#default_value' => (!empty($storedValues['cust_disclaim_de']))? $storedValues['cust_disclaim_de'] : t(''),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_disclaim_de']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Disclaimer']['table9']['R9.2']['Custom_Disclaimer_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom information on liability for links (leave empty to display default text)'),
-            '#default_value' => (!empty($storedValues['cust_disclaim_en']))? $storedValues['cust_disclaim_en'] : t(''),
-            '#required'      => false,
+            '#default_value' => $storedValues['cust_disclaim_en']?? t(''),
+            '#required'      => FALSE,
             );
 
     // Field: Timestamp
@@ -569,6 +562,15 @@ class WissKiImpressumForm extends FormBase {
           '#default_value' => $todays_date,
           '#required'      => true,
         );
+
+    // Disclaimer
+        $form['notice'] = array(
+          '#type'   => 'item',
+          '#prefix' => '<br /><p><strong>',
+          '#suffix' => '</strong></p><br />',
+          '#markup' => t('Es wird keine Haftung für die Korrektheit der eingegebenen Daten übernommen.<br />Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
+          );
+
 
 // Sumbit Form and Populate Template
     $form['submit_button'] = array(
@@ -607,11 +609,11 @@ class WissKiImpressumForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
-    $title                = $values['table1']['R1.1']['title'];
+    $title_de             = $values['table1']['R1.1']['Title_DE'];
     $title_en             = $values['table1']['R1.1']['Title_EN'];
     $wisski_url           = $values['table1']['R1.2']['WissKI_URL'];
-    $alias                = $values['table1']['R1.3']['alias'];
-    $alias_en             = $values['table1']['R1.3']['alias_EN'];
+    $alias_de             = $values['table1']['R1.3']['Alias_DE'];
+    $alias_en             = $values['table1']['R1.3']['Alias_EN'];
     $project_name_de      = $values['table1']['R1.4']['Project_Name_DE'];
     $project_name_en      = $values['table1']['R1.4']['Project_Name_EN'];
     $pub_institute_de     = $values['table2']['R2.1']['Pub_Institute_DE'];
@@ -629,9 +631,9 @@ class WissKiImpressumForm extends FormBase {
     $contact_email        = $values['table4']['R4.3']['Contact_Email'];
     $sup_institute_de     = $values['table5']['R5.1']['Sup_Institute_DE'];
     $sup_institute_en     = $values['table5']['R5.1']['Sup_Institute_EN'];
-    $sup_email            = $values['table5']['R5.2']['Sup_Email'];
-    $sup_staff            = $values['table5']['R5.3']['Sup_Staff'];
-    $sup_url              = $values['table5']['R5.4']['Sup_URL'];
+    $sup_url              = $values['table5']['R5.2']['Sup_URL'];
+    $sup_email            = $values['table5']['R5.3']['Sup_Email'];
+    $sup_staff            = $values['table5']['R5.4']['Sup_Staff'];
     $auth_name_de         = $values['table6']['R6.1']['Auth_Name_DE'];
     $auth_name_en         = $values['table6']['R6.1']['Auth_Name_EN'];
     $auth_address         = $values['table6']['R6.2']['Auth_Address'];
@@ -656,7 +658,7 @@ class WissKiImpressumForm extends FormBase {
 
     $sup_staff_array = explode('; ', $sup_staff);
 
-    $template = [
+    $template_de = [
       '#theme'                => 'impressum_template',
       '#wisski_url'              => $wisski_url,
       '#project_name_de'         => $project_name_de,
@@ -671,10 +673,10 @@ class WissKiImpressumForm extends FormBase {
       '#contact_phone'           => $contact_phone,
       '#contact_email'           => $contact_email,
       '#sup_institute_de'        => $sup_institute_de,
+      '#sup_url'                 => $sup_url,
       '#sup_email'               => $sup_email,
       '#sup_staff'               => $sup_staff,
       '#sup_staff_array'         => $sup_staff_array,
-      '#sup_url'                 => $sup_url,
       '#auth_name_de'            => $auth_name_de,
       '#auth_address'            => $auth_address,
       '#auth_plz'                => $auth_plz,
@@ -692,13 +694,13 @@ class WissKiImpressumForm extends FormBase {
     ];
 
     $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias);
+    $deleteQuery->condition('alias', '/'.$alias_de);
     $deleteQuery->execute();
 
-    $html = \Drupal::service('renderer')->renderPlain($template);
+    $html_de = \Drupal::service('renderer')->renderPlain($template_de);
 
-    $this->generateNode($title, $html, $alias);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">Deutsches Impressum erfolgreich erstellt / German legal notice generated successfully</a>'), 'status', TRUE);
+    $this->generateNode($title_de, $html_de, $alias_de);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsches Impressum erfolgreich erstellt / German legal notice generated successfully</a>'), 'status', TRUE);
 
 
     $template_en = [
@@ -716,10 +718,10 @@ class WissKiImpressumForm extends FormBase {
       '#contact_phone'           => $contact_phone,
       '#contact_email'           => $contact_email,
       '#sup_institute_en'        => $sup_institute_en,
+      '#sup_url'                 => $sup_url,
       '#sup_email'               => $sup_email,
       '#sup_staff'               => $sup_staff,
       '#sup_staff_array'         => $sup_staff_array,
-      '#sup_url'                 => $sup_url,
       '#auth_name_en'            => $auth_name_en,
       '#auth_address'            => $auth_address,
       '#auth_plz'                => $auth_plz,
@@ -747,10 +749,10 @@ class WissKiImpressumForm extends FormBase {
      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englisches Impressum erfolgreich erstellt / English legal notice generated successfully</a>'), 'status', TRUE);
 
 
-     $valuesStoredInState = array('wisski_impressum.legalNotice' => array('title'                 => $title,
+     $valuesStoredInState = array('wisski_impressum.legalNotice' => array('title_de'              => $title_de,
                                                                           'title_en'              => $title_en,
                                                                           'wisski_url'            => $wisski_url,
-                                                                          'alias'                 => $alias,
+                                                                          'alias_de'              => $alias_de,
                                                                           'alias_en'              => $alias_en,
                                                                           'project_name_de'       => $project_name_de,
                                                                           'project_name_en'       => $project_name_en,
@@ -769,10 +771,10 @@ class WissKiImpressumForm extends FormBase {
                                                                           'contact_email'         => $contact_email,
                                                                           'sup_institute_de'      => $sup_institute_de,
                                                                           'sup_institute_en'      => $sup_institute_en,
+                                                                          'sup_url'               => $sup_url,
                                                                           'sup_email'             => $sup_email,
                                                                           'sup_staff'             => $sup_staff,
                                                                           'sup_staff_array'       => $sup_staff_array,
-                                                                          'sup_url'               => $sup_url,
                                                                           'auth_name_de'          => $auth_name_de,
                                                                           'auth_name_en'          => $auth_name_en,
                                                                           'auth_address'          => $auth_address,

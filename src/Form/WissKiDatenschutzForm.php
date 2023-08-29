@@ -58,13 +58,6 @@ class WissKiDatenschutzForm extends FormBase {
 
   $valuesFromLegalNotice = \Drupal::state()->get('wisski_impressum.legalNotice');
 
-    // Disclaimer
-    $form['text_header'] = array(
-      '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>',
-      '#markup' => t('Das CDI ist nicht für die Korrektheit der eingegebenen Daten verantwortlich. Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
-      '#weight' => -100,
-      );
 
     // Fields: General
     $form['General'] = array(
@@ -79,17 +72,17 @@ class WissKiDatenschutzForm extends FormBase {
           '#header' => array('German', 'English'),
         );
 
-          $form['General']['table1']['R1.1']['title'] = array(
+          $form['General']['table1']['R1.1']['Title_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Seitentitel'),
-            '#default_value' =>(!empty($storedValues['title']))? $storedValues['title'] :  t('Datenschutz'),
+            '#default_value' => $storedValues['title_de']??  t('Datenschutz'),
             '#required'      => true,
             );
 
           $form['General']['table1']['R1.1']['Title_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Page title'),
-            '#default_value' => (!empty($storedValues['title_en']))? $storedValues['title_en'] : t('Privacy'),
+            '#default_value' => $storedValues['title_en']?? t('Privacy'),
             '#required'      => true,
             );
 
@@ -99,48 +92,48 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('WissKI URL'),
-            '#default_value' => (!empty($storedValues['wisski_url']))? $storedValues['wisski_url'] : t('https://mehrdad.wisski.data.fau.de/'),
+            '#default_value' => $storedValues['wisski_url']?? t(''),
             '#required'      => true,
             );
 
-            $form['General']['table1']['R1.3']['alias'] = array(
+            $form['General']['table1']['R1.3']['Alias_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Seiten-Alias'),
-            '#default_value' => (!empty($storedValues['alias']))? $storedValues['alias'] : t('datenschutz'),
+            '#default_value' => $storedValues['alias_de']?? t('datenschutz'),
             '#required'      => true,
             );
 
-          $form['General']['table1']['R1.3']['alias_EN'] = array(
+          $form['General']['table1']['R1.3']['Alias_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Site alias'),
-            '#default_value' => (!empty($storedValues['alias_en']))? $storedValues['alias_en'] : t('privacy'),
+            '#default_value' => $storedValues['alias_en']?? t('privacy'),
             '#required'      => true,
             );
 
           $form['General']['table1']['R1.4']['Not_FAU_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Absätze zu verantwortlicher Person im Sinne der Datenschutz-Grundverordnung<br/>NUR AUSFÜLLEN, WENN GEWÜNSCHT: Ersetzen FAU-spezifischer Absätze durch diesen Text'),
-            '#required'      => false,
-            '#default_value' => (!empty($storedValues['not_fau_de']))? $storedValues['not_fau_de'] : t(''),
+            '#required'      => FALSE,
+            '#default_value' => $storedValues['not_fau_de']?? t(''),
             );
 
           $form['General']['table1']['R1.4']['Not_FAU_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Paragraphs on the person responsible within the meaning of the General Data Protection Regulation<br/>ONLY FILL IN IF YOU WANT TO: Replace FAU-specific text with custom text'),
-            '#required'      => false,
-            '#default_value' => (!empty($storedValues['not_fau_en']))? $storedValues['not_fau_en'] : t(''),
+            '#required'      => FALSE,
+            '#default_value' => $storedValues['not_fau_en']?? t(''),
             );
 
           $form['General']['table1']['R1.5']['Legal_Notice_URL_DE'] = array(
             '#type'          => 'hidden',
             '#title'         => t('Legal notice URL'),
-            '#default_value' => (!empty($valuesFromLegalNotice['alias']))? $valuesFromLegalNotice['alias'] : t('impressum'),
-          );
+            '#default_value' => $valuesFromLegalNotice['alias_de']?? t('impressum'),
+          )??
 
           $form['General']['table1']['R1.5']['Legal_Notice_URL_EN'] = array(
             '#type'          => 'hidden',
             '#title'         => t('Legal notice URL'),
-            '#default_value' => (!empty($valuesFromLegalNotice['alias_en']))? $valuesFromLegalNotice['alias_en'] : t('legalnotice'),
+            '#default_value' => $valuesFromLegalNotice['alias_en']?? t('legalnotice'),
           );
 
 
@@ -160,14 +153,14 @@ class WissKiDatenschutzForm extends FormBase {
           $form['Data_Security_Official']['table2']['R2.1']['Sec_Off_Title_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Titel Beauftragte*'),
-            '#default_value' => (!empty($storedValues['sec_off_title_de']))? $storedValues['sec_off_title_de'] : t('Datenschutzbeauftragter der FAU'),
+            '#default_value' => $storedValues['sec_off_title_de']?? t('Datenschutzbeauftragter der FAU'),
             '#required'      => true,
             );
 
           $form['Data_Security_Official']['table2']['R2.1']['Sec_Off_Title_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Title Data Security Official'),
-            '#default_value' => (!empty($storedValues['sec_off_title_en']))? $storedValues['sec_off_title_en'] : t('Data Security Official of the FAU'),
+            '#default_value' => $storedValues['sec_off_title_en']?? t('Data Security Official of the FAU'),
             '#required'      => true,
             );
 
@@ -177,22 +170,22 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Name Beauftragte* / Name data security official'),
-            '#default_value' => (!empty($storedValues['sec_off_name']))? $storedValues['sec_off_name'] : t('Klaus Hoogestraat'),
+            '#default_value' => $storedValues['sec_off_name']?? t('Klaus Hoogestraat'),
             '#required'      => true,
             );
 
           $form['Data_Security_Official']['table2']['R2.3']['Sec_Off_Add_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Zusatz Beauftragte*'),
-            '#default_value' => (!empty($storedValues['sec_off_add_de']))? $storedValues['sec_off_add_de'] : t('c/o ITM Gesellschaft für IT-Management mbH'),
-            '#required'      => false,
+            '#default_value' => $storedValues['sec_off_add_de']?? t('c/o ITM Gesellschaft für IT-Management mbH'),
+            '#required'      => FALSE,
             );
 
           $form['Data_Security_Official']['table2']['R2.3']['Sec_Off_Add_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Name line 2'),
-            '#default_value' => (!empty($storedValues['sec_off_add_en']))? $storedValues['sec_off_add_en'] : t('c/o ITM Gesellschaft für IT-Management mbH'),
-            '#required'      => false,
+            '#default_value' => $storedValues['sec_off_add_en']?? t('c/o ITM Gesellschaft für IT-Management mbH'),
+            '#required'      => FALSE,
             );
 
           $form['Data_Security_Official']['table2']['R2.4']['Sec_Off_Address'] = array(
@@ -201,7 +194,7 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Straße und Hausnummer / Street name and house number'),
-            '#default_value' => (!empty($storedValues['sec_off_address']))? $storedValues['sec_off_address'] : t('Bürgerstraße 81'),
+            '#default_value' => $storedValues['sec_off_address']?? t('Bürgerstraße 81'),
             '#required'      => true,
             );
 
@@ -211,53 +204,54 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('PLZ / Postal code'),
-            '#default_value' => (!empty($storedValues['sec_off_plz']))? $storedValues['sec_off_plz'] : t('01127'),
+            '#default_value' => $storedValues['sec_off_plz']?? t('01127'),
             '#required'      => true,
             );
 
           $form['Data_Security_Official']['table2']['R2.6']['Sec_Off_City_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Ort'),
-            '#default_value' => (!empty($storedValues['sec_off_city_de']))? $storedValues['sec_off_city_de'] : t('Dresden'),
+            '#default_value' => $storedValues['sec_off_city_de']?? t('Dresden'),
             '#required'      => true,
             );
 
           $form['Data_Security_Official']['table2']['R2.6']['Sec_Off_City_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('City'),
-            '#default_value' => (!empty($storedValues['sec_off_city_en']))? $storedValues['sec_off_city_en'] : t('Dresden'),
+            '#default_value' => $storedValues['sec_off_city_en']?? t('Dresden'),
             '#required'      => true,
             );
 
-          $form['Data_Security_Official']['table2']['R2.7']['Sec_Off_Email'] = array(
-            '#type'          => 'textfield',
-            '#wrapper_attributes' => [
-              'colspan' =>  2,
-            ],
-            '#title'         => t('E-Mail Datenschutzbeauftragte* / E-mail data security official'),
-            '#default_value' => (!empty($storedValues['sec_off_email']))? $storedValues['sec_off_email'] : t('datenschutzbeauftragter@fau.de'),
-            '#required'      => true,
-            );
-
-          $form['Data_Security_Official']['table2']['R2.8']['Sec_Off_Phone'] = array(
+          $form['Data_Security_Official']['table2']['R2.7']['Sec_Off_Phone'] = array(
             '#type'          => 'textfield',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
             '#title'         => t('Telefon / Phone'),
-            '#default_value' => (!empty($storedValues['sec_off_phone']))? $storedValues['sec_off_phone'] : t('+49 9131 85-25860'),
+            '#default_value' => $storedValues['sec_off_phone']?? t('+49 9131 85-25860'),
             '#required'      => true,
             );
 
-          $form['Data_Security_Official']['table2']['R2.9']['Sec_Off_Fax'] = array(
+          $form['Data_Security_Official']['table2']['R2.8']['Sec_Off_Fax'] = array(
             '#type'     => 'textfield',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
             '#title'    => t('Fax'),
-            '#default_value' => (!empty($storedValues['sec_off_fax']))? $storedValues['sec_off_fax'] : t(''),
-            '#required' => false,
+            '#default_value' => $storedValues['sec_off_fax']?? t(''),
+            '#required' => FALSE,
             );
+
+          $form['Data_Security_Official']['table2']['R2.9']['Sec_Off_Email'] = array(
+            '#type'          => 'textfield',
+            '#wrapper_attributes' => [
+              'colspan' =>  2,
+            ],
+            '#title'         => t('E-Mail Datenschutzbeauftragte* / E-mail data security official'),
+            '#default_value' => $storedValues['sec_off_email']?? t('datenschutzbeauftragter@fau.de'),
+            '#required'      => true,
+            );
+
 
 
     // Fields: Third Party Services
@@ -279,49 +273,49 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Name'),
-            '#default_value' => (!empty($storedValues['third_service_provider']))? $storedValues['third_service_provider'] : t(''),
-            '#required'      => false,
+            '#default_value' => $storedValues['third_service_provider']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Third_Party_Services']['table3']['R3.2']['Third_Descr_Data_Coll_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Beschreibung und Umfang der Datenverarbeitung'),
-            '#default_value' => (!empty($storedValues['third_descr_data_coll_de']))? $storedValues['third_descr_data_coll_de'] : t('<<Beschreibung>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['third_descr_data_coll_de']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Third_Party_Services']['table3']['R3.2']['Third_Descr_Data_Coll_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Description and scope of data processing'),
-            '#default_value' => (!empty($storedValues['third_descr_data_coll_en']))? $storedValues['third_descr_data_coll_en'] : t('<<Description>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['third_descr_data_coll_en']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Third_Party_Services']['table3']['R3.3']['Third_Legal_Basis_Data_Coll_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Rechtsgrundlage für Verarbeitung personenbezogener Daten'),
-            '#default_value' => (!empty($storedValues['third_legal_basis_data_coll_de']))? $storedValues['third_legal_basis_data_coll_de'] : t('<<Text zur Rechtsgrundlage>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['third_legal_basis_data_coll_de']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Third_Party_Services']['table3']['R3.3']['Third_Legal_Basis_Data_Coll_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Legal basis for the processing of personal data'),
-            '#default_value' => (!empty($storedValues['third_legal_basis_data_coll_en']))? $storedValues['third_legal_basis_data_coll_en'] : t('<<Text on the legal basis of personal data processing>>'),
-            '#required'      => false,
+            '#default_value' => $storedValues['third_legal_basis_data_coll_en']?? t(''),
+            '#required'      => FALSE,
             );
 
           $form['Third_Party_Services']['table3']['R3.4']['Third_Objection_Data_Coll_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Widerspruchs- und Beseitigungsmöglichkeit'),
-            '#default_value' => (!empty($storedValues['third_objection_data_coll_de']))? $storedValues['third_objection_data_coll_de'] : t('<<Text der Möglichkeiten>>'),
+            '#default_value' => $storedValues['third_objection_data_coll_de']?? t(''),
             '#optional'      => true,
             );
 
           $form['Third_Party_Services']['table3']['R3.4']['Third_Objection_Data_Coll_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Objection and elimination'),
-            '#default_value' => (!empty($storedValues['third_objection_data_coll_en']))? $storedValues['third_objection_data_coll_en'] : t('<<Text on possibilities>>'),
+            '#default_value' => $storedValues['third_objection_data_coll_en']?? t(''),
             '#optional'      => true,
             );
 
@@ -342,14 +336,14 @@ class WissKiDatenschutzForm extends FormBase {
           $form['Data_Protection_Commissioner']['table4']['R4.1']['Data_Comm_Title_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Titel Landesbauftragte* (mit bestimmtem Artikel)'),
-            '#default_value' => (!empty($storedValues['data_comm_title_de']))? $storedValues['data_comm_title_de'] : t('der Bayerische Landesbeauftragte für den Datenschutz'),
+            '#default_value' => $storedValues['data_comm_title_de']?? t('der Bayerische Landesbeauftragte für den Datenschutz'),
             '#required'      => true,
             );
 
           $form['Data_Protection_Commissioner']['table4']['R4.1']['Data_Comm_Title_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Title Bavarian State Commissioner for Data Protection (without definite article)'),
-            '#default_value' => (!empty($storedValues['data_comm_title_en']))? $storedValues['data_comm_title_en'] : t('Bavarian State Commissioner for Data Protection'),
+            '#default_value' => $storedValues['data_comm_title_en']?? t('Bavarian State Commissioner for Data Protection'),
             '#required'      => true,
             );
 
@@ -359,7 +353,7 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('Straße und Hausnummer/ Street name and house number'),
-            '#default_value' => (!empty($storedValues['data_comm_address']))? $storedValues['data_comm_address'] : t('Wagmüllerstraße 18'),
+            '#default_value' => $storedValues['data_comm_address']?? t('Wagmüllerstraße 18'),
             '#required'      => true,
             );
 
@@ -369,21 +363,21 @@ class WissKiDatenschutzForm extends FormBase {
               'colspan' =>  2,
             ],
             '#title'         => t('PLZ / Postal code'),
-            '#default_value' => (!empty($storedValues['data_comm_plz']))? $storedValues['data_comm_plz'] : t('80538'),
+            '#default_value' => $storedValues['data_comm_plz']?? t('80538'),
             '#required'      => true,
             );
 
           $form['Data_Protection_Commissioner']['table4']['R4.4']['Data_Comm_City_DE'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Ort'),
-            '#default_value' => (!empty($storedValues['data_comm_city_de']))? $storedValues['data_comm_city_de'] : t('München'),
+            '#default_value' => $storedValues['data_comm_city_de']?? t('München'),
             '#required'      => true,
             );
 
           $form['Data_Protection_Commissioner']['table4']['R4.4']['Data_Comm_City_EN'] = array(
             '#type'          => 'textfield',
             '#title'         => t('City'),
-            '#default_value' => (!empty($storedValues['data_comm_city_en']))? $storedValues['data_comm_city_en'] : t('Munich'),
+            '#default_value' => $storedValues['data_comm_city_en']?? t('Munich'),
             '#required'      => true,
             );
 
@@ -405,6 +399,13 @@ class WissKiDatenschutzForm extends FormBase {
           '#required'      => true,
         );
 
+    // Disclaimer
+    $form['notice'] = array(
+      '#type'   => 'item',
+      '#prefix' => '<br /><p><strong>',
+      '#suffix' => '</strong></p><br />',
+      '#markup' => t('Es wird keine Haftung für die Korrektheit der eingegebenen Daten übernommen.<br />Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
+      );
 
 // Submit Form and Populate Template
     $form['submit_button'] = array(
@@ -442,11 +443,11 @@ class WissKiDatenschutzForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
 
+    $title_de                           = $values['table1']['R1.1']['Title_DE'];
     $title_en                           = $values['table1']['R1.1']['Title_EN'];
-    $title                              = $values['table1']['R1.1']['title'];
     $wisski_url                         = $values['table1']['R1.2']['WissKI_URL'];
-    $alias                              = $values['table1']['R1.3']['alias'];
-    $alias_en                           = $values['table1']['R1.3']['alias_EN'];
+    $alias_de                           = $values['table1']['R1.3']['Alias_DE'];
+    $alias_en                           = $values['table1']['R1.3']['Alias_EN'];
     $not_fau_de                         = $values['table1']['R1.4']['Not_FAU_DE'];
     $not_fau_en                         = $values['table1']['R1.4']['Not_FAU_EN'];
     $legal_notice_url_de                = $values['table1']['R1.5']['Legal_Notice_URL_DE'];
@@ -460,9 +461,9 @@ class WissKiDatenschutzForm extends FormBase {
     $sec_off_plz                        = $values['table2']['R2.5']['Sec_Off_PLZ'];
     $sec_off_city_de                    = $values['table2']['R2.6']['Sec_Off_City_DE'];
     $sec_off_city_en                    = $values['table2']['R2.6']['Sec_Off_City_EN'];
-    $sec_off_email                      = $values['table2']['R2.7']['Sec_Off_Email'];
-    $sec_off_phone                      = $values['table2']['R2.8']['Sec_Off_Phone'];
-    $sec_off_fax                        = $values['table2']['R2.9']['Sec_Off_Fax'];
+    $sec_off_phone                      = $values['table2']['R2.7']['Sec_Off_Phone'];
+    $sec_off_fax                        = $values['table2']['R2.8']['Sec_Off_Fax'];
+    $sec_off_email                      = $values['table2']['R2.9']['Sec_Off_Email'];
     $third_service_provider             = $values['table3']['R3.1']['Third_Service_Provider'];
     $third_descr_data_coll_de           = $values['table3']['R3.2']['Third_Descr_Data_Coll_DE'];
     $third_descr_data_coll_en           = $values['table3']['R3.2']['Third_Descr_Data_Coll_EN'];
@@ -479,20 +480,20 @@ class WissKiDatenschutzForm extends FormBase {
     $date                               = $values['Date'];
 
 
-    $template = [
+    $template_de = [
       '#theme'                 => 'datenschutz_template',
+      '#wisski_url'                     => $wisski_url,
       '#not_fau_de'                     => $not_fau_de,
       '#legal_notice_url_de'            => $legal_notice_url_de,
-      '#wisski_url'                     => $wisski_url,
       '#sec_off_title_de'               => $sec_off_title_de,
       '#sec_off_name'                   => $sec_off_name,
       '#sec_off_add_de'                 => $sec_off_add_de,
       '#sec_off_address'                => $sec_off_address,
       '#sec_off_plz'                    => $sec_off_plz,
       '#sec_off_city_de'                => $sec_off_city_de,
-      '#sec_off_email'                  => $sec_off_email,
       '#sec_off_phone'                  => $sec_off_phone,
       '#sec_off_fax'                    => $sec_off_fax,
+      '#sec_off_email'                  => $sec_off_email,
       '#third_service_provider'         => $third_service_provider,
       '#third_descr_data_coll_de'       => $third_descr_data_coll_de,
       '#third_legal_basis_data_coll_de' => $third_legal_basis_data_coll_de,
@@ -506,28 +507,28 @@ class WissKiDatenschutzForm extends FormBase {
     ];
 
     $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias);
+    $deleteQuery->condition('alias', '/'.$alias_de);
     $deleteQuery->execute();
 
-    $html = \Drupal::service('renderer')->renderPlain($template);
+    $html_de = \Drupal::service('renderer')->renderPlain($template_de);
 
-    $this->generateNode($title, $html, $alias);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias.'">Deutsche Datenschutzerklärung erstellt / German privacy declaration generated successfully</a>'), 'status', TRUE);
+    $this->generateNode($title_de, $html_de, $alias_de);
+    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsche Datenschutzerklärung erstellt / German privacy declaration generated successfully</a>'), 'status', TRUE);
 
     $template_en = [
       '#theme'                 => 'privacy_template',
+      '#wisski_url'                     => $wisski_url,
       '#not_fau_en'                     => $not_fau_en,
       '#legal_notice_url_en'            => $legal_notice_url_en,
-      '#wisski_url'                     => $wisski_url,
       '#sec_off_title_en'               => $sec_off_title_en,
       '#sec_off_name'                   => $sec_off_name,
       '#sec_off_add_en'                 => $sec_off_add_en,
       '#sec_off_address'                => $sec_off_address,
       '#sec_off_plz'                    => $sec_off_plz,
       '#sec_off_city_en'                => $sec_off_city_en,
-      '#sec_off_email'                  => $sec_off_email,
       '#sec_off_phone'                  => $sec_off_phone,
       '#sec_off_fax'                    => $sec_off_fax,
+      '#sec_off_email'                  => $sec_off_email,
       '#third_service_provider'         => $third_service_provider,
       '#third_descr_data_coll_en'       => $third_descr_data_coll_en,
       '#third_legal_basis_data_coll_en' => $third_legal_basis_data_coll_en,
@@ -550,9 +551,13 @@ class WissKiDatenschutzForm extends FormBase {
     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Datenschutzerklärung erfolgreich erstellt / English privacy declaration generated successfully</a>'), 'status', TRUE);
 
 
-    $valuesStoredInState = array('wisski_impressum.privacy' => array('not_fau_de'                     => $not_fau_de,
-                                                                     'not_fau_en'                     => $not_fau_en,
+    $valuesStoredInState = array('wisski_impressum.privacy' => array('title_de'                       => $title_de,
+                                                                     'title_en'                       => $title_en,
                                                                      'wisski_url'                     => $wisski_url,
+                                                                     'alias_de'                       => $alias_de,
+                                                                     'alias_en'                       => $alias_en,
+                                                                     'not_fau_de'                     => $not_fau_de,
+                                                                     'not_fau_en'                     => $not_fau_en,
                                                                      'sec_off_title_de'               => $sec_off_title_de,
                                                                      'sec_off_title_en'               => $sec_off_title_en,
                                                                      'sec_off_name'                   => $sec_off_name,
@@ -562,9 +567,9 @@ class WissKiDatenschutzForm extends FormBase {
                                                                      'sec_off_plz'                    => $sec_off_plz,
                                                                      'sec_off_city_de'                => $sec_off_city_de,
                                                                      'sec_off_city_en'                => $sec_off_city_en,
-                                                                     'sec_off_email'                  => $sec_off_email,
                                                                      'sec_off_phone'                  => $sec_off_phone,
                                                                      'sec_off_fax'                    => $sec_off_fax,
+                                                                     'sec_off_email'                  => $sec_off_email,
                                                                      'third_service_provider'         => $third_service_provider,
                                                                      'third_descr_data_coll_de'       => $third_descr_data_coll_de,
                                                                      'third_descr_data_coll_en'       => $third_descr_data_coll_en,
