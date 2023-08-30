@@ -91,7 +91,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('WissKI URL'),
-          '#default_value' => $storedValues['wisski_url']?? t('https://mehrdad.wisski.data.fau.de/'),
+          '#default_value' => $storedValues['wisski_url']?? t(''),
           '#required'      => true,
           );
 
@@ -112,14 +112,14 @@ class WissKiImpressumForm extends FormBase {
         $form['General']['table1']['R1.4']['Project_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Projektname'),
-          '#default_value' => $storedValues['project_name_de']?? t('Mehrdad'),
+          '#default_value' => $storedValues['project_name_de']?? t(''),
           '#required'      => true,
           );
 
         $form['General']['table1']['R1.4']['Project_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Project name'),
-          '#default_value' => $storedValues['project_name_en']?? t('Mehrdad'),
+          '#default_value' => $storedValues['project_name_en']?? t(''),
           '#required'      => true,
           );
 
@@ -253,7 +253,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Kontaktperson / Name contact person'),
-          '#default_value' => $storedValues['contact_name']?? t('Name Kontaktperson'),
+          '#default_value' => $storedValues['contact_name']?? t(''),
           '#required'      => true,
           );
 
@@ -263,7 +263,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Telefonnummer Kontaktperson / Phone contact person'),
-          '#default_value' => $storedValues['contact_phone']?? t('+49 9131~ '),
+          '#default_value' => $storedValues['contact_phone']?? t(''),
           '#required'      => true,
         );
 
@@ -273,7 +273,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Kontaktperson / E-mail contact person'),
-          '#default_value' => $storedValues['contact_email']?? t('email@beispiel.de'),
+          '#default_value' => $storedValues['contact_email']?? t(''),
           '#required'      => true,
           );
 
@@ -294,14 +294,14 @@ class WissKiImpressumForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => $storedValues['sup_institute_de']?? t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => $storedValues['sup_institute_de']?? t(''),
           '#required'      => true,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => $storedValues['sup_institute_en']?? t('FAU Competence Center for Research Data and Information'),
+          '#default_value' => $storedValues['sup_institute_en']?? t(''),
           '#required'      => true,
           );
 
@@ -311,7 +311,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Betreuung / Hompage support'),
-          '#default_value' => $storedValues['sup_url']?? t('https://www.cdi.fau.de/'),
+          '#default_value' => $storedValues['sup_url']?? t(''),
           '#required'      => true,
           );
 
@@ -321,7 +321,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Betreuung / E-mail support'),
-          '#default_value' => $storedValues['sup_email']?? t('cdi-wisski-support@fau.de'),
+          '#default_value' => $storedValues['sup_email']?? t(''),
           '#required'      => true,
           );
 
@@ -497,14 +497,14 @@ class WissKiImpressumForm extends FormBase {
           $form['Exclusion_Liab']['table8']['R8.1']['Custom_Exclusion_Liab_DE'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Eigene Angaben zum Haftungsausschluss'),
-            '#default_value' => $storedValues['cust_exclusion_de']?? t('<<Text mit eigenen Angaben>>'),
+            '#default_value' => $storedValues['cust_exclusion_de']?? t(''),
             '#required'      => FALSE,
             );
 
           $form['Exclusion_Liab']['table8']['R8.1']['Custom_Exclusion_Liab_EN'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom information on liability exclusion'),
-            '#default_value' => $storedValues['cust_exclusion_en']?? t('<<Text with own information>>'),
+            '#default_value' => $storedValues['cust_exclusion_en']?? t(''),
             '#required'      => FALSE,
             );
 
