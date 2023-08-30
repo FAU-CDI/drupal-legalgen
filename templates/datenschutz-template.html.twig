@@ -2,7 +2,7 @@
 
 	{% if not_fau_de == '' %}
 	<div>
-		{{ include('modules/wisski_impressum/templates/privacy-template/privacy-fau-template_de.html.twig') }}
+		{{ include('@wisski_impressum/privacy-template/privacy-fau-template_de.html.twig') }}
 	</div>
 
 	{% else %}
@@ -13,7 +13,7 @@
 	</div>
 	{% endif %}
 	<div>
-		{{ include('modules/wisski_impressum/templates/privacy-template/data-security-official-template_de.html.twig') }}
+		{{ include('@wisski_impressum/privacy-template/data-security-official-template_de.html.twig') }}
 	</div>
 
 	<!-- Collapsibles: Start -->
@@ -227,12 +227,12 @@
 
 	{% if third_service_provider %}
 	<div>
-		{{ include('modules/wisski_impressum/templates/privacy-template/service-provider-template_de.html.twig') }}
+		{{ include('@wisski_impressum/privacy-template/service-provider-template_de.html.twig') }}
 	</div>
 
 	{% endif %}
 	<div>
-		{{ include('modules/wisski_impressum/templates/privacy-template//rights-data-subject-template_de.html.twig') }}
+		{{ include('@wisski_impressum/privacy-template//rights-data-subject-template_de.html.twig') }}
 	</div>
 
 	<!-- Collapsibles: End -->
