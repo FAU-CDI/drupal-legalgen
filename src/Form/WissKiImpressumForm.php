@@ -568,7 +568,8 @@ class WissKiImpressumForm extends FormBase {
           '#type'   => 'item',
           '#prefix' => '<br /><p><strong>',
           '#suffix' => '</strong></p><br />',
-          '#markup' => t('Es wird keine Haftung für die Korrektheit der eingegebenen Daten übernommen.<br />Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit.'),
+          '#markup' => t('Es wird keine Haftung für die Korrektheit der eingegebenen Daten übernommen. / No liability is assumed for the correctness of the data entered.<br />
+                          Bitte überprüfen Sie nach der Generierung die erstellten Seiten auf Richtigkeit. / Please verify the accuracy of the generated pages.'),
           );
 
 
