@@ -110,7 +110,7 @@ class WissKiAccessibilityForm extends FormBase {
               );
 
             $form['General']['table1']['R1.2']['WissKI_URL'] = array(
-              '#type'          => 'textfield',
+              '#type'          => 'link',
               '#wrapper_attributes' => [
                 'colspan' =>  2,
               ],
@@ -212,7 +212,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
         $form['Conformity']['table2']['R2.5']['Report_URL'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'link',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -302,7 +302,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
         $form['Contact_Accessibility']['table4']['R4.2']['Contact_Access_Phone'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'tel',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -312,7 +312,7 @@ class WissKiAccessibilityForm extends FormBase {
         );
 
         $form['Contact_Accessibility']['table4']['R4.3']['Contact_Access_Email'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'email',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -349,7 +349,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
           $form['Support_and_Hosting']['table5']['R5.2']['Sup_URL'] = array(
-            '#type'          => 'textfield',
+            '#type'          => 'link',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
@@ -393,7 +393,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
           $form['Support_and_Hosting']['table5']['R5.6']['Sup_Email'] = array(
-            '#type'          => 'textfield',
+            '#type'          => 'email',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
@@ -479,7 +479,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
         $form['Oversight Body']['table6']['R6.6']['Oversight_Phone'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'tel',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -489,7 +489,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
         $form['Oversight Body']['table6']['R6.7']['Oversight_Email'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'email',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -499,7 +499,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
         $form['Oversight Body']['table6']['R6.8']['Oversight_URL'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'link',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],

@@ -86,7 +86,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['General']['table1']['R1.2']['WissKI_URL'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'link',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -196,7 +196,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['Publisher']['table2']['R2.6']['Pub_Email'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'email',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -258,7 +258,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['Contact_Content']['table4']['R4.2']['Contact_Phone'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'tel',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -268,7 +268,7 @@ class WissKiImpressumForm extends FormBase {
         );
 
         $form['Contact_Content']['table4']['R4.3']['Contact_Email'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'email',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -306,7 +306,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['Support_and_Hosting']['table5']['R5.2']['Sup_URL'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'link',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -316,7 +316,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['Support_and_Hosting']['table5']['R5.3']['Sup_Email'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'email',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -399,7 +399,7 @@ class WissKiImpressumForm extends FormBase {
           );
 
         $form['Supervisory_Authority']['table6']['R6.5']['Auth_URL'] = array(
-          '#type'          => 'textfield',
+          '#type'          => 'link',
           '#wrapper_attributes' => [
             'colspan' =>  2,
           ],
@@ -437,7 +437,7 @@ class WissKiImpressumForm extends FormBase {
             );
 
           $form['Copyright']['table7']['R7.2']['Licence_URL'] = array(
-            '#type'          => 'textfield',
+            '#type'          => 'link',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],

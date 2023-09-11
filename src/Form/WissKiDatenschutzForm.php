@@ -223,12 +223,12 @@ class WissKiDatenschutzForm extends FormBase {
             );
 
           $form['Data_Security_Official']['table2']['R2.7']['Sec_Off_Phone'] = array(
-            '#type'          => 'textfield',
+            '#type'          => 'tel',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
             '#title'         => t('Telefon / Phone'),
-            '#default_value' => $storedValues['sec_off_phone']?? t('+49 9131 85-25860'),
+            '#default_value' => $storedValues['sec_off_phone']?? t('+49 913185-25860'),
             '#required'      => true,
             );
 
@@ -243,7 +243,7 @@ class WissKiDatenschutzForm extends FormBase {
             );
 
           $form['Data_Security_Official']['table2']['R2.9']['Sec_Off_Email'] = array(
-            '#type'          => 'textfield',
+            '#type'          => 'email',
             '#wrapper_attributes' => [
               'colspan' =>  2,
             ],
