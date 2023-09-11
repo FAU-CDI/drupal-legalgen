@@ -238,42 +238,42 @@ class WissKiAccessibilityForm extends FormBase {
         $form['Issues']['table3']['R3.1']['Known_Issues_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Nicht barrierefrei zugängliche Inhalte ("; " als Separator für Probleme)'),
-          '#default_value'  => $storedValues['known_issues_de']?? t(''),
+          '#default_value'  => implode(';', $storedValues['issues_array_de'])?? t(''),
           '#required'       => FALSE,
           );
 
         $form['Issues']['table3']['R3.1']['Known_Issues_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Content that is not accessible to all ("; " as separator for problems)'),
-          '#default_value'  => $storedValues['known_issues_en']?? t(''),
+          '#default_value'  => implode(';', $storedValues['issues_array_en'])?? t(''),
           '#required'       => FALSE,
           );
 
         $form['Issues']['table3']['R3.2']['Justification_Statement_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Begründung ("; " als Separator für Unterpunkte)'),
-          '#default_value'  => $storedValues['statement_de']?? t(''),
+          '#default_value'  => implode(';', $storedValues['statement_array_de'])?? t(''),
           '#required'       => FALSE,
           );
 
         $form['Issues']['table3']['R3.2']['Justification_Statement_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Justification ("; " as separator for subitems)'),
-          '#default_value'  => $storedValues['statement_en']?? t(''),
+          '#default_value'  => implode(';', $storedValues['statement_array_en'])?? t(''),
           '#required'       => FALSE,
           );
 
         $form['Issues']['table3']['R3.3']['Alternative_Access_DE'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Alternative Zugangswege ("; " als Separator für Unterpunkte)'),
-          '#default_value'  => $storedValues['alternatives_de']?? t(''),
+          '#default_value'  => implode(';', $storedValues['alternatives_array_de'])?? t(''),
           '#required'       => FALSE,
           );
 
         $form['Issues']['table3']['R3.3']['Alternative_Access_EN'] = array(
           '#type'           => 'textarea',
           '#title'          => t('Alternative access paths ("; " as separator for subitems)'),
-          '#default_value'  => $storedValues['alternatives_en']?? t(''),
+          '#default_value'  => implode(';', $storedValues['alternatives_array_en'])?? t(''),
           '#required'       => FALSE,
           );
 
@@ -624,164 +624,59 @@ return $form;
 
 
 
-    $template_de = [
-      '#theme'                 => 'barrierefreiheit_template',
-      '#wisski_url'               => $wisski_url,
-      '#status'                   => $status,
-      '#methodology_de'           => $methodology_de,
-      '#creation_date'            => $creation_date,
-      '#last_revis_date'          => $last_revis_date,
-      '#report_url'               => $report_url,
-      '#known_issues_de'          => $known_issues_de,
-      '#issues_array_de'          => $issues_array_de,
-      '#statement_de'             => $statement_de,
-      '#statement_array_de'       => $statement_array_de,
-      '#alternatives_de'          => $alternatives_de,
-      '#alternatives_array_de'    => $alternatives_array_de,
-      '#contact_access_name'      => $contact_access_name,
-      '#contact_access_phone'     => $contact_access_phone,
-      '#contact_access_email'     => $contact_access_email,
-      '#sup_institute_de'         => $sup_institute_de,
-      '#sup_url'                  => $sup_url,
-      '#sup_address'              => $sup_address,
-      '#sup_plz'                  => $sup_plz,
-      '#sup_city_de'              => $sup_city_de,
-      '#sup_email'                => $sup_email,
-      '#overs_name_de'            => $overs_name_de,
-      '#overs_dept_de'            => $overs_dept_de,
-      '#overs_address'            => $overs_address,
-      '#overs_plz'                => $overs_plz,
-      '#overs_city_de'            => $overs_city_de,
-      '#overs_phone'              => $overs_phone,
-      '#overs_email'              => $overs_email,
-      '#overs_url'                => $overs_url,
-      '#date'                     => $date,
+    $data = [
+      'theme'                 => 'barrierefreiheit_template',
+      'wisski_url'               => $wisski_url,
+      'status'                   => $status,
+      'methodology_de'           => $methodology_de,
+      'methodology_en'           => $methodology_en,
+      'creation_date'            => $creation_date,
+      'last_revis_date'          => $last_revis_date,
+      'report_url'               => $report_url,
+      'issues_array_de'          => $issues_array_de,
+      'issues_array_en'          => $issues_array_en,
+      'statement_array_de'       => $statement_array_de,
+      'statement_array_en'       => $statement_array_en,
+      'alternatives_array_de'    => $alternatives_array_de,
+      'alternatives_array_en'    => $alternatives_array_en,
+      'contact_access_name'      => $contact_access_name,
+      'contact_access_phone'     => $contact_access_phone,
+      'contact_access_email'     => $contact_access_email,
+      'sup_institute_de'         => $sup_institute_de,
+      'sup_institute_en'         => $sup_institute_en,
+      'sup_url'                  => $sup_url,
+      'sup_address'              => $sup_address,
+      'sup_plz'                  => $sup_plz,
+      'sup_city_de'              => $sup_city_de,
+      'sup_city_en'              => $sup_city_en,
+      'sup_email'                => $sup_email,
+      'overs_name_de'            => $overs_name_de,
+      'overs_name_en'            => $overs_name_en,
+      'overs_dept_de'            => $overs_dept_de,
+      'overs_dept_en'            => $overs_dept_en,
+      'overs_address'            => $overs_address,
+      'overs_plz'                => $overs_plz,
+      'overs_city_de'            => $overs_city_de,
+      'overs_city_en'            => $overs_city_en,
+      'overs_phone'              => $overs_phone,
+      'overs_email'              => $overs_email,
+      'overs_url'                => $overs_url,
+      'date'                     => $date,
+
     ];
 
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_de);
-    $deleteQuery->execute();
-
-    $html_de = \Drupal::service('renderer')->renderPlain($template_de);
-
-    $this->generateNode($title_de, $html_de, $alias_de);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsche Barrierefreiheitserklärung erfolgreich erstellt / German accessibility declaration generated successfully</a>'), 'status', TRUE);
+    // Call Service:
 
 
+    $success =  \Drupal::service('wisski_impressum.generator')->generateBarrierefreiheit($data, $title_de, $title_en, $alias_de, $alias_en);
 
-    $template_en = [
-      '#theme'                 => 'accessibility_template',
-      '#wisski_url'               => $wisski_url,
-      '#status'                   => $status,
-      '#methodology_en'           => $methodology_en,
-      '#creation_date'            => $creation_date,
-      '#last_revis_date'          => $last_revis_date,
-      '#report_url'               => $report_url,
-      '#known_issues_en'          => $known_issues_en,
-      '#issues_array_en'          => $issues_array_en,
-      '#statement_en'             => $statement_en,
-      '#statement_array_en'       => $statement_array_en,
-      '#alternatives_en'          => $alternatives_en,
-      '#alternatives_array_en'    => $alternatives_array_en,
-      '#contact_access_name'      => $contact_access_name,
-      '#contact_access_phone'     => $contact_access_phone,
-      '#contact_access_email'     => $contact_access_email,
-      '#sup_institute_en'         => $sup_institute_en,
-      '#sup_url'                  => $sup_url,
-      '#sup_address'              => $sup_address,
-      '#sup_plz'                  => $sup_plz,
-      '#sup_city_en'              => $sup_city_en,
-      '#sup_email'                => $sup_email,
-      '#overs_name_en'            => $overs_name_en,
-      '#overs_dept_en'            => $overs_dept_en,
-      '#overs_address'            => $overs_address,
-      '#overs_plz'                => $overs_plz,
-      '#overs_city_en'            => $overs_city_en,
-      '#overs_phone'              => $overs_phone,
-      '#overs_email'              => $overs_email,
-      '#overs_url'                => $overs_url,
-      '#date'                     => $date,
-    ];
-
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_en);
-    $deleteQuery->execute();
-
-    $html_en = \Drupal::service('renderer')->renderPlain($template_en);
-
-    $this->generateNode($title_en, $html_en, $alias_en);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Barrierefreiheitserklärung erfolgreich erstellt / English accessibility declaration generated successfully</a>'), 'status', TRUE);
-
-
-    $valuesStoredInState = array('wisski_impressum.accessibility' => array('title_de'              => $title_de,
-                                                                           'title_en'              => $title_en,
-                                                                           'wisski_url'            => $wisski_url,
-                                                                           'alias_de'              => $alias_de,
-                                                                           'alias_en'              => $alias_en,
-                                                                           'status'                => $status,
-                                                                           'methodology_de'        => $methodology_de,
-                                                                           'methodology_en'        => $methodology_en,
-                                                                           'creation_date'         => $creation_date,
-                                                                           'last_revis_date'       => $last_revis_date,
-                                                                           'report_url'            => $report_url,
-                                                                           'known_issues_de'       => $known_issues_de,
-                                                                           'issues_array_de'       => $issues_array_de,
-                                                                           'known_issues_en'       => $known_issues_en,
-                                                                           'issues_array_en'       => $issues_array_en,
-                                                                           'statement_de'          => $statement_de,
-                                                                           'statement_array_de'    => $statement_array_de,
-                                                                           'statement_en'          => $statement_en,
-                                                                           'statement_array_en'    => $statement_array_en,
-                                                                           'alternatives_de'       => $alternatives_de,
-                                                                           'alternatives_array_de' => $alternatives_array_de,
-                                                                           'alternatives_en'       => $alternatives_en,
-                                                                           'alternatives_array_en' => $alternatives_array_en,
-                                                                           'contact_access_name'   => $contact_access_name,
-                                                                           'contact_access_phone'  => $contact_access_phone,
-                                                                           'contact_access_email'  => $contact_access_email,
-                                                                           'sup_institute_de'      => $sup_institute_de,
-                                                                           'sup_institute_en'      => $sup_institute_en,
-                                                                           'sup_url'               => $sup_url,
-                                                                           'sup_address'           => $sup_address,
-                                                                           'sup_plz'               => $sup_plz,
-                                                                           'sup_city_de'           => $sup_city_de,
-                                                                           'sup_city_en'           => $sup_city_en,
-                                                                           'sup_email'             => $sup_email,
-                                                                           'overs_name_de'         => $overs_name_de,
-                                                                           'overs_name_en'         => $overs_name_en,
-                                                                           'overs_dept_de'         => $overs_dept_de,
-                                                                           'overs_dept_en'         => $overs_dept_en,
-                                                                           'overs_address'         => $overs_address,
-                                                                           'overs_plz'             => $overs_plz,
-                                                                           'overs_city_de'         => $overs_city_de,
-                                                                           'overs_city_en'         => $overs_city_en,
-                                                                           'overs_phone'           => $overs_phone,
-                                                                           'overs_email'           => $overs_email,
-                                                                           'overs_url'             => $overs_url,
-                                                                           'date'                  => $date,
-
-    )
-    );
-
-      // Store current German and English input in state:
-      \Drupal::state()->setMultiple($valuesStoredInState);
-
-  }
-
-
-  function generateNode($title, $body, $alias){
-    $node = Node::create([
-        'type'    => 'page',
-        'title'   => $title,
-        'body'    => array(
-          //'summary' => "this is the summary",
-            'value'     => $body,
-            'format'    => 'full_html',
-          ),
-        // set alias for page
-        'path'    => array('alias' => "/$alias"),
-    ]);
-    $node->save();
+    // Generate Success Messages:
+    if($success){
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsche Barrierefreiheitserklärung erfolgreich erstellt / German accessibility declaration generated successfully</a>'), 'status', TRUE);
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Barrierefreiheitserklärung erfolgreich erstellt / English accessibility declaration generated successfully</a>'), 'status', TRUE);
+    } else {
+      \Drupal::messenger()->addMessage($this->t('Leider ist ein Fehler aufgetreten'), 'status', TRUE);
+    }
   }
 
 }

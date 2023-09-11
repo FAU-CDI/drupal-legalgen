@@ -128,7 +128,7 @@ class WissKiDatenschutzForm extends FormBase {
             '#type'          => 'hidden',
             '#title'         => t('Legal notice URL'),
             '#default_value' => $valuesFromLegalNotice['alias_de']?? t('impressum'),
-          )??
+          );
 
           $form['General']['table1']['R1.5']['Legal_Notice_URL_EN'] = array(
             '#type'          => 'hidden',
@@ -481,131 +481,50 @@ class WissKiDatenschutzForm extends FormBase {
     $date                               = $values['Date'];
 
 
-    $template_de = [
-      '#theme'                 => 'datenschutz_template',
-      '#wisski_url'                     => $wisski_url,
-      '#not_fau_de'                     => $not_fau_de,
-      '#legal_notice_url_de'            => $legal_notice_url_de,
-      '#sec_off_title_de'               => $sec_off_title_de,
-      '#sec_off_name'                   => $sec_off_name,
-      '#sec_off_add_de'                 => $sec_off_add_de,
-      '#sec_off_address'                => $sec_off_address,
-      '#sec_off_plz'                    => $sec_off_plz,
-      '#sec_off_city_de'                => $sec_off_city_de,
-      '#sec_off_phone'                  => $sec_off_phone,
-      '#sec_off_fax'                    => $sec_off_fax,
-      '#sec_off_email'                  => $sec_off_email,
-      '#third_service_provider'         => $third_service_provider,
-      '#third_descr_data_coll_de'       => $third_descr_data_coll_de,
-      '#third_legal_basis_data_coll_de' => $third_legal_basis_data_coll_de,
-      '#third_objection_data_coll_de'   => $third_objection_data_coll_de,
-      '#data_comm_title_de'             => $data_comm_title_de,
-      '#data_comm_address'              => $data_comm_address,
-      '#data_comm_plz'                  => $data_comm_plz,
-      '#data_comm_city_de'              => $data_comm_city_de,
-      '#date'                           => $date,
-
+    $data= [
+      'wisski_url'                     => $wisski_url,
+      'not_fau_de'                     => $not_fau_de,
+      'not_fau_en'                     => $not_fau_en,
+      'legal_notice_url_de'            => $legal_notice_url_de,
+      'legal_notice_url_en'            => $legal_notice_url_en,
+      'sec_off_title_de'               => $sec_off_title_de,
+      'sec_off_title_en'               => $sec_off_title_en,
+      'sec_off_name'                   => $sec_off_name,
+      'sec_off_add_de'                 => $sec_off_add_de,
+      'sec_off_add_en'                 => $sec_off_add_en,
+      'sec_off_address'                => $sec_off_address,
+      'sec_off_plz'                    => $sec_off_plz,
+      'sec_off_city_de'                => $sec_off_city_de,
+      'sec_off_city_en'                => $sec_off_city_en,
+      'sec_off_phone'                  => $sec_off_phone,
+      'sec_off_fax'                    => $sec_off_fax,
+      'sec_off_email'                  => $sec_off_email,
+      'third_service_provider'         => $third_service_provider,
+      'third_descr_data_coll_de'       => $third_descr_data_coll_de,
+      'third_descr_data_coll_en'       => $third_descr_data_coll_en,
+      'third_legal_basis_data_coll_de' => $third_legal_basis_data_coll_de,
+      'third_legal_basis_data_coll_en' => $third_legal_basis_data_coll_en,
+      'third_objection_data_coll_de'   => $third_objection_data_coll_de,
+      'third_objection_data_coll_en'   => $third_objection_data_coll_en,
+      'data_comm_title_de'             => $data_comm_title_de,
+      'data_comm_title_en'             => $data_comm_title_en,
+      'data_comm_address'              => $data_comm_address,
+      'data_comm_plz'                  => $data_comm_plz,
+      'data_comm_city_de'              => $data_comm_city_de,
+      'data_comm_city_en'              => $data_comm_city_en,
+      'date'                           => $date,
     ];
 
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_de);
-    $deleteQuery->execute();
 
-    $html_de = \Drupal::service('renderer')->renderPlain($template_de);
+    // Call Service:
+    $success =  \Drupal::service('wisski_impressum.generator')->generateDatenschutz($data, $title_de, $title_en, $alias_de, $alias_en);
 
-    $this->generateNode($title_de, $html_de, $alias_de);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsche Datenschutzerklärung erstellt / German privacy declaration generated successfully</a>'), 'status', TRUE);
-
-    $template_en = [
-      '#theme'                 => 'privacy_template',
-      '#wisski_url'                     => $wisski_url,
-      '#not_fau_en'                     => $not_fau_en,
-      '#legal_notice_url_en'            => $legal_notice_url_en,
-      '#sec_off_title_en'               => $sec_off_title_en,
-      '#sec_off_name'                   => $sec_off_name,
-      '#sec_off_add_en'                 => $sec_off_add_en,
-      '#sec_off_address'                => $sec_off_address,
-      '#sec_off_plz'                    => $sec_off_plz,
-      '#sec_off_city_en'                => $sec_off_city_en,
-      '#sec_off_phone'                  => $sec_off_phone,
-      '#sec_off_fax'                    => $sec_off_fax,
-      '#sec_off_email'                  => $sec_off_email,
-      '#third_service_provider'         => $third_service_provider,
-      '#third_descr_data_coll_en'       => $third_descr_data_coll_en,
-      '#third_legal_basis_data_coll_en' => $third_legal_basis_data_coll_en,
-      '#third_objection_data_coll_en'   => $third_objection_data_coll_en,
-      '#data_comm_title_en'             => $data_comm_title_en,
-      '#data_comm_address'              => $data_comm_address,
-      '#data_comm_plz'                  => $data_comm_plz,
-      '#data_comm_city_en'              => $data_comm_city_en,
-      '#date'                           => $date,
-
-    ];
-
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_en);
-    $deleteQuery->execute();
-
-    $html_en = \Drupal::service('renderer')->renderPlain($template_en);
-
-    $this->generateNode($title_en, $html_en, $alias_en);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Datenschutzerklärung erfolgreich erstellt / English privacy declaration generated successfully</a>'), 'status', TRUE);
-
-
-    $valuesStoredInState = array('wisski_impressum.privacy' => array('title_de'                       => $title_de,
-                                                                     'title_en'                       => $title_en,
-                                                                     'wisski_url'                     => $wisski_url,
-                                                                     'alias_de'                       => $alias_de,
-                                                                     'alias_en'                       => $alias_en,
-                                                                     'not_fau_de'                     => $not_fau_de,
-                                                                     'not_fau_en'                     => $not_fau_en,
-                                                                     'sec_off_title_de'               => $sec_off_title_de,
-                                                                     'sec_off_title_en'               => $sec_off_title_en,
-                                                                     'sec_off_name'                   => $sec_off_name,
-                                                                     'sec_off_add_de'                 => $sec_off_add_de,
-                                                                     'sec_off_add_en'                 => $sec_off_add_en,
-                                                                     'sec_off_address'                => $sec_off_address,
-                                                                     'sec_off_plz'                    => $sec_off_plz,
-                                                                     'sec_off_city_de'                => $sec_off_city_de,
-                                                                     'sec_off_city_en'                => $sec_off_city_en,
-                                                                     'sec_off_phone'                  => $sec_off_phone,
-                                                                     'sec_off_fax'                    => $sec_off_fax,
-                                                                     'sec_off_email'                  => $sec_off_email,
-                                                                     'third_service_provider'         => $third_service_provider,
-                                                                     'third_descr_data_coll_de'       => $third_descr_data_coll_de,
-                                                                     'third_descr_data_coll_en'       => $third_descr_data_coll_en,
-                                                                     'third_legal_basis_data_coll_de' => $third_legal_basis_data_coll_de,
-                                                                     'third_legal_basis_data_coll_en' => $third_legal_basis_data_coll_en,
-                                                                     'third_objection_data_coll_de'   => $third_objection_data_coll_de,
-                                                                     'third_objection_data_coll_en'   => $third_objection_data_coll_en,
-                                                                     'data_comm_title_de'             => $data_comm_title_de,
-                                                                     'data_comm_title_en'             => $data_comm_title_en,
-                                                                     'data_comm_address'              => $data_comm_address,
-                                                                     'data_comm_plz'                  => $data_comm_plz,
-                                                                     'data_comm_city_de'              => $data_comm_city_de,
-                                                                     'data_comm_city_en'              => $data_comm_city_en,
-                                                                     'date'                           => $date,
-                                                                     ),
-    );
-
-    // Store current German and English input in state:
-    \Drupal::state()->setMultiple($valuesStoredInState);
-
-  }
-
-  function generateNode($title, $body, $alias){
-    $node = Node::create([
-        'type'    => 'page',
-        'title'   => t($title),
-        'body'    => array(
-          //'summary' => "this is the summary",
-            'value'     => $body,
-            'format'    => 'full_html',
-          ),
-        // set alias for page
-        'path'    => array('alias' => "/$alias"),
-    ]);
-    $node->save();
+    if($success){
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsche Datenschutzerklärung erstellt / German privacy declaration generated successfully</a>'), 'status', TRUE);
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englische Datenschutzerklärung erfolgreich erstellt / English privacy declaration generated successfully</a>'), 'status', TRUE);
+    } else{
+      \Drupal::messenger()->addMessage($this->t('Leider ist ein Fehler aufgetreten'), 'status', TRUE);
+    }
   }
 }
 

@@ -331,7 +331,7 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Mitarbeitende ("; " als Separator - e.g. "Alan Angestellter; Beatrice Beispiel;...") / Staff ("; " as separator - e.g. "Eda Employee; Sujin Staff;...")'),
-          '#default_value' => $storedValues['sup_staff']?? t(''),
+          '#default_value' =>  $storedValues['sup_staff_array']?? t(''),
           '#required'      => true,
           );
 
@@ -656,166 +656,63 @@ class WissKiImpressumForm extends FormBase {
     $cust_disclaim_en     = $values['table9']['R9.2']['Custom_Disclaimer_EN'];
     $date                 = $values['Date'];
 
-
     $sup_staff_array = explode('; ', $sup_staff);
 
-    $template_de = [
-      '#theme'                => 'impressum_template',
-      '#wisski_url'              => $wisski_url,
-      '#project_name_de'         => $project_name_de,
-      '#pub_institute_de'        => $pub_institute_de,
-      '#pub_name'                => $pub_name,
-      '#pub_address'             => $pub_address,
-      '#pub_plz'                 => $pub_plz,
-      '#pub_city_de'             => $pub_city_de,
-      '#pub_email'               => $pub_email,
-      '#cust_legal_form_de'      => $cust_legal_form_de,
-      '#contact_name'            => $contact_name,
-      '#contact_phone'           => $contact_phone,
-      '#contact_email'           => $contact_email,
-      '#sup_institute_de'        => $sup_institute_de,
-      '#sup_url'                 => $sup_url,
-      '#sup_email'               => $sup_email,
-      '#sup_staff'               => $sup_staff,
-      '#sup_staff_array'         => $sup_staff_array,
-      '#auth_name_de'            => $auth_name_de,
-      '#auth_address'            => $auth_address,
-      '#auth_plz'                => $auth_plz,
-      '#auth_city_de'            => $auth_city_de,
-      '#auth_url'                => $auth_url,
-      '#licence_title_de'        => $licence_title_de,
-      '#licence_url'             => $licence_url,
-      '#use_fau_temp'            => $use_fau_temp,
-      '#no_default_txt'          => $no_default_txt,
-      '#cust_licence_txt_de'     => $cust_licence_txt_de,
-      '#cust_exclusion_de'       => $cust_exclusion_de,
-      '#show_disclaim'           => $show_disclaim,
-      '#cust_disclaim_de'        => $cust_disclaim_de,
-      '#date'                    => $date,
+    $data = [
+              'wisski_url'             => $wisski_url,
+              'project_name_de'        => $project_name_de,
+              'project_name_en'        => $project_name_en,
+              'pub_institute_de'       => $pub_institute_de,
+              'pub_institute_en'       => $pub_institute_en,
+              'pub_name'               => $pub_name,
+              'pub_address'            => $pub_address,
+              'pub_plz'                => $pub_plz,
+              'pub_city_de'            => $pub_city_de,
+              'pub_city_en'            => $pub_city_en,
+              'pub_email'              => $pub_email,
+              'cust_legal_form_de'     => $cust_legal_form_de,
+              'cust_legal_form_en'     => $cust_legal_form_en,
+              'contact_name'           => $contact_name,
+              'contact_phone'          => $contact_phone,
+              'contact_email'          => $contact_email,
+              'sup_institute_de'       => $sup_institute_de,
+              'sup_institute_en'       => $sup_institute_en,
+              'sup_url'                => $sup_url,
+              'sup_email'              => $sup_email,
+              'sup_staff_array'        => $sup_staff_array,
+              'auth_name_de'           => $auth_name_de,
+              'auth_name_en'           => $auth_name_en,
+              'auth_address'           => $auth_address,
+              'auth_plz'               => $auth_plz,
+              'auth_city_de'           => $auth_city_de,
+              'auth_city_en'           => $auth_city_en,
+              'auth_url'               => $auth_url,
+              'licence_title_de'       => $licence_title_de,
+              'licence_title_en'       => $licence_title_en,
+              'licence_url'            => $licence_url,
+              'use_fau_temp'           => $use_fau_temp,
+              'no_default_txt'         => $no_default_txt,
+              'cust_licence_txt_de'    => $cust_licence_txt_de,
+              'cust_licence_txt_en'    => $cust_licence_txt_en,
+              'cust_exclusion_de'      => $cust_exclusion_de,
+              'cust_exclusion_en'      => $cust_exclusion_en,
+              'show_disclaim'          => $show_disclaim,
+              'cust_disclaim_de'       => $cust_disclaim_de,
+              'cust_disclaim_en'       => $cust_disclaim_en,
+              'date'                   => $date,
     ];
 
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_de);
-    $deleteQuery->execute();
 
-    $html_de = \Drupal::service('renderer')->renderPlain($template_de);
+    // Call Service:
 
-    $this->generateNode($title_de, $html_de, $alias_de);
-    \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsches Impressum erfolgreich erstellt / German legal notice generated successfully</a>'), 'status', TRUE);
+    $success =  \Drupal::service('wisski_impressum.generator')->generateImpressum($data, $title_de, $title_en, $alias_de, $alias_en);
 
-
-    $template_en = [
-      '#theme'                => 'legalnotice_template',
-      '#wisski_url'              => $wisski_url,
-      '#project_name_en'         => $project_name_en,
-      '#pub_institute_en'        => $pub_institute_en,
-      '#pub_name'                => $pub_name,
-      '#pub_address'             => $pub_address,
-      '#pub_plz'                 => $pub_plz,
-      '#pub_city_en'             => $pub_city_en,
-      '#pub_email'               => $pub_email,
-      '#cust_legal_form_en'      => $cust_legal_form_en,
-      '#contact_name'            => $contact_name,
-      '#contact_phone'           => $contact_phone,
-      '#contact_email'           => $contact_email,
-      '#sup_institute_en'        => $sup_institute_en,
-      '#sup_url'                 => $sup_url,
-      '#sup_email'               => $sup_email,
-      '#sup_staff'               => $sup_staff,
-      '#sup_staff_array'         => $sup_staff_array,
-      '#auth_name_en'            => $auth_name_en,
-      '#auth_address'            => $auth_address,
-      '#auth_plz'                => $auth_plz,
-      '#auth_city_en'            => $auth_city_en,
-      '#auth_url'                => $auth_url,
-      '#licence_title_en'        => $licence_title_en,
-      '#licence_url'             => $licence_url,
-      '#use_fau_temp'            => $use_fau_temp,
-      '#no_default_txt'          => $no_default_txt,
-      '#cust_licence_txt_en'     => $cust_licence_txt_en,
-      '#cust_exclusion_en'       => $cust_exclusion_en,
-      '#show_disclaim'           => $show_disclaim,
-      '#cust_disclaim_en'        => $cust_disclaim_en,
-      '#date'                    => $date,
-
-    ];
-    $deleteQuery = \Drupal::database()->delete('path_alias');
-    $deleteQuery->condition('alias', '/'.$alias_en);
-    $deleteQuery->execute();
-
-    $html_en = \Drupal::service('renderer')->renderPlain($template_en);
-    $body_en = $html_en;
-
-    $this->generateNode($title_en, $html_en, $alias_en);
-     \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englisches Impressum erfolgreich erstellt / English legal notice generated successfully</a>'), 'status', TRUE);
-
-
-     $valuesStoredInState = array('wisski_impressum.legalNotice' => array('title_de'              => $title_de,
-                                                                          'title_en'              => $title_en,
-                                                                          'wisski_url'            => $wisski_url,
-                                                                          'alias_de'              => $alias_de,
-                                                                          'alias_en'              => $alias_en,
-                                                                          'project_name_de'       => $project_name_de,
-                                                                          'project_name_en'       => $project_name_en,
-                                                                          'pub_institute_de'      => $pub_institute_de,
-                                                                          'pub_institute_en'      => $pub_institute_en,
-                                                                          'pub_name'              => $pub_name,
-                                                                          'pub_address'           => $pub_address,
-                                                                          'pub_plz'               => $pub_plz,
-                                                                          'pub_city_de'           => $pub_city_de,
-                                                                          'pub_city_en'           => $pub_city_en,
-                                                                          'pub_email'             => $pub_email,
-                                                                          'cust_legal_form_de'    => $cust_legal_form_de,
-                                                                          'cust_legal_form_en'    => $cust_legal_form_en,
-                                                                          'contact_name'          => $contact_name,
-                                                                          'contact_phone'         => $contact_phone,
-                                                                          'contact_email'         => $contact_email,
-                                                                          'sup_institute_de'      => $sup_institute_de,
-                                                                          'sup_institute_en'      => $sup_institute_en,
-                                                                          'sup_url'               => $sup_url,
-                                                                          'sup_email'             => $sup_email,
-                                                                          'sup_staff'             => $sup_staff,
-                                                                          'sup_staff_array'       => $sup_staff_array,
-                                                                          'auth_name_de'          => $auth_name_de,
-                                                                          'auth_name_en'          => $auth_name_en,
-                                                                          'auth_address'          => $auth_address,
-                                                                          'auth_plz'              => $auth_plz,
-                                                                          'auth_city_de'          => $auth_city_de,
-                                                                          'auth_city_en'          => $auth_city_en,
-                                                                          'auth_url'              => $auth_url,
-                                                                          'licence_title_de'      => $licence_title_de,
-                                                                          'licence_title_en'      => $licence_title_en,
-                                                                          'licence_url'           => $licence_url,
-                                                                          'use_fau_temp'          => $use_fau_temp,
-                                                                          'no_default_txt'        => $no_default_txt,
-                                                                          'cust_licence_txt_de'   => $cust_licence_txt_de,
-                                                                          'cust_licence_txt_en'   => $cust_licence_txt_en,
-                                                                          'cust_exclusion_de'     => $cust_exclusion_de,
-                                                                          'cust_exclusion_en'     => $cust_exclusion_en,
-                                                                          'show_disclaim'         => $show_disclaim,
-                                                                          'cust_disclaim_de'      => $cust_disclaim_de,
-                                                                          'cust_disclaim_en'      => $cust_disclaim_en,
-                                                                          'date'                  => $date,
-                                                                         ),
-  );
-
-    // Store current German and English input in state:
-    \Drupal::state()->setMultiple($valuesStoredInState);
-
-  }
-
-  function generateNode($title, $body, $alias){
-    $node = Node::create([
-        'type'    => 'page',
-        'title'   => t($title),
-        'body'    => array(
-          //'summary' => "this is the summary",
-            'value'     => $body,
-            'format'    => 'full_html',
-          ),
-        // set alias for page
-        'path'     => array('alias' => "/$alias"),
-    ]);
-    $node->save();
+    // Display Success Message:
+    if($success){
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_de.'">Deutsches Impressum erfolgreich erstellt / German legal notice generated successfully</a>'), 'status', TRUE);
+      \Drupal::messenger()->addMessage($this->t('<a href="/'.$alias_en.'">Englisches Impressum erfolgreich erstellt / English legal notice generated successfully</a>'), 'status', TRUE);
+    } else {
+      \Drupal::messenger()->addMessage($this->t('Leider ist ein Fehler aufgetreten'), 'status', TRUE);
+    }
   }
 }
