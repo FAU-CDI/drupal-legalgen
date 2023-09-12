@@ -6,6 +6,114 @@ use \Drupal\node\Entity\Node;
 
 class WisskiLegalGenerator {
 
+  // Consant used in REQUIRED_DATA_ALL array for legal notice and privacy
+  const REQUIRED_LEGAL_NOTICE_ALIAS_DE = 'impressum';
+
+  const REQUIRED_LEGAL_NOTICE_ALIAS_EN = 'legalnotice';
+
+
+  const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('title_de'           => 'Impressum',
+                                                              'title_en'          => 'Legal Notice',
+                                                              'alias_de'          => 'impressum',
+                                                              'alias_en'          => 'legalnotice',
+                                                              'wisski_url'        => '',
+                                                              'project_name_de'   => '',
+                                                              'project_name_en'   => '',
+                                                              'pub_institute_de'  => '',
+                                                              'pub_institute_en'  => '',
+                                                              'pub_name'          => '',
+                                                              'pub_address'       => '',
+                                                              'pub_plz'           => '',
+                                                              'pub_city_de'       => '',
+                                                              'pub_city_en'       => '',
+                                                              'pub_email'         => '',
+                                                              'contact_name'      => '',
+                                                              'contact_phone'     => '',
+                                                              'contact_email'     => '',
+                                                              'sup_institute_de'  => '',
+                                                              'sup_institute_en'  => '',
+                                                              'sup_url'           => '',
+                                                              'sup_email'         => '',
+                                                              'sup_staff_array'   => '',
+                                                              'auth_name_de'      => 'Bayerisches Staatsministerium für Wissenschaft und Kunst',
+                                                              'auth_name_en'      => 'Bavarian State Ministry of Science and Art',
+                                                              'auth_address'      => 'Salvatorstraße 2',
+                                                              'auth_plz'          => '80327',
+                                                              'auth_city_de'      => 'München',
+                                                              'auth_city_en'      => 'Munich',
+                                                              'auth_url'          => 'www.stmwk.bayern.de',
+                                                              'date'              => '',
+                                                              ),
+                                'REQUIRED_ACCESSIBILITY' => array('title_de'              => 'Barrierefreiheit',
+                                                                  'title_en'              => 'Accessibility',
+                                                                  'alias_de'              => 'barrierefreiheit',
+                                                                  'alias_en'              => 'accessibility',
+                                                                  'wisski_url'            => '',
+                                                                  'status'                => array('Completely compliant' => '',
+                                                                                                   'Partially compliant' => array('issues_array_de'       => '',
+                                                                                                                                  'issues_array_en'       => '',
+                                                                                                                                  'statement_array_de'    => '',
+                                                                                                                                  'statement_array_en'    => '',
+                                                                                                                                  'alternatives_array_de' => '',
+                                                                                                                                  'alternatives_array_en' => '',
+                                                                                                                                  ),
+                                                                                                  ),
+                                                                  'methodology_de'        => '',
+                                                                  'methodology_en'        => '',
+                                                                  'creation_date'         => '',
+                                                                  'last_revis_date'       => '',
+                                                                  'contact_access_name'   => '',
+                                                                  'contact_access_phone'  => '',
+                                                                  'contact_access_email'  => '',
+                                                                  'sup_institute_de'      => '',
+                                                                  'sup_institute_en'      => '',
+                                                                  'sup_url'               => '',
+                                                                  'sup_address'           => '',
+                                                                  'sup_plz'               => '',
+                                                                  'sup_city_de'           => '',
+                                                                  'sup_city_en'           => '',
+                                                                  'sup_email'             => '',
+                                                                  'overs_name_de'         => 'Landesamt für Digitalisierung, Breitband und Vermessung',
+                                                                  'overs_name_en'         => 'Agency for Digitalisation, High-Speed Internet and Surveying',
+                                                                  'overs_dept_de'         => 'IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik',
+                                                                  'overs_dept_en'         => 'IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology',
+                                                                  'overs_address'         => 'St.-Martin-Straße 47',
+                                                                  'overs_plz'             => '81541',
+                                                                  'overs_city_de'         => 'München',
+                                                                  'overs_city_en'         => 'Munich',
+                                                                  'overs_phone'           => '+49 89 2129-1111',
+                                                                  'overs_email'           => 'bitv@bayern.de',
+                                                                  'overs_url'             => 'https://www.ldbv.bayern.de/digitalisierung/bitv.html',
+                                                                  'date'                  => '',
+                                                                ),
+                                  'REQUIRED_PRIVACY' => array('title_de'            => 'Datenschutz',
+                                                              'title_en'            => 'Privacy',
+                                                              'alias_de'            => 'datenschutz',
+                                                              'alias_en'            => 'privacy',
+                                                              'wisski_url'          => '',
+                                                              'legal_notice_de'     => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
+                                                              'legal_notice_en'     => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
+                                                              'sec_off_title_de'    => 'Datenschutzbeauftragter der FAU',
+                                                              'sec_off_title_en'    => 'Data Security Official of the FAU',
+                                                              'sec_off_name'        => 'Klaus Hoogestraat',
+                                                              'sec_off_add_de'      => 'c/o ITM Gesellschaft für IT-Management mbH',
+                                                              'sec_off_add_en'      => 'c/o ITM Gesellschaft für IT-Management mbH',
+                                                              'sec_off_address'     => 'Bürgerstraße 81',
+                                                              'sec_off_plz'         => '01127',
+                                                              'sec_off_city_de'     => 'Dresden',
+                                                              'sec_off_city_en'     => 'Dresden',
+                                                              'sec_off_phone'       => '+49 9131 85-25860',
+                                                              'sec_off_fax'         => '',
+                                                              'sec_off_email'       => 'datenschutzbeauftragter@fau.de',
+                                                              'data_comm_title_de'  => 'der Bayerische Landesbeauftragte für den Datenschutz',
+                                                              'data_comm_title_en'  => 'Bavarian State Commissioner for Data Protection',
+                                                              'data_comm_address'   => 'Wagmüllerstraße 18',
+                                                              'data_comm_plz'       => '80538',
+                                                              'data_comm_city_de'   => 'München',
+                                                              'data_comm_city_en'   => 'Munich',
+                                                              'date'                => '',
+                                                              ),
+  ];
 
     public $template;
 
@@ -24,6 +132,10 @@ class WisskiLegalGenerator {
       $node->save();
     }
 
+    public function required_data($docKey){
+
+  return REQUIRED_DATA_ALL[$docKey];
+  }
 
 
 

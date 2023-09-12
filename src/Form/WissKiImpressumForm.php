@@ -58,11 +58,14 @@ class WissKiImpressumForm extends FormBase {
 
   $storedValues = $this->getStateValues();
 
+  $defaultValues = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_LEGALNOTICE'];
+
+
     // Fields: General
     $form['General'] = array(
       '#type'  => 'details',
       '#title' => t('Allgemein / General'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['General']['table1'] = array(
@@ -74,15 +77,15 @@ class WissKiImpressumForm extends FormBase {
         $form['General']['table1']['R1.1']['Title_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Seitentitel'),
-          '#default_value' => $storedValues['title_de']?? t('Impressum'),
-          '#required'      => true,
+          '#default_value' => $storedValues['title_de']?? $defaultValues['title_de'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.1']['Title_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Page title'),
-          '#default_value' => $storedValues['title_en']?? t('Legal Notice'),
-          '#required'      => true,
+          '#default_value' => $storedValues['title_en']?? $defaultValues['title_en'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.2']['WissKI_URL'] = array(
@@ -91,36 +94,36 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('WissKI URL'),
-          '#default_value' => $storedValues['wisski_url']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['wisski_url']?? $defaultValues['wisski_url'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.3']['Alias_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Seiten-Alias'),
-          '#default_value' => $storedValues['alias_de']?? t('impressum'),
-          '#required'      => true,
+          '#default_value' => $storedValues['alias_de']?? $defaultValues['alias_de'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.3']['Alias_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Page alias'),
-          '#default_value' => $storedValues['alias_en']?? t('legalnotice'),
-          '#required'      => true,
+          '#default_value' => $storedValues['alias_en']?? $defaultValues['alias_en'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.4']['Project_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Projektname'),
-          '#default_value' => $storedValues['project_name_de']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['project_name_de']?? $defaultValues['project_name_de'],
+          '#required'      => TRUE,
           );
 
         $form['General']['table1']['R1.4']['Project_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Project name'),
-          '#default_value' => $storedValues['project_name_en']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['project_name_en']?? $defaultValues['project_name_en'],
+          '#required'      => TRUE,
           );
 
 
@@ -128,7 +131,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Publisher'] = array(
       '#type'  => 'details',
       '#title' => t('Herausgebende / Publisher'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Publisher']['table2'] = array(
@@ -140,15 +143,15 @@ class WissKiImpressumForm extends FormBase {
         $form['Publisher']['table2']['R2.1']['Pub_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => $storedValues['pub_institute_de']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_institute_de']?? $defaultValues['pub_institute_de'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.1']['Pub_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => $storedValues['pub_institute_en']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_institute_en']?? $defaultValues['pub_institute_en'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.2']['Pub_Name'] = array(
@@ -157,8 +160,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Herausgebende / Name publisher'),
-          '#default_value' => $storedValues['pub_name']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_name']?? $defaultValues['pub_name'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.3']['Pub_Address'] = array(
@@ -167,8 +170,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => $storedValues['pub_address']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_address']?? $defaultValues['pub_address'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.4']['Pub_PLZ'] = array(
@@ -177,22 +180,22 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => $storedValues['pub_plz']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_plz']?? $defaultValues['pub_plz'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.5']['Pub_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => $storedValues['pub_city_de']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_city_de']?? $defaultValues['pub_city_de'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.5']['Pub_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => $storedValues['pub_city_en']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_city_en']?? $defaultValues['pub_city_en'],
+          '#required'      => TRUE,
           );
 
         $form['Publisher']['table2']['R2.6']['Pub_Email'] = array(
@@ -201,15 +204,15 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Herausgebende / E-mail publisher'),
-          '#default_value' => $storedValues['pub_email']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['pub_email']?? $defaultValues['pub_email'],
+          '#required'      => TRUE,
           );
 
     // Fields: Legal Form and Representation
     $form['Legal_Form_and_Representation'] = array(
       '#type'  => 'details',
       '#title' => t('Rechtsform und Vertretung / Legal form and representation'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Legal_Form_and_Representation']['table3'] = array(
@@ -238,7 +241,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Contact_Content'] = array(
       '#type'  => 'details',
       '#title' => t('Kontaktperson Inhalt / Contact Person Content'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Contact_Content']['table4'] = array(
@@ -253,8 +256,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Name Kontaktperson / Name contact person'),
-          '#default_value' => $storedValues['contact_name']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['contact_name']?? $defaultValues['contact_name'],
+          '#required'      => TRUE,
           );
 
         $form['Contact_Content']['table4']['R4.2']['Contact_Phone'] = array(
@@ -263,8 +266,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Telefonnummer Kontaktperson / Phone contact person'),
-          '#default_value' => $storedValues['contact_phone']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['contact_phone']?? $defaultValues['contact_phone'],
+          '#required'      => TRUE,
         );
 
         $form['Contact_Content']['table4']['R4.3']['Contact_Email'] = array(
@@ -273,8 +276,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Kontaktperson / E-mail contact person'),
-          '#default_value' => $storedValues['contact_email']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['contact_email']?? $defaultValues['contact_email'],
+          '#required'      => TRUE,
           );
 
 
@@ -282,7 +285,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Support_and_Hosting'] = array(
       '#type'  => 'details',
       '#title' => t('Betreuung und Hosting / Support and Hosting'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Support_and_Hosting']['table5'] = array(
@@ -294,15 +297,15 @@ class WissKiImpressumForm extends FormBase {
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institut'),
-          '#default_value' => $storedValues['sup_institute_de']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['sup_institute_de']?? $defaultValues['sup_institute_de'],
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.1']['Sup_Institute_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#default_value' => $storedValues['sup_institute_en']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['sup_institute_en']?? $defaultValues['sup_institute_en'],
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.2']['Sup_URL'] = array(
@@ -311,8 +314,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Homepage Betreuung / Hompage support'),
-          '#default_value' => $storedValues['sup_url']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['sup_url']?? $defaultValues['sup_url'],
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.3']['Sup_Email'] = array(
@@ -321,8 +324,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('E-Mail Betreuung / E-mail support'),
-          '#default_value' => $storedValues['sup_email']?? t(''),
-          '#required'      => true,
+          '#default_value' => $storedValues['sup_email']?? t('sup_email'),
+          '#required'      => TRUE,
           );
 
         $form['Support_and_Hosting']['table5']['R5.4']['Sup_Staff'] = array(
@@ -331,8 +334,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Mitarbeitende ("; " als Separator - e.g. "Alan Angestellter; Beatrice Beispiel;...") / Staff ("; " as separator - e.g. "Eda Employee; Sujin Staff;...")'),
-          '#default_value' =>  $storedValues['sup_staff_array']?? t(''),
-          '#required'      => true,
+          '#default_value' =>  $storedValues['sup_staff_array']?? $defaultValues['sup_staff_array'],
+          '#required'      => TRUE,
           );
 
 
@@ -341,7 +344,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Supervisory_Authority'] = array(
       '#type'  => 'details',
       '#title' => t('Zuständige Aufsichtsbehörde / Supervisory Authority'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
       $form['Supervisory_Authority']['table6'] = array(
@@ -353,15 +356,15 @@ class WissKiImpressumForm extends FormBase {
         $form['Supervisory_Authority']['table6']['R6.1']['Auth_Name_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Behördenname'),
-          '#default_value' => $storedValues['auth_name_de']?? t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_name_de']?? $defaultValues['auth_name_de'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.1']['Auth_Name_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name supervisory authority'),
-          '#default_value' => $storedValues['auth_name_en']?? t('Bayerisches Staatsministerium für Wissenschaft und Kunst'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_name_en']?? $defaultValues['auth_name_en'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.2']['Auth_Address'] = array(
@@ -370,8 +373,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('Straße und Hausnummer / Street name and house number'),
-          '#default_value' => $storedValues['auth_address']?? t('Salvatorstraße 2'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_address']?? $defaultValues['auth_address'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.3']['Auth_PLZ'] = array(
@@ -380,22 +383,22 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('PLZ / Postal code'),
-          '#default_value' => $storedValues['auth_plz']?? t('80327'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_plz']?? $defaultValues['auth_plz'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.4']['Auth_City_DE'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Ort'),
-          '#default_value' => $storedValues['auth_city_de']?? t('München'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_city_de']?? $defaultValues['auth_city_de'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.4']['Auth_City_EN'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#default_value' => $storedValues['auth_city_en']?? t('Munich'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_city_en']?? $defaultValues['auth_city_en'],
+          '#required'      => TRUE,
           );
 
         $form['Supervisory_Authority']['table6']['R6.5']['Auth_URL'] = array(
@@ -404,8 +407,8 @@ class WissKiImpressumForm extends FormBase {
             'colspan' =>  2,
           ],
           '#title'         => t('URL Behörde / URL Supervisory Authority'),
-          '#default_value' => $storedValues['auth_url']?? t('www.stmwk.bayern.de'),
-          '#required'      => true,
+          '#default_value' => $storedValues['auth_url']?? $defaultValues['auth_url'],
+          '#required'      => TRUE,
           );
 
 
@@ -413,7 +416,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Copyright'] = array(
       '#type'  => 'details',
       '#title' => t('Nutzungsbedingungen (Urheberrecht) / Copyright'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
         $form['Copyright']['table7'] = array(
@@ -485,7 +488,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Exclusion_Liab'] = array(
       '#type'  => 'details',
       '#title' => t('Haftungsausschluss / Exclusion of Liability'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
         $form['Exclusion_Liab']['table8'] = array(
@@ -513,7 +516,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Disclaimer'] = array(
       '#type'  => 'details',
       '#title' => t('Haftung für Links / Disclaimer External Links'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
         $form['Disclaimer']['table9'] = array(
@@ -550,7 +553,7 @@ class WissKiImpressumForm extends FormBase {
     $form['Timestamp'] = array(
       '#type'  => 'details',
       '#title' => t('Erstellungsdatum / Generation Date'),
-      '#open'  => true,
+      '#open'  => TRUE,
       );
 
         $current_timestamp = \Drupal::time()->getCurrentTime();
@@ -560,7 +563,7 @@ class WissKiImpressumForm extends FormBase {
           '#type'          => 'date',
           '#title'         => t('Erstellungsdatum / Generation Date'),
           '#default_value' => $todays_date,
-          '#required'      => true,
+          '#required'      => TRUE,
         );
 
     // Disclaimer
