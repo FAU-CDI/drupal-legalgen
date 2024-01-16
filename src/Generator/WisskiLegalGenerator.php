@@ -3,538 +3,514 @@
 namespace Drupal\wisski_impressum\Generator;
 
 use \Drupal\node\Entity\Node;
+use Drupal\path_alias\Entity\PathAlias;
+use \Drupal\Core\Language;
+use \Drupal\Component\Render\MarkupInterface;
+use \Drupal\Core\Messenger\Messenger;
+use \Drupal\Core\Url;
+use \Drupal\Core\Link;
+use \Drupal\Core\StringTranslation\TranslatableMarkup;
+
 
 class WisskiLegalGenerator {
 
   // Consant used in REQUIRED_DATA_ALL array for legal notice and privacy
+
   const REQUIRED_LEGAL_NOTICE_ALIAS_DE = 'impressum';
 
   const REQUIRED_LEGAL_NOTICE_ALIAS_EN = 'legalnotice';
 
-
-  const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('title_de'           => 'Impressum',
-                                                              'title_en'          => 'Legal Notice',
-                                                              'alias_de'          => 'impressum',
-                                                              'alias_en'          => 'legalnotice',
-                                                              'wisski_url'        => '',
-                                                              'project_name_de'   => '',
-                                                              'project_name_en'   => '',
-                                                              'pub_institute_de'  => '',
-                                                              'pub_institute_en'  => '',
-                                                              'pub_name'          => '',
-                                                              'pub_address'       => '',
-                                                              'pub_plz'           => '',
-                                                              'pub_city_de'       => '',
-                                                              'pub_city_en'       => '',
-                                                              'pub_email'         => '',
-                                                              'contact_name'      => '',
-                                                              'contact_phone'     => '',
-                                                              'contact_email'     => '',
-                                                              'sup_institute_de'  => '',
-                                                              'sup_institute_en'  => '',
-                                                              'sup_url'           => '',
-                                                              'sup_email'         => '',
-                                                              'sup_staff_array'   => '',
-                                                              'auth_name_de'      => 'Bayerisches Staatsministerium für Wissenschaft und Kunst',
-                                                              'auth_name_en'      => 'Bavarian State Ministry of Science and Art',
-                                                              'auth_address'      => 'Salvatorstraße 2',
-                                                              'auth_plz'          => '80327',
-                                                              'auth_city_de'      => 'München',
-                                                              'auth_city_en'      => 'Munich',
-                                                              'auth_url'          => 'www.stmwk.bayern.de',
-                                                              'date'              => '',
-                                                              ),
-                                'REQUIRED_ACCESSIBILITY' => array('title_de'              => 'Barrierefreiheit',
-                                                                  'title_en'              => 'Accessibility',
-                                                                  'alias_de'              => 'barrierefreiheit',
-                                                                  'alias_en'              => 'accessibility',
-                                                                  'wisski_url'            => '',
-                                                                  'status'                => array('Completely compliant' => '',
-                                                                                                   'Partially compliant' => array('issues_array_de'       => '',
-                                                                                                                                  'issues_array_en'       => '',
-                                                                                                                                  'statement_array_de'    => '',
-                                                                                                                                  'statement_array_en'    => '',
-                                                                                                                                  'alternatives_array_de' => '',
-                                                                                                                                  'alternatives_array_en' => '',
-                                                                                                                                  ),
-                                                                                                  ),
-                                                                  'methodology_de'        => '',
-                                                                  'methodology_en'        => '',
-                                                                  'creation_date'         => '',
-                                                                  'last_revis_date'       => '',
-                                                                  'contact_access_name'   => '',
-                                                                  'contact_access_phone'  => '',
-                                                                  'contact_access_email'  => '',
-                                                                  'sup_institute_de'      => '',
-                                                                  'sup_institute_en'      => '',
-                                                                  'sup_url'               => '',
-                                                                  'sup_address'           => '',
-                                                                  'sup_plz'               => '',
-                                                                  'sup_city_de'           => '',
-                                                                  'sup_city_en'           => '',
-                                                                  'sup_email'             => '',
-                                                                  'overs_name_de'         => 'Landesamt für Digitalisierung, Breitband und Vermessung',
-                                                                  'overs_name_en'         => 'Agency for Digitalisation, High-Speed Internet and Surveying',
-                                                                  'overs_dept_de'         => 'IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik',
-                                                                  'overs_dept_en'         => 'IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology',
-                                                                  'overs_address'         => 'St.-Martin-Straße 47',
-                                                                  'overs_plz'             => '81541',
-                                                                  'overs_city_de'         => 'München',
-                                                                  'overs_city_en'         => 'Munich',
-                                                                  'overs_phone'           => '+49 89 2129-1111',
-                                                                  'overs_email'           => 'bitv@bayern.de',
-                                                                  'overs_url'             => 'https://www.ldbv.bayern.de/digitalisierung/bitv.html',
-                                                                  'date'                  => '',
+  const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('en' =>  array('title'             => 'Legal Notice',
+                                                                            'alias'             => 'legalnotice',
+                                                                            'project_name'      => '',
+                                                                            'pub_institute'     => '',
+                                                                            'pub_name'          => '',
+                                                                            'pub_city'          => '',
+                                                                            'contact_name'      => '',
+                                                                            'sup_institute'     => '',
+                                                                            'sup_staff_array'   => '',
+                                                                            'auth_name'         => 'Bavarian State Ministry of Science and Art',
+                                                                            'auth_city'         => 'Munich',
+                                                                            ),
+                                                             'de' =>  array('title'             => 'Impressum',
+                                                                            'alias'             => 'impressum',
+                                                                            'project_name'      => '',
+                                                                            'pub_institute'     => '',
+                                                                            'pub_name'          => '',
+                                                                            'pub_city'          => '',
+                                                                            'contact_name'      => '',
+                                                                            'sup_institute'     => '',
+                                                                            'sup_staff_array'   => '',
+                                                                            'auth_name'         => 'Bayerisches Staatsministerium für Wissenschaft und Kunst',
+                                                                            'auth_city'         => 'München',
+                                                                           ),
+                                                             'intl' => array('wisski_url'        => '',
+                                                                             'pub_address'       => '',
+                                                                             'pub_plz'           => '',
+                                                                             'pub_email'         => '',
+                                                                             'contact_phone'     => '',
+                                                                             'contact_email'     => '',
+                                                                             'sup_url'           => '',
+                                                                             'sup_email'         => '',
+                                                                             'auth_address'      => 'Salvatorstraße 2',
+                                                                             'auth_plz'          => '80327',
+                                                                             'auth_url'          => 'www.stmwk.bayern.de',
+                                                                             'date'              => '',
+                                                                            ),
+                                                          	),
+                                'REQUIRED_ACCESSIBILITY' => array('en' => array('title'                 => 'Accessibility',
+                                                                                'alias'                 => 'accessibility',
+                                                                                'status'                => array('Completely compliant',
+                                                                                                                 'Partially compliant',
+                                                                                                                ),
+                                                                                'issues_array'          => '',
+                                                                                'statement_array'       => '',
+                                                                                'alternatives_array'    => '',
+                                                                                'methodology'           => 'TEST',
+                                                                                'contact_access_name'   => 'TEST',
+                                                                                'sup_institute'         => 'TEST',
+                                                                                'sup_city'              => 'TEST',
+                                                                                'overs_name'            => 'Agency for Digitalisation, High-Speed Internet and Surveying',
+                                                                                'overs_dept'            => 'IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology',
+                                                                                'overs_city'            => 'Munich',
+                                                                               ),
+                                                                  'de' =>  array('title'                => 'Barrierefreiheit',
+                                                                                 'alias'                => 'barrierefreiheit',
+                                                                                 'status'               => array('Completely compliant',
+                                                                                                                 'Partially compliant',
+                                                                                                            ),
+                                                                                'issues_array'          => '',
+                                                                                'statement_array'       => '',
+                                                                                'alternatives_array'    => '',
+                                                                                'methodology'           => '',
+                                                                                'contact_access_name'   => '',
+                                                                                'sup_institute'         => '',
+                                                                                'sup_city'              => '',
+                                                                                'overs_name'            => 'Landesamt für Digitalisierung, Breitband und Vermessung',
+                                                                                'overs_dept'            => 'IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik',
+                                                                                'overs_city'            => 'München',
+                                                                                ),
+                                                                  'intl' => array('wisski_url'            => 'TEST',
+                                                                                  'creation_date'         => 'TEST',
+                                                                                  'last_revis_date'       => 'TEST',
+                                                                                  'contact_access_phone'  => 'TEST',
+                                                                                  'contact_access_email'  => 'test@test.de',
+                                                                                  'sup_url'               => 'TEST',
+                                                                                  'sup_address'           => 'TEST',
+                                                                                  'sup_plz'               => 'TEST',
+                                                                                  'sup_email'             => 'test@test.de',
+                                                                                  'overs_address'         => 'St.-Martin-Straße 47',
+                                                                                  'overs_plz'             => '81541',
+                                                                                  'overs_phone'           => '+49 89 2129-1111',
+                                                                                  'overs_email'           => 'bitv@bayern.de',
+                                                                                  'overs_url'             => 'https://www.ldbv.bayern.de/digitalisierung/bitv.html',
+                                                                                  'date'                  => '',
+                                                                                  ),
                                                                 ),
-                                  'REQUIRED_PRIVACY' => array('title_de'            => 'Datenschutz',
-                                                              'title_en'            => 'Privacy',
-                                                              'alias_de'            => 'datenschutz',
-                                                              'alias_en'            => 'privacy',
-                                                              'wisski_url'          => '',
-                                                              'legal_notice_de'     => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
-                                                              'legal_notice_en'     => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
-                                                              'sec_off_title_de'    => 'Datenschutzbeauftragter der FAU',
-                                                              'sec_off_title_en'    => 'Data Security Official of the FAU',
-                                                              'sec_off_name'        => 'Klaus Hoogestraat',
-                                                              'sec_off_add_de'      => 'c/o ITM Gesellschaft für IT-Management mbH',
-                                                              'sec_off_add_en'      => 'c/o ITM Gesellschaft für IT-Management mbH',
-                                                              'sec_off_address'     => 'Bürgerstraße 81',
-                                                              'sec_off_plz'         => '01127',
-                                                              'sec_off_city_de'     => 'Dresden',
-                                                              'sec_off_city_en'     => 'Dresden',
-                                                              'sec_off_phone'       => '+49 9131 85-25860',
-                                                              'sec_off_fax'         => '',
-                                                              'sec_off_email'       => 'datenschutzbeauftragter@fau.de',
-                                                              'data_comm_title_de'  => 'der Bayerische Landesbeauftragte für den Datenschutz',
-                                                              'data_comm_title_en'  => 'Bavarian State Commissioner for Data Protection',
-                                                              'data_comm_address'   => 'Wagmüllerstraße 18',
-                                                              'data_comm_plz'       => '80538',
-                                                              'data_comm_city_de'   => 'München',
-                                                              'data_comm_city_en'   => 'Munich',
-                                                              'date'                => '',
-                                                              ),
+                                  'REQUIRED_PRIVACY' => array('en' =>  array('title'               => 'Privacy',
+                                                                             'alias'               => 'privacy',
+                                                                             'legal_notice_url'    => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
+                                                                             'sec_off_title'       => 'Data Security Official of the FAU',
+                                                                             'sec_off_name'        => 'Klaus Hoogestraat',
+                                                                             'sec_off_add'         => 'c/o ITM Gesellschaft für IT-Management mbH',
+                                                                             'sec_off_city'        => 'Dresden',
+                                                                             'data_comm_title'     => 'Bavarian State Commissioner for Data Protection',
+                                                                             'data_comm_city'      => 'Munich',
+                                                                            ),
+                                                               'de' =>  array('title'                 => 'Datenschutz',
+                                                                              'alias'                 => 'datenschutz',
+                                                                              'legal_notice_url'      => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
+                                                                              'sec_off_title'         => 'Datenschutzbeauftragter der FAU',
+                                                                              'sec_off_name'          => 'Klaus Hoogestraat',
+                                                                              'sec_off_add'           => 'c/o ITM Gesellschaft für IT-Management mbH',
+                                                                              'sec_off_city'          => 'Dresden',
+                                                                              'data_comm_title'       => 'der Bayerische Landesbeauftragte für den Datenschutz',
+                                                                              'data_comm_city'        => 'München',
+                                                                             ),
+                                                               'intl' => array('wisski_url'            => '',
+                                                                               'sec_off_address'       => 'Bürgerstraße 81',
+                                                                               'sec_off_plz'           => '01127',
+                                                                               'sec_off_phone'         => '+49 9131 85-25860',
+                                                                               'sec_off_fax'           => '',
+                                                                               'sec_off_email'         => 'datenschutzbeauftragter@fau.de',
+                                                                               'data_comm_address'     => 'Wagmüllerstraße 18',
+                                                                               'data_comm_plz'         => '80538',
+                                                                               'date'                  => '',
+                                                                               ),
+                                                            ),
   ];
 
-    public $template;
+  public function validateDataBeforeGeneration(array $data, String $default_key, String $title, String $alias){
 
-    function generateNode($title, $body, $alias){
-      $node = Node::create([
-          'type'    => 'page',
-          'title'   => t($title),
-          'body'    => array(
-            //'summary' => "this is the summary",
-              'value'     => $body,
-              'format'    => 'full_html',
-            ),
-          // set alias for page
-          'path'     => array('alias' => "/$alias"),
-      ]);
-      $node->save();
+    // Check If All Required Keys Are in Data Array and Is NOT Empty + Title and Alias are not Empty
+
+    $missingValues = [];
+
+    $lang = $data['lang'];
+
+    $required = WisskiLegalGenerator::REQUIRED_DATA_ALL[$default_key][$lang];
+
+    // Loop over Required Array
+    foreach ($required as $k => $v){
+
+      // Required Key in Data?
+      $requiredKeyInData = array_key_exists($k, $data);
+
+      // Add to Missing Values if Key not in Data or Title or Alias OR if no Value
+      if(($requiredKeyInData === FALSE and $k !== 'title' and $k !== 'alias') or empty($data[$k]) === 0 or empty($title) === 0 or empty($alias) === 0){
+
+        if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
+
+          if ($required['status'] === 'Completely compliant'){
+            continue;
+          }
+        }
+        array_push($missingValues, $k);
+        continue;
+      }
+
+      continue;
     }
 
-    public function required_data($docKey){
+    // Convert Missing Values to String
+    return implode(", ", $missingValues);
+  }
 
-  return REQUIRED_DATA_ALL[$docKey];
+  public $template;
+
+
+  function generateNode($title, $alias, $body, $lang): Node {
+
+    $node = Node::create([
+        'type'    => 'page',
+        'title'   => t($title),
+        'activeLangcode' => $lang,
+        'body'    => array(
+          //'summary' => "this is the summary",
+            'value'     => $body,
+            'format'    => 'full_html',
+          ),
+        // set alias for page
+        'path'     => array('alias' => "/$alias"),
+      ]);
+
+      $node->save();
+
+      return $node;
+
+  }
+
+  function updateNode ($title, $alias, $body, $node): string {
+
+    // Update Values for Body
+    $node-> title =  $title;
+    $node->set('body', array(
+      'value' => $body,
+      'format'  => 'full_html',
+    ));
+
+    // Update Value for Path
+    $node->set('path', array(
+      'alias' => "/$alias",
+    ));
+
+    $node->save();
+
+    $node_id = $node->id();
+    return $node_id;
+
   }
 
 
 
 
-    public function generateImpressum(array $data_ln, string $title_de, string $title_en, string $alias_de, string $alias_en){
+  function generateTranslation(string $title, string $alias, $body, string $lang, Node $node): string {
 
-        $template_de = [
-            '#theme' => 'impressum_template',
-            '#wisski_url'             => $data_ln['wisski_url'],
-            '#project_name_de'        => $data_ln['project_name_de'],
-            '#pub_institute_de'       => $data_ln['pub_institute_de'],
-            '#pub_name'               => $data_ln['pub_name'],
-            '#pub_address'            => $data_ln['pub_address'],
-            '#pub_plz'                => $data_ln['pub_plz'],
-            '#pub_city_de'            => $data_ln['pub_city_de'],
-            '#pub_email'              => $data_ln['pub_email'],
-            '#cust_legal_form_de'     => $data_ln['cust_legal_form_de'],
-            '#contact_name'           => $data_ln['contact_name'],
-            '#contact_phone'          => $data_ln['contact_phone'],
-            '#contact_email'          => $data_ln['contact_email'],
-            '#sup_institute_de'       => $data_ln['sup_institute_de'],
-            '#sup_url'                => $data_ln['sup_url'],
-            '#sup_email'              => $data_ln['sup_email'],
-            '#sup_staff_array'        => $data_ln['sup_staff_array'],
-            '#auth_name_de'           => $data_ln['auth_name_de'],
-            '#auth_address'           => $data_ln['auth_address'],
-            '#auth_plz'               => $data_ln['auth_plz'],
-            '#auth_city_de'           => $data_ln['auth_city_de'],
-            '#auth_url'               => $data_ln['auth_url'],
-            '#licence_title_de'       => $data_ln['licence_title_de'],
-            '#licence_url'            => $data_ln['licence_url'],
-            '#use_fau_temp'           => $data_ln['use_fau_temp'],
-            '#no_default_txt'         => $data_ln['no_default_txt'],
-            '#cust_licence_txt_de'    => $data_ln['cust_licence_txt_de'],
-            '#cust_exclusion_de'      => $data_ln['cust_exclusion_de'],
-            '#show_disclaim'          => $data_ln['show_disclaim'],
-            '#cust_disclaim_de'       => $data_ln['cust_disclaim_de'],
-            '#date'                   => $data_ln['date'],
-          ];
+        // Create Non Default Language Page
+        $node_trans = $node->addTranslation($lang);
+
+        $node_trans->path->alias = $alias;
+        $node_trans->title = $title;
+        $node_trans->body->value = $body;
+        $node_trans->body->format = 'full_html';
 
 
-          $deleteQuery = \Drupal::database()->delete('path_alias');
-          $deleteQuery->condition('alias', '/'.$alias_de);
-          $deleteQuery->execute();
+        //Save Translation to Node
+        $node_trans->save();
 
-          $html_de = \Drupal::service('renderer')->renderPlain($template_de);
+        // Get Translation Created
+        $exist_trans = $node->getTranslation($lang);
 
-          $this->generateNode($title_de, $html_de, $alias_de);
+        // Update Path
+        $exist_trans->set('path', array(
+        'alias' => "/$alias",
+        ));
 
+        $exist_trans->save();
 
-          $template_en = [
-            '#theme' => 'legalnotice_template',
-            '#wisski_url'             => $data_ln['wisski_url'],
-            '#project_name_en'        => $data_ln['project_name_en'],
-            '#pub_institute_en'       => $data_ln['pub_institute_en'],
-            '#pub_name'               => $data_ln['pub_name'],
-            '#pub_address'            => $data_ln['pub_address'],
-            '#pub_plz'                => $data_ln['pub_plz'],
-            '#pub_city_en'            => $data_ln['pub_city_en'],
-            '#pub_email'              => $data_ln['pub_email'],
-            '#cust_legal_form_en'     => $data_ln['cust_legal_form_en'],
-            '#contact_name'           => $data_ln['contact_name'],
-            '#contact_phone'          => $data_ln['contact_phone'],
-            '#contact_email'          => $data_ln['contact_email'],
-            '#sup_institute_en'       => $data_ln['sup_institute_en'],
-            '#sup_url'                => $data_ln['sup_url'],
-            '#sup_email'              => $data_ln['sup_email'],
-            '#sup_staff_array'        => $data_ln['sup_staff_array'],
-            '#auth_name_en'           => $data_ln['auth_name_en'],
-            '#auth_address'           => $data_ln['auth_address'],
-            '#auth_plz'               => $data_ln['auth_plz'],
-            '#auth_city_en'           => $data_ln['auth_city_en'],
-            '#auth_url'               => $data_ln['auth_url'],
-            '#licence_title_en'       => $data_ln['licence_title_en'],
-            '#licence_url'            => $data_ln['licence_url'],
-            '#use_fau_temp'           => $data_ln['use_fau_temp'],
-            '#no_default_txt'         => $data_ln['no_default_txt'],
-            '#cust_licence_txt_en'    => $data_ln['cust_licence_txt_en'],
-            '#cust_exclusion_en'      => $data_ln['cust_exclusion_en'],
-            '#show_disclaim'          => $data_ln['show_disclaim'],
-            '#cust_disclaim_en'       => $data_ln['cust_disclaim_en'],
-            '#date'                   => $data_ln['date'],
+        // Get Node ID
+        $node_id = $node->id();
 
-          ];
+      return $node_id;
+  }
 
-          $deleteQuery = \Drupal::database()->delete('path_alias');
-          $deleteQuery->condition('alias', '/'.$alias_en);
-          $deleteQuery->execute();
+  function updateTranslation ($title, $alias, $body, $lang, $node): string {
 
-          $html_en = \Drupal::service('renderer')->renderPlain($template_en);
+      $exist_trans = $node->getTranslation($lang);
 
-          $this->generateNode($title_en, $html_en, $alias_en);
+      // Update Body
+      $exist_trans-> title =  $title;
+      $exist_trans->set('body', array(
+        'value' => $body,
+        'format'  => 'full_html',
+      ));
 
-          $valuesStoredInState = array('wisski_impressum.legalNotice' => array('title_de'              => $title_de,
-                                                                               'title_en'              => $title_en,
-                                                                               'wisski_url'            => $data_ln['wisski_url'],
-                                                                               'alias_de'              => $alias_de,
-                                                                               'alias_en'              => $alias_en,
-                                                                               'project_name_de'       => $data_ln['project_name_de'],
-                                                                               'project_name_en'       => $data_ln['project_name_en'],
-                                                                               'pub_institute_de'      => $data_ln['pub_institute_de'],
-                                                                               'pub_institute_en'      => $data_ln['pub_institute_en'],
-                                                                               'pub_name'              => $data_ln['pub_name'],
-                                                                               'pub_address'           => $data_ln['pub_address'],
-                                                                               'pub_plz'               => $data_ln['pub_plz'],
-                                                                               'pub_city_de'           => $data_ln['pub_city_de'],
-                                                                               'pub_city_en'           => $data_ln['pub_city_en'],
-                                                                               'pub_email'             => $data_ln['pub_email'],
-                                                                               'cust_legal_form_de'    => $data_ln['cust_legal_form_de'],
-                                                                               'cust_legal_form_en'    => $data_ln['cust_legal_form_en'],
-                                                                               'contact_name'          => $data_ln['contact_name'],
-                                                                               'contact_phone'         => $data_ln['contact_phone'],
-                                                                               'contact_email'         => $data_ln['contact_email'],
-                                                                               'sup_institute_de'      => $data_ln['sup_institute_de'],
-                                                                               'sup_institute_en'      => $data_ln['sup_institute_en'],
-                                                                               'sup_url'               => $data_ln['sup_url'],
-                                                                               'sup_email'             => $data_ln['sup_email'],
-                                                                               'sup_staff_array'       => $data_ln['sup_staff_array'],
-                                                                               'auth_name_de'          => $data_ln['auth_name_de'],
-                                                                               'auth_name_en'          => $data_ln['auth_name_en'],
-                                                                               'auth_address'          => $data_ln['auth_address'],
-                                                                               'auth_plz'              => $data_ln['auth_plz'],
-                                                                               'auth_city_de'          => $data_ln['auth_city_de'],
-                                                                               'auth_city_en'          => $data_ln['auth_city_en'],
-                                                                               'auth_url'              => $data_ln['auth_url'],
-                                                                               'licence_title_de'      => $data_ln['licence_title_de'],
-                                                                               'licence_title_en'      => $data_ln['licence_title_en'],
-                                                                               'licence_url'           => $data_ln['licence_url'],
-                                                                               'use_fau_temp'          => $data_ln['use_fau_temp'],
-                                                                               'no_default_txt'        => $data_ln['no_default_txt'],
-                                                                               'cust_licence_txt_de'   => $data_ln['cust_licence_txt_de'],
-                                                                               'cust_licence_txt_en'   => $data_ln['cust_licence_txt_en'],
-                                                                               'cust_exclusion_de'     => $data_ln['cust_exclusion_de'],
-                                                                               'cust_exclusion_en'     => $data_ln['cust_exclusion_en'],
-                                                                               'show_disclaim'         => $data_ln['show_disclaim'],
-                                                                               'cust_disclaim_de'      => $data_ln['cust_disclaim_de'],
-                                                                               'cust_disclaim_en'      => $data_ln['cust_disclaim_en'],
-                                                                               'date'                  => $data_ln['date'],
-                                                                               ),
-            );
+      // Update Path
+      $exist_trans->set('path', array(
+        'alias' => "/$alias",
+      ));
 
-          // Store current German and English input in state:
-          \Drupal::state()->setMultiple($valuesStoredInState);
+      $exist_trans->save();
 
-          return TRUE;
-        }
+      $node_id = $exist_trans->id();
 
-    public function generateBarrierefreiheit(array $data_a, $title_de, $title_en, $alias_de, $alias_en){
-      $template_de = [
-        '#theme' => 'barrierefreiheit_template',
-        '#wisski_url'             => $data_a['wisski_url'],
-        '#status'                 => $data_a['status'],
-        '#methodology_de'         => $data_a['methodology_de'],
-        '#creation_date'          => $data_a['creation_date'],
-        '#last_revis_date'        => $data_a['last_revis_date'],
-        '#report_url'             => $data_a['report_url'],
-        '#issues_array_de'        => $data_a['issues_array_de'],
-        '#statement_array_de'     => $data_a['statement_array_de'],
-        '#alternatives_array_de'  => $data_a['alternatives_array_de'],
-        '#contact_access_name'    => $data_a['contact_access_name'],
-        '#contact_access_phone'   => $data_a['contact_access_phone'],
-        '#contact_access_email'   => $data_a['contact_access_email'],
-        '#sup_institute_de'       => $data_a['sup_institute_de'],
-        '#sup_url'                => $data_a['sup_url'],
-        '#sup_address'            => $data_a['sup_address'],
-        '#sup_plz'                => $data_a['sup_plz'],
-        '#sup_city_de'            => $data_a['sup_city_de'],
-        '#sup_email'              => $data_a['sup_email'],
-        '#overs_name_de'          => $data_a['overs_name_de'],
-        '#overs_dept_de'          => $data_a['overs_dept_de'],
-        '#overs_address'          => $data_a['overs_address'],
-        '#overs_plz'              => $data_a['overs_plz'],
-        '#overs_city_de'          => $data_a['overs_city_de'],
-        '#overs_phone'            => $data_a['overs_phone'],
-        '#overs_email'            => $data_a['overs_email'],
-        '#overs_url'              => $data_a['overs_url'],
-        '#date'                   => $data_a['date'],
-      ];
-
-      $deleteQuery = \Drupal::database()->delete('path_alias');
-      $deleteQuery->condition('alias', '/'.$alias_de);
-      $deleteQuery->execute();
-
-      $html_de = \Drupal::service('renderer')->renderPlain($template_de);
-
-      $this->generateNode($title_de, $html_de, $alias_de);
+    return $node_id;
+  }
 
 
-      $template_en = [
-        '#theme' => 'accessibility_template',
-        '#wisski_url'             => $data_a['wisski_url'],
-        '#status'                 => $data_a['status'],
-        '#methodology_en'         => $data_a['methodology_en'],
-        '#creation_date'          => $data_a['creation_date'],
-        '#last_revis_date'        => $data_a['last_revis_date'],
-        '#report_url'             => $data_a['report_url'],
-        '#issues_array_en'        => $data_a['issues_array_en'],
-        '#statement_array_en'     => $data_a['statement_array_en'],
-        '#alternatives_array_en'  => $data_a['alternatives_array_en'],
-        '#contact_access_name'    => $data_a['contact_access_name'],
-        '#contact_access_phone'   => $data_a['contact_access_phone'],
-        '#contact_access_email'   => $data_a['contact_access_email'],
-        '#sup_institute_en'       => $data_a['sup_institute_en'],
-        '#sup_url'                => $data_a['sup_url'],
-        '#sup_address'            => $data_a['sup_address'],
-        '#sup_plz'                => $data_a['sup_plz'],
-        '#sup_city_en'            => $data_a['sup_city_en'],
-        '#sup_email'              => $data_a['sup_email'],
-        '#overs_name_en'          => $data_a['overs_name_en'],
-        '#overs_dept_en'          => $data_a['overs_dept_en'],
-        '#overs_address'          => $data_a['overs_address'],
-        '#overs_plz'              => $data_a['overs_plz'],
-        '#overs_city_en'          => $data_a['overs_city_en'],
-        '#overs_phone'            => $data_a['overs_phone'],
-        '#overs_email'            => $data_a['overs_email'],
-        '#overs_url'              => $data_a['overs_url'],
-        '#date'                   => $data_a['date'],
-      ];
+  function checkPage ($title, $alias, $body, $lang, $overwrite, $node): array|NULL {
 
-      $deleteQuery = \Drupal::database()->delete('path_alias');
-      $deleteQuery->condition('alias', '/'.$alias_en);
-      $deleteQuery->execute();
+    // Get Default Language
+    $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
 
-      $html_en = \Drupal::service('renderer')->renderPlain($template_en);
+    $return_array = [];
 
-      $this->generateNode($title_en, $html_en, $alias_en);
+    // 1) NO NODE
+
+    if ($node === NULL){
+
+      // A) Default Language
+      if ($lang === $default_lang){
+
+        $node_id = $this->generateNode($title, $alias, $body, $default_lang)->id();
+
+        array_push($return_array, $node_id, '');
+
+        // Return Node ID
+        return $return_array;
+
+      } else {
+
+      // B) NOT Default Language
+
+        // a) Generate Empty Default Lang
+
+        $node = $this->generateNode($title, $alias, $body, $default_lang);
 
 
-      $valuesStoredInState = array('wisski_impressum.accessibility' => array('title_de'            => $title_de,
-                                                                           'title_en'              => $title_en,
-                                                                           'wisski_url'            => $data_a['wisski_url'],
-                                                                           'alias_de'              => $alias_de,
-                                                                           'alias_en'              => $alias_en,
-                                                                           'status'                => $data_a['status'],
-                                                                           'methodology_de'        => $data_a['methodology_de'],
-                                                                           'methodology_en'        => $data_a['methodology_en'],
-                                                                           'creation_date'         => $data_a['creation_date'],
-                                                                           'last_revis_date'       => $data_a['last_revis_date'],
-                                                                           'report_url'            => $data_a['report_url'],
-                                                                           'issues_array_de'       => $data_a['issues_array_de'],
-                                                                           'issues_array_en'       => $data_a['issues_array_en'],
-                                                                           'statement_array_de'    => $data_a['statement_array_de'],
-                                                                           'statement_array_en'    => $data_a['statement_array_en'],
-                                                                           'alternatives_array_de' => $data_a['alternatives_array_de'],
-                                                                           'alternatives_array_en' => $data_a['alternatives_array_en'],
-                                                                           'contact_access_name'   => $data_a['contact_access_name'],
-                                                                           'contact_access_phone'  => $data_a['contact_access_phone'],
-                                                                           'contact_access_email'  => $data_a['contact_access_email'],
-                                                                           'sup_institute_de'      => $data_a['sup_institute_de'],
-                                                                           'sup_institute_en'      => $data_a['sup_institute_en'],
-                                                                           'sup_url'               => $data_a['sup_url'],
-                                                                           'sup_address'           => $data_a['sup_address'],
-                                                                           'sup_plz'               => $data_a['sup_plz'],
-                                                                           'sup_city_de'           => $data_a['sup_city_de'],
-                                                                           'sup_city_en'           => $data_a['sup_city_en'],
-                                                                           'sup_email'             => $data_a['sup_email'],
-                                                                           'overs_name_de'         => $data_a['overs_name_de'],
-                                                                           'overs_name_en'         => $data_a['overs_name_en'],
-                                                                           'overs_dept_de'         => $data_a['overs_dept_de'],
-                                                                           'overs_dept_en'         => $data_a['overs_dept_en'],
-                                                                           'overs_address'         => $data_a['overs_address'],
-                                                                           'overs_plz'             => $data_a['overs_plz'],
-                                                                           'overs_city_de'         => $data_a['overs_city_de'],
-                                                                           'overs_city_en'         => $data_a['overs_city_en'],
-                                                                           'overs_phone'           => $data_a['overs_phone'],
-                                                                           'overs_email'           => $data_a['overs_email'],
-                                                                           'overs_url'             => $data_a['overs_url'],
-                                                                           'date'                  => $data_a['date'],
+        // b) Generate Non Default Lang
+        $this->generateTranslation($title, $alias, $body, $lang, $node);
 
-    )
-    );
+        array_push($return_array, $node->id(), 'Empty Default', $default_lang);
 
-      // Store current German and English input in state:
-      \Drupal::state()->setMultiple($valuesStoredInState);
+        // Return Node ID
+        return $return_array;
 
-
-      return TRUE;
-    }
-
-
-
-    public function generateDatenschutz(array $data_p, string $title_de, string $title_en, string $alias_de, string $alias_en){
-
-      $template_de = ['#theme' => 'datenschutz_template'];
-      foreach ($data_p as $key => $value) {
-        $newKey = "#{$key}";
-        $template_de[$newKey] = $value;
       }
-      $template_de = [
-        '#theme' => 'datenschutz_template',
-        '#wisski_url'                       => $data_p['wisski_url'],
-        '#not_fau_de'                       => $data_p['not_fau_de'],
-        '#legal_notice_url_de'              => $data_p['legal_notice_url_de'],
-        '#sec_off_title_de'                 => $data_p['sec_off_title_de'],
-        '#sec_off_name'                     => $data_p['sec_off_name'],
-        '#sec_off_add_de'                   => $data_p['sec_off_add_de'],
-        '#sec_off_address'                  => $data_p['sec_off_address'],
-        '#sec_off_plz'                      => $data_p['sec_off_plz'],
-        '#sec_off_city_de'                  => $data_p['sec_off_city_de'],
-        '#sec_off_phone'                    => $data_p['sec_off_phone'],
-        '#sec_off_fax'                      => $data_p['sec_off_fax'],
-        '#sec_off_email'                    => $data_p['sec_off_email'],
-        '#third_service_provider'           => $data_p['third_service_provider'],
-        '#third_descr_data_coll_de'         => $data_p['third_descr_data_coll_de'],
-        '#third_legal_basis_data_coll_de'   => $data_p['third_legal_basis_data_coll_de'],
-        '#third_objection_data_coll_de'     => $data_p['third_objection_data_coll_de'],
-        '#data_comm_title_de'               => $data_p['data_comm_title_de'],
-        '#data_comm_address'                => $data_p['data_comm_address'],
-        '#data_comm_plz'                    => $data_p['data_comm_plz'],
-        '#data_comm_city_de'                => $data_p['data_comm_city_de'],
-        '#date'                             => $data_p['date'],
+    } else {
 
-      ];
+    // 2) NODE EXISTS
 
+      // A) Overwrite NOT Ticked
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Identical Operator and Other
+      if ($overwrite == 0){
 
-      $deleteQuery = \Drupal::database()->delete('path_alias');
-      $deleteQuery->condition('alias', '/'.$alias_de);
-      $deleteQuery->execute();
+        array_push($return_array, NULL, 'No Overwrite');
 
-      $html_de = \Drupal::service('renderer')->renderPlain($template_de);
+        return $return_array;
 
-      $this->generateNode($title_de, $html_de, $alias_de);
+      } else {
+
+      // B) Overwrite Ticked
+
+        // a) Default Language
+
+        if ($lang === $default_lang){
+
+          $node_id = $this->updateNode($title, $alias, $body, $node);
+
+          array_push($return_array, $node_id, '');
+
+          return $return_array;
+
+        } else {
+
+          // b) NOT Default Language
+
+          $trans_exist = $node->hasTranslation($lang);
 
 
-      $template_en = [
-        '#theme' => 'privacy_template',
-        '#wisski_url'                       => $data_p['wisski_url'],
-        '#not_fau_en'                       => $data_p['not_fau_en'],
-        '#legal_notice_url_en'              => $data_p['legal_notice_url_en'],
-        '#sec_off_title_en'                 => $data_p['sec_off_title_en'],
-        '#sec_off_name'                     => $data_p['sec_off_name'],
-        '#sec_off_add_en'                   => $data_p['sec_off_add_en'],
-        '#sec_off_address'                  => $data_p['sec_off_address'],
-        '#sec_off_plz'                      => $data_p['sec_off_plz'],
-        '#sec_off_city_en'                  => $data_p['sec_off_city_en'],
-        '#sec_off_phone'                    => $data_p['sec_off_phone'],
-        '#sec_off_fax'                      => $data_p['sec_off_fax'],
-        '#sec_off_email'                    => $data_p['sec_off_email'],
-        '#third_service_provider'           => $data_p['third_service_provider'],
-        '#third_descr_data_coll_en'         => $data_p['third_descr_data_coll_en'],
-        '#third_legal_basis_data_coll_en'   => $data_p['third_legal_basis_data_coll_en'],
-        '#third_objection_data_coll_en'     => $data_p['third_objection_data_coll_en'],
-        '#data_comm_title_en'               => $data_p['data_comm_title_en'],
-        '#data_comm_address'                => $data_p['data_comm_address'],
-        '#data_comm_plz'                    => $data_p['data_comm_plz'],
-        '#data_comm_city_en'                => $data_p['data_comm_city_en'],
-        '#date'                             => $data_p['date'],
+          // i) NO Translation Exists
 
-      ];
+          if(!$trans_exist){
+
+            $node_id = $this->generateTranslation($title, $alias, $body, $lang, $node);
+
+            array_push($return_array, $node_id, '');
+
+            return $return_array;
+
+          } else {
+
+            // ii) Translation Exists
+
+            $node_id = $this->updateTranslation($title, $alias, $body, $lang, $node);
+
+            array_push($return_array, $node_id, '');
+
+            return $return_array;
+          }
+        }
+      }
+    }
+  }
 
 
-      $deleteQuery = \Drupal::database()->delete('path_alias');
-      $deleteQuery->condition('alias', '/'.$alias_en);
-      $deleteQuery->execute();
+  public function generatePage(array $data, string $title, string $alias, string $lang, string $required_key, string $page_name, array $state_keys_lang, array $state_keys_intl) {
 
-      $html_en = \Drupal::service('renderer')->renderPlain($template_en);
+    // Ad
+    $validity = \Drupal::service('wisski_impressum.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias);
 
-      $this->generateNode($title_en, $html_en, $alias_en);
 
-      $valuesStoredInState = array('wisski_impressum.privacy' => array('title_de'                       => $title_de,
-                                                                       'title_en'                       => $title_en,
-                                                                       'wisski_url'                     => $data_p['wisski_url'],
-                                                                       'alias_de'                       => $alias_de,
-                                                                       'alias_en'                       => $alias_en,
-                                                                       'not_fau_de'                     => $data_p['not_fau_de'],
-                                                                       'not_fau_en'                     => $data_p['not_fau_en'],
-                                                                       'sec_off_title_de'               => $data_p['sec_off_title_de'],
-                                                                       'sec_off_title_en'               => $data_p['sec_off_title_en'],
-                                                                       'sec_off_name'                   => $data_p['sec_off_name'],
-                                                                       'sec_off_add_de'                 => $data_p['sec_off_add_de'],
-                                                                       'sec_off_add_en'                 => $data_p['sec_off_add_en'],
-                                                                       'sec_off_address'                => $data_p['sec_off_address'],
-                                                                       'sec_off_plz'                    => $data_p['sec_off_plz'],
-                                                                       'sec_off_city_de'                => $data_p['sec_off_city_de'],
-                                                                       'sec_off_city_en'                => $data_p['sec_off_city_en'],
-                                                                       'sec_off_phone'                  => $data_p['sec_off_phone'],
-                                                                       'sec_off_fax'                    => $data_p['sec_off_fax'],
-                                                                       'sec_off_email'                  => $data_p['sec_off_email'],
-                                                                       'third_service_provider'         => $data_p['third_service_provider'],
-                                                                       'third_descr_data_coll_de'       => $data_p['third_descr_data_coll_de'],
-                                                                       'third_descr_data_coll_en'       => $data_p['third_descr_data_coll_en'],
-                                                                       'third_legal_basis_data_coll_de' => $data_p['third_legal_basis_data_coll_de'],
-                                                                       'third_legal_basis_data_coll_en' => $data_p['third_legal_basis_data_coll_en'],
-                                                                       'third_objection_data_coll_de'   => $data_p['third_objection_data_coll_de'],
-                                                                       'third_objection_data_coll_en'   => $data_p['third_objection_data_coll_en'],
-                                                                       'data_comm_title_de'             => $data_p['data_comm_title_de'],
-                                                                       'data_comm_title_en'             => $data_p['data_comm_title_en'],
-                                                                       'data_comm_address'              => $data_p['data_comm_address'],
-                                                                       'data_comm_plz'                  => $data_p['data_comm_plz'],
-                                                                       'data_comm_city_de'              => $data_p['data_comm_city_de'],
-                                                                       'data_comm_city_en'              => $data_p['data_comm_city_en'],
-                                                                       'date'                           => $data_p['date'],
-                                                                        ),
-      );
+    if(empty($validity)){
 
-      // Store current German and English input in state:
-      \Drupal::state()->setMultiple($valuesStoredInState);
+      // Get Info from Config
+      $config_langs = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
 
-      return TRUE;
+      // Get Template Name from Config
+      $templ1 = $config_langs[$lang][$page_name];
+
+      // Create Template from Form Data Array
+      $template = ['#theme' => $templ1];
+      foreach ($data as $key => $val) {
+        $newKey = "#{$key}";
+        $template[$newKey] = $val;
+      }
+
+      // Delete Language and Overwrite from Template
+      unset($template['#lang']);
+      unset($template['#overwrite']);
+
+    $body = \Drupal::service('renderer')->renderPlain($template);
+
+
+    // Get Node ID from State
+    $state_of_page = 'wisski_impressum.'.$page_name;
+
+    $state_vals = \Drupal::state()->get($state_of_page);
+
+    if(!empty($state_vals)){
+    $nid = $state_vals['node_id'];
+
+    $node = Node::load((string)$nid);
+    } else {
+      $node = NULL;
+    }
+
+    $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $node);
+
+    $node_id = $pageArray[0];
+
+    $userInfo = $pageArray[1];
+
+    // Create Arrays to Store in State
+    $to_store_in_state_lang = array($lang => $state_keys_lang);
+    $to_store_in_state_intl = array('intl' => $state_keys_intl);
+    $state_node = array('node_id' => $node_id);
+
+    // Merge Lang and Intl Array
+    $merged = array_merge($to_store_in_state_lang, $to_store_in_state_intl);
+
+    foreach ($merged as $key => $val_array) {
+      foreach ($merged[$key] as $k => $v){
+        if($k === 'title'){
+          $val_array[$k] = $title;
+
+        }else if($k === 'alias'){
+          $val_array[$k] = $alias;
+
+        }else{
+          $val_array[$k] = $data[$k];
+        }
+      }
+      $merged[$key] = $val_array;
+    }
+
+    // Add Node ID to Values Array for State
+    $valuesStoredInState = array_merge($merged, $state_node);
+
+    // Check if Values in State
+    if(!empty($state_vals)){
+
+    $state_keys = array_replace($state_vals, $valuesStoredInState);
+    } else {
+      $state_keys = $valuesStoredInState;
 
     }
+
+    $toSaveInState = array($state_of_page => $state_keys);
+
+    // Store Current Language Specific Input in State:
+    \Drupal::state()->setMultiple($toSaveInState);
+
+    /* TEST STARTS HERE */
+
+
+
+
+    /* TEST ENDS HERE */
+
+    // Info to User
+    if($userInfo === 'No Overwrite'){
+
+      $text = 'Unfortunately an error ocurred: Page already exists and cannot be overwritten<br/>Overwriting was not permitted by user (overwrite checkbox at the end of the form NOT checked)';
+      $rendered_text = \Drupal\Core\Render\Markup::create($text);
+      $error_message = new TranslatableMarkup ('@message', array('@message' => $rendered_text));
+
+
+      \Drupal::messenger()->addError($error_message, 'status', TRUE);
+
+
+    } else {
+
+        if($userInfo === 'Empty Default'){
+
+          $domain = \Drupal::request()->getHost();
+          $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
+          $url = \Drupal\Core\Url::fromUri('https://'.$domain.'/'.$default_lang.'/'.$alias)->toString();
+          $message = t('<a href=":href">Empty default language page created</a> ('.$pageArray[2].') <b>Please ensure to manually generate this page again with all required values</b>', array(':href' => $url));
+
+          \Drupal::messenger()->addStatus($message, 'status', TRUE);
+
+
+    } else {
+
+      // Generate Success Messages:
+      $domain = \Drupal::request()->getHost();
+      $url = \Drupal\Core\Url::fromUri('https://'.$domain.'/'.$lang.'/'.$alias)->toString();
+      $message = t('<a href=":href">Page generated successfully</a>'.' ('.$lang.')', array(':href' => $url));
+
+      \Drupal::messenger()->addStatus($message, 'status', TRUE);
+
+
+
+    }
+    }
+
+
+  } else {
+    // Info to User
+    \Drupal::messenger()->addError('Unfortunately an error ocurred: Required values invalid', 'status', TRUE);
+  }
+  }
 }

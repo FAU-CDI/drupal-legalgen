@@ -1,13 +1,13 @@
 <div lang="en">
 
-	{% if not_fau_en == FALSE %}
+	{% if not_fau == FALSE %}
 	<div>
 		{{ include('@wisski_impressum/privacy-template/privacy-fau-template_en.html.twig') }}
 	</div>
 	{% else %}
 	<div>
 		<p>
-			{{ not_fau_en }}
+			{{ not_fau }}
 		</p>
 	</div>
 	{% endif %}

@@ -1,0 +1,10 @@
+en:
+    option: "English"
+    legal_notice : "legalnotice_template"
+    accessibility: "accessibility_template"
+    privacy: "privacy_template"
+de:
+    option: "Deutsch"
+    legal_notice: "impressum_template"
+    accessibility: "barrierefreiheit_template"
+    privacy: "datenschutz_template"

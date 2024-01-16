@@ -31,7 +31,7 @@
 
         <p>
             <strong>Methodology:</strong>
-            {{ methodology_en }}
+            {{ methodology }}
         </p>
 
         <p>
@@ -61,24 +61,24 @@
 
         <h3>Content that has accessiblilty restrictions</h3>
 
-        {% if known_issues_en %}
+        {% if known_issues %}
             <div>
                 <p>
                     <ul>
-                        {% for issue in issues_array_en %}
+                        {% for issue in issues_array %}
                             <li>{{ issue }}</li>
                         {% endfor %}
                     </ul>
                 </p>
             </div>
 
-            {% if statement_array_en %}
+            {% if statement_array %}
                 <h3>Explanatory statement</h3>
 
                 <div>
                     <p>
                         <ul>
-                            {% for statement in statement_array_en %}
+                            {% for statement in statement_array %}
                                 <li>{{ statement }}</li>
                             {% endfor %}
                         </ul>
@@ -87,13 +87,13 @@
             {% endif %}
 
 
-            {% if alternatives_en %}
+            {% if alternatives %}
                 <h3>Alternative access methods</h3>
 
                 <div>
                     <p>
                         <ul>
-                            {% for alternative in alternatives_array_en %}
+                            {% for alternative in alternatives_array %}
                             <li>{{ alternative }}</li>
                             {% endfor %}
                         </ul>
@@ -131,11 +131,11 @@
             <hr />
 
             <p>
-                <a href="{{ sup_url }}">{{ sup_institute_en }}</a>
+                <a href="{{ sup_url }}">{{ sup_institute }}</a>
                 <br />
 
                 {{ sup_address }}<br />
-                {{ sup_plz }} {{ sup_city_en }}<br />
+                {{ sup_plz }} {{ sup_city }}<br />
                 <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
             </p>
         </div>
@@ -152,13 +152,13 @@
         <p>Contact information of the supervisory authority:</p>
 
         <p>
-            <strong>{{ overs_name_en }}</strong>
-            <br>{{ overs_dept_en }}
+            <strong>{{ overs_name }}</strong>
+            <br>{{ overs_dept }}
         </p>
 
         <p>
             <div>{{ overs_address }}</div>
-            <div>{{ overs_plz }} {{ overs_city_en }}</div>
+            <div>{{ overs_plz }} {{ overs_city }}</div>
         </p>
 
         <p>

@@ -4,17 +4,17 @@
 
     <div>
         <p>
-            {{ pub_institute_en }}<br />
+            {{ pub_institute }}<br />
             {{ pub_name }}<br />
             {{ pub_address }}<br />
-            {{ pub_plz }} {{ pub_city_en }}<br />
+            {{ pub_plz }} {{ pub_city }}<br />
             <a href="mailto:{{ pub_email }}">{{ pub_email }}</a>
         </p>
 
         <br />
 
         <h3>Legal form and representation</h3>
-        {% if cust_legal_form_en == '' %}
+        {% if cust_legal_form == '' %}
             <div>
                 <p>
                     The <a href="https://www.fau.eu/">Friedrich-Alexander-Universität Erlangen-Nürnberg</a> (FAU) is a state institution and also a legal personality under public law according to Art. 4 Para. 1 BayHIG.
@@ -24,7 +24,7 @@
         {% else %}
             <div>
                 <p>
-                    {{ cust_legal_form_en }}
+                    {{ cust_legal_form }}
                 </p>
             </div>
         {% endif %}
@@ -42,7 +42,7 @@
         </div>
 
 
-        <h3>Technical implementation of the virtual research environment {{ project_name_en }}</h3>
+        <h3>Technical implementation of the virtual research environment {{ project_name }}</h3>
 
         <div>
             <p>
@@ -55,7 +55,7 @@
 
             <div>
                 <p>
-                    {{ sup_institute_en }}<br />
+                    {{ sup_institute }}<br />
                     <a href="{{ sup_url }}">{{ sup_url  }}</a>
                     <br />
                     <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
@@ -95,7 +95,7 @@
         <div>
             {% if no_default_txt %}
                 <p>
-                    {{ cust_licence_txt_en }}
+                    {{ cust_licence_txt }}
                 </p>
 
             {% else %}
@@ -116,16 +116,16 @@
                 {% endif %}
                 </p>
 
-                {% if licence_title_en %}
+                {% if licence_title %}
                 <p>
-                    <strong>License:</strong> {{ licence_title_en }}<br />
+                    <strong>License:</strong> {{ licence_title }}<br />
                     <a href="{{ licence_url }}">{{ licence_url }}</a>
                 </p>
                 {% endif %}
 
-                {% if cust_licence_txt_en %}
+                {% if cust_licence_txt %}
                     <p>
-                        {{ cust_licence_txt_en }}
+                        {{ cust_licence_txt }}
                     </p>
                 {% endif %}
 
@@ -197,9 +197,9 @@
                 The operator expressly reserves the right to change, amend or delete individual web pages, services, or the entire application or to cease the publication temporarily or permanently without prior notice.
             </p>
 
-            {% if cust_exclusion_en %}
+            {% if cust_exclusion %}
             <p>
-                {{ cust_exclusion_en }}
+                {{ cust_exclusion }}
             </p>
             {% endif %}
         </div>
@@ -215,9 +215,9 @@
             <h2>Links and references (disclaimer)</h2>
 
             <div>
-            {% if cust_disclaim_en %}
+            {% if cust_disclaim %}
                 <p>
-                    {{ cust_disclaim_en }}
+                    {{ cust_disclaim }}
                 </p>
             {% else %}
                 <p>

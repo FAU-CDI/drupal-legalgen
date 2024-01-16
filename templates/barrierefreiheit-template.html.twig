@@ -2,7 +2,7 @@
 
     <div>
         <p>
-            Der Anbieter dieses Webangebots (<a href="{{ pub_url }}">{{ pub_name }}</a>&nbsp;,&nbsp;<a href="{{ pub_inst_url }}">{{ pub_institute_de }}</a>) &nbsp;
+            Der Anbieter dieses Webangebots (<a href="{{ pub_url }}">{{ pub_name }}</a>&nbsp;,&nbsp;<a href="{{ pub_inst_url }}">{{ pub_institute }}</a>) &nbsp;
             ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">gültigen Gesetzgebung</a>&nbsp;
             barrierefrei zugänglich zu machen.
         </p>
@@ -33,7 +33,7 @@
 
         <p>
             <strong>Methodik der Prüfung:</strong>
-            {{ methodology_de }}
+            {{ methodology }}
         </p>
 
         <p>
@@ -64,24 +64,24 @@
 
         <h3>Nicht barrierefrei zugängliche Inhalte</h3>
 
-        {% if known_issues_de %}
+        {% if known_issues %}
     	    <div>
                 <p>
                     <ul>
-                        {% for issue in issues_array_de %}
+                        {% for issue in issues_array %}
                             <li>{{ issue }}</li>
                         {% endfor %}
                     </ul>
                 </p>
             </div>
 
-            {% if statement_array_de %}
+            {% if statement_array %}
                 <h3>Begründung</h3>
 
                 <div>
                     <p>
                         <ul>
-                            {% for statement in statement_array_de %}
+                            {% for statement in statement_array %}
                                 <li>{{ statement }}</li>
                             {% endfor %}
                         </ul>
@@ -90,13 +90,13 @@
             {% endif %}
 
 
-            {% if alternatives_de %}
+            {% if alternatives %}
                 <h3>Alternative Zugangswege</h3>
 
                 <div>
                     <p>
                         <ul>
-                            {% for alternative in alternatives_array_de %}
+                            {% for alternative in alternatives_array %}
                             <li>{{ alternative }}</li>
                             {% endfor %}
                         </ul>
@@ -134,11 +134,11 @@
             <hr />
 
             <p>
-                <a href="{{ sup_url }}">{{ sup_institute_de }} </a>
+                <a href="{{ sup_url }}">{{ sup_institute }} </a>
                 <br />
 
                 {{ sup_address }}<br />
-                {{ sup_plz }} {{ sup_city_de }}<br />
+                {{ sup_plz }} {{ sup_city }}<br />
                 <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
             </p>
         </div>
@@ -154,13 +154,13 @@
         <p>Kontaktinformation der für das Durchsetzungsverfahren zuständigen Aufsicht:</p>
 
         <p>
-            <strong>{{ overs_name_de }}</strong>
-            <br>{{ overs_dept_de }}
+            <strong>{{ overs_name }}</strong>
+            <br>{{ overs_dept }}
         </p>
 
         <p>
             <div>{{ overs_address }}</div>
-            <div>{{ overs_plz }} {{overs_city_de }}</div>
+            <div>{{ overs_plz }} {{overs_city }}</div>
         </p>
 
         <p>
