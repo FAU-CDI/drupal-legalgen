@@ -7,7 +7,7 @@
             <a href="https://www.gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">applicable legislation</a>.
         </p>
         <p>
-            This accessibility statement applies to the following website(s):
+            This accessibility statement applies to content and applications available at:
             <strong>
                 &nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a>
             </strong>
@@ -61,7 +61,7 @@
 
         <h3>Content that has accessiblilty restrictions</h3>
 
-        {% if known_issues %}
+        {% if status == 'Partially compliant' %}
             <div>
                 <p>
                     <ul>
@@ -72,34 +72,29 @@
                 </p>
             </div>
 
-            {% if statement_array %}
-                <h3>Explanatory statement</h3>
+        <h3>Explanatory statement</h3>
 
-                <div>
-                    <p>
-                        <ul>
-                            {% for statement in statement_array %}
-                                <li>{{ statement }}</li>
-                            {% endfor %}
-                        </ul>
-                    </p>
-                </div>
-            {% endif %}
+            <div>
+                <p>
+                    <ul>
+                        {% for statement in statement_array %}
+                            <li>{{ statement }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
 
+        <h3>Alternative access methods</h3>
 
-            {% if alternatives %}
-                <h3>Alternative access methods</h3>
-
-                <div>
-                    <p>
-                        <ul>
-                            {% for alternative in alternatives_array %}
-                            <li>{{ alternative }}</li>
-                            {% endfor %}
-                        </ul>
-                    </p>
-                </div>
-            {% endif %}
+            <div>
+                <p>
+                    <ul>
+                        {% for alternative in alternatives_array %}
+                        <li>{{ alternative }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
 
         {% else %}
         <div>
@@ -124,8 +119,8 @@
         <div>
             <p>
                 {{ contact_access_name }}<br />
-                {{ contact_access_phone }}<br />
-                <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a>
+                Phone: {{ contact_access_phone }}<br />
+                E-mail: <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a>
             </p>
 
             <hr />
@@ -136,7 +131,7 @@
 
                 {{ sup_address }}<br />
                 {{ sup_plz }} {{ sup_city }}<br />
-                <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                E-mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
             </p>
         </div>
 
@@ -152,26 +147,23 @@
         <p>Contact information of the supervisory authority:</p>
 
         <p>
-            <strong>{{ overs_name }}</strong>
-            <br>{{ overs_dept }}
+            <div><strong>{{ overs_name }}</strong><br />
+            {{ overs_dept }}<br />
+            {{ overs_address }}<br />
+            {{ overs_plz }} {{ overs_city }}<br />
         </p>
 
         <p>
-            <div>{{ overs_address }}</div>
-            <div>{{ overs_plz }} {{ overs_city }}</div>
-        </p>
-
-        <p>
-            <div>Phone: {{ overs_phone }}</div>
-            <div>E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a></div>
-            <div>Website: <a href="{{ overs_url }}">{{ overs_url }}</a></div>
+            Phone: {{ overs_phone }}<br />
+            E-mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a><br />
+            Website: <a href="{{ overs_url }}">{{ overs_url }}</a><br />
+            <br />
         </p>
     </div>
 
     <div>
         <p>
-            Last updated on:
-            {{ date }}
+            Last updated on: {{ date }}
         </p>
     </div>
 </div>

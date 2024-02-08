@@ -8,7 +8,7 @@
             {{ pub_name }}<br />
             {{ pub_address }} <br />
             {{ pub_plz }} {{ pub_city }}<br />
-            <a href="mailto":{{ pub_email }}><{{ pub_email }}</a>
+            E-Mail: <a href="mailto":{{ pub_email }}>{{ pub_email }}</a>
         </p>
 
         <br />
@@ -20,6 +20,9 @@
                     Die <a href="https://www.fau.de">Friedrich-Alexander-Universität Erlangen-Nürnberg</a> (FAU) ist eine staatliche Einrichtung und daneben eine rechtsfähige Personalkörperschaft des öffentlichen
                     Rechts nach <a href="https://www.gesetze-bayern.de/Content/Document/BayHIG-4" target="_blank" rel="noopener noreferer">Art. 4 Abs. 1 Bayerisches Hochschulinnovationsgesetz</a>
                     (BayHIG). Sie wird gesetzlich vertreten durch den Präsidenten.
+                </p>
+                <p>
+                    Die inhaltliche Bereitstellung dieser virtuellen Forschungsumgebung erfolgt durch: {{ pub_institute }}.
                 </p>
             </div>
         {% else %}
@@ -36,17 +39,17 @@
             <p>
                 Die inhaltliche Bereitstellung erfolgt durch:<br />
                 {{ contact_name }}<br />
-                {{ contact_phone }}<br />
-                <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br />
+                Telefon: {{ contact_phone }}<br />
+                E-Mail: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br />
             <br />
             </p>
         </div>
 
-        <h3>Technische Umsetzung der Virtuellen Forschungsumgebung {{ project_name }}</h3>
+        <h3>Technische Umsetzung der virtuellen Forschungsumgebung {{ project_name }}</h3>
 
         <div>
             <p>
-                Diese Anwendung basiert auf der Software „Wissenschaftliche KommunikationsInfrastruktur" (WissKI) (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
+                Diese Anwendung basiert auf der virtuellen Forschungsumgebung „Wissenschaftliche KommunikationsInfrastruktur" (WissKI) (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
             </p>
             <br />
             <br />
@@ -56,9 +59,9 @@
             <div>
                 <p>
                     {{ sup_institute }}<br />
-                    <a href="{{ sup_url }}" target="_blank" rel="noopener noreferer">{{ sup_url  }}</a>
+                    Webseite: <a href="{{ sup_url }}" target="_blank" rel="noopener noreferer">{{ sup_url  }}</a>
                     <br />
-                    <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                    E-Mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
                     <br />
                     <br />
                     Mitarbeitende: <ul>
@@ -94,9 +97,34 @@
 
         <div>
             {% if no_default_txt %}
+
+                {% if licence_title %}
+
+                    <p>
+                        <strong>Lizenz:</strong> {{ licence_title }}<br />
+                        {% if licence_url %}
+
+                        <a href="{{ licence_url }}">{{ licence_url }}</a>
+
+                        {% endif %}
+                    </p>
+
+                {% endif %}
+
                 <p>
                     {{ cust_licence_txt }}
                 </p>
+
+                {% if use_fau_temp == true %}
+
+                    <p>
+                        Die Gestaltung dieser Internetseiten verwendet das <abbr title="Friedrich-Alexander-Universität Erlangen-Nürnberg">FAU</abbr> Corporate Design (mit Modifikationen).
+                        Nähere Informationen, auch zu Nutzungsrechten, finden Sie auf der Projektwebseite.
+                        Die Reproduktion und Nutzung, in Teilen oder im Ganzen, der Webseiten in elektronischer oder gedruckter Form sowie dere Publikation (einschließlich im Internet) bedürfen der vorherigen Genehmigung.<br />
+                        Pressemitteilungen, Veröffntlichungen, Skripte und Informationen zu Vorlesung können unter Quellenangabe nachgedruckt und ausgewertet werden.
+                    </p>
+
+                {% endif %}
 
             {% else %}
                 <p>
@@ -115,15 +143,12 @@
                 {% endif %}
                 </p>
 
-                <p>
-                    Weiterhin können Texte, Bilder, Grafiken und sonstige Dateien ganz oder teilweise dem Urheberrecht Dritter unterliegen.
-                    Auch über das Bestehen möglicher Rechte Dritter geben Ihnen die für den Inhalt Verantwortlichen nähere Auskünfte, sofern diese Rechte nicht bereits durch entsprechende Hinweise im Webangebot kenntlich gemacht sind.
-                </p>
                 {% if licence_title %}
-                <p>
-                    <strong>Lizenz:</strong> {{ licence_title }}<br />
-                    <a href="{{ licence_url }}">{{ licence_url }}</a>
-                </p>
+                    <p>
+                        <strong>Lizenz:</strong> {{ licence_title }}<br />
+                        <a href="{{ licence_url }}">{{ licence_url }}</a>
+                    </p>
+
                 {% endif %}
 
                 {% if cust_licence_txt %}
@@ -132,10 +157,12 @@
                     </p>
                 {% endif %}
 
-                <p>
-                    Weiterhin können Texte, Bilder, Grafiken und sonstige Dateien ganz oder teilweise dem Urheberrecht Dritter unterliegen.
-                    Auch über das Bestehen möglicher Rechte Dritter geben Ihnen die für den Inhalt Verantwortlichen nähere Auskünfte, sofern diese Rechte nicht bereits durch entsprechende Hinweise im Webangebot kenntlich gemacht sind.
-                </p>
+                    <p>
+                        Weiterhin können Texte, Bilder, Grafiken und sonstige Dateien ganz oder teilweise dem Urheberrecht Dritter unterliegen.
+                        Alle genannten Marken und Markenzeichen sind möglicherweise durch Dritte geschützt. Sie unterliegen uneingeschränkt den Bestimmungen des jeweils gültigen Markenrechts und den Schutzrechten der jeweiligen Eigentümer. Allein die bloße Nennung von Markenzeichen lässt nicht den Schluss zu, dass diese nicht durch Rechte Dritter geschützt sind.
+                        Auch über das Bestehen möglicher Rechte Dritter geben Ihnen die für den Inhalt Verantwortlichen nähere Auskünfte, sofern diese Rechte nicht bereits durch entsprechende Hinweise im Webangebot kenntlich gemacht sind.
+                    </p>
+
             {% endif %}
             <br />
             <p>
@@ -169,11 +196,11 @@
         <h2>Haftungsausschluss</h2>
         <div>
             <p>
-                Dieses Impressum gilt nur für den Webauftritt unter der Adresse:<br /><a href="{{ wisski_url }}" title="{{ wisski_url }}"> {{ wisski_url }} </a>
+                Dieses Impressum gilt nur für Inhalte und Anwendungen verfügbar unter:<br /><a href="{{ wisski_url }}" title="{{ wisski_url }}"> {{ wisski_url }} </a>
             </p>
 
             <p>
-                Für die Inhalte anderer Webangebote sind die jeweiligen Einrichtungen verantwortlich.
+                Für die Inhalte anderer nicht oben aufgezählter Angebote sind die jeweiligen Einrichtungen verantwortlich.
             </p>
 
             <p>
@@ -204,7 +231,7 @@
     </details>
 
 
-    {% if show_disclaim == FALSE %}
+    {% if hide_disclaim == FALSE %}
     <details>
         <summary>
             Haftung für Links
@@ -215,18 +242,26 @@
             <div>
                 {% if cust_disclaim %}
                     <p>
-                        {{ cust_diclaim }}
+                        {{ cust_disclaim }}
                     </p>
+
                 {% else %}
+
                     <p>
-                        Unser Angebot enthält Links zu externen Webauftritte Dritter, auf deren Inhalte wir keinen Einfluss haben.
-                        Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
-                        Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
-                        Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft.
-                        Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.<br />
-                        Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.
-                        Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+                        Der Betreiber ist nur für die eigenen Inhalte, die er zur Verfügung stellt, nach den einschlägigen Gesetzen verantwortlich.
+                        Diese originären Inhalte sind von Links zu den Webseiten anderer Betreiber zu unterscheiden.<br />
+                        Durch diese als "externe Links" gekennzeichneten Verweise ermöglicht der Betreiber dem Besucher den Zugang zu "fremden Inhalten".<br />
+                        Für diese fremden Inhalte ist der Betreiber nicht verantwortlich, da er die Übermittlung der Daten weder veranlasst noch den Adressaten der übermittelten Informationen auswählt und die übermittelten Informationen auch nicht ausgewählt oder beeinflusst hat.
+                        Deshalb kann er für diese fremden Inhalte auch keine Gewähr übernehmen.
+                        Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.<br />
+                        Auch eine automatische kurzzeitige Zwischenspeicherung dieser fremden Informationen erfolgt wegen der gewählten Aufruf- und Verlinkungsmethodik nicht.
+                        Daher ergibt sich auch dadurch keine Verantwortlichkeit des Betreibers für diese fremden Inhalte.<br />
+                        Bei der erstmaligen Verknüpfung mit diesen Internetangeboten haben die Autoren bzw. die Redaktion des Betreibers den fremden Inhalt jedoch daraufhin überprüft, ob durch ihn eine mögliche zivilrechtliche oder strafrechtliche Verantwortlichkeit ausgelöst wird.
+                        Wenn der Betreiber feststellt oder von anderen darauf hingewiesen wird, dass ein konkretes Angebot, zu dem er einen Link bereitgestellt hat, eine zivil- oder strafrechtliche Verantwortlichkeit auslöst, wird er den Verweis auf dieses Angebot unverzüglich löschen, soweit ihm dies technisch möglich und zumutbar ist.
+                        Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.<br />
+                        Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung solcherart dargebotener Informationen entstehen, haftet allein der jeweilige Anbieter der Seite, auf welche verwiesen wurde.
                     </p>
+
                 {% endif %}
             </div>
         </div>

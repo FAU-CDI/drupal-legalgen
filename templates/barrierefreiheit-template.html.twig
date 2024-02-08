@@ -2,13 +2,12 @@
 
     <div>
         <p>
-            Der Anbieter dieses Webangebots (<a href="{{ pub_url }}">{{ pub_name }}</a>&nbsp;,&nbsp;<a href="{{ pub_inst_url }}">{{ pub_institute }}</a>) &nbsp;
-            ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">gültigen Gesetzgebung</a>&nbsp;
+            Der Anbieter dieses Webangebots ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">gültigen Gesetzgebung</a>&nbsp;
             barrierefrei zugänglich zu machen.
         </p>
 
         <p>
-            Diese Erklärung zur Barrierefreiheit gilt für den Webauftritt unter
+            Diese Erklärung zur Barrierefreiheit gilt für Inhalte und Anwendungen verfügbar unter:
             <strong>
                 &nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a>
             </strong>
@@ -64,7 +63,7 @@
 
         <h3>Nicht barrierefrei zugängliche Inhalte</h3>
 
-        {% if known_issues %}
+        {% if status == 'Partially compliant' %}
     	    <div>
                 <p>
                     <ul>
@@ -75,8 +74,7 @@
                 </p>
             </div>
 
-            {% if statement_array %}
-                <h3>Begründung</h3>
+        <h3>Begründung</h3>
 
                 <div>
                     <p>
@@ -87,10 +85,8 @@
                         </ul>
                     </p>
                 </div>
-            {% endif %}
 
 
-            {% if alternatives %}
                 <h3>Alternative Zugangswege</h3>
 
                 <div>
@@ -101,7 +97,6 @@
                             {% endfor %}
                         </ul>
                 </div>
-            {% endif %}
 
         {% else %}
         <div>
@@ -128,7 +123,7 @@
             <p>
                 {{ contact_access_name }}<br />
                 {{ contact_access_phone }}<br />
-                <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a><br />
+                E-Mail: <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a><br />
             </p>
 
             <hr />
@@ -139,7 +134,7 @@
 
                 {{ sup_address }}<br />
                 {{ sup_plz }} {{ sup_city }}<br />
-                <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                E-Mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
             </p>
         </div>
 
@@ -154,26 +149,23 @@
         <p>Kontaktinformation der für das Durchsetzungsverfahren zuständigen Aufsicht:</p>
 
         <p>
-            <strong>{{ overs_name }}</strong>
-            <br>{{ overs_dept }}
+            <strong>{{ overs_name }}</strong><br />
+            {{ overs_dept }}
+            {{ overs_address }}<br />
+            {{ overs_plz }} {{overs_city }}<br />
         </p>
 
         <p>
-            <div>{{ overs_address }}</div>
-            <div>{{ overs_plz }} {{overs_city }}</div>
-        </p>
-
-        <p>
-            <div>Telefon: {{ overs_phone }}</div>
-            <div>E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a></div>
-            <div>Webseite: <a href="{{ overs_url }}">{{ overs_url }}</a></div>
+            Telefon: {{ overs_phone }}<br />
+            E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a><br />
+            Webseite: <a href="{{ overs_url }}">{{ overs_url }}</a><br />
+            <br/>
         </p>
     </div>
 
     <div>
         <p>
-            Stand:
-            {{ date }}
+            Stand: {{ date }}
         </p>
     </div>
 </div>
