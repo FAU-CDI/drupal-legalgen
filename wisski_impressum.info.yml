@@ -1,8 +1,9 @@
 name: WissKI Impressum
-description: Generate legal notice, accessibility statement, and privacy policy 
+description: Generate legal notice, accessibility statement, and privacy policy
 core: 8.x
 package: WissKI
 type: module
 core_version_requirement: ^8 || ^9 || ^10
 dependencies:
   - wisski:wisski_core
+  - content_translation
