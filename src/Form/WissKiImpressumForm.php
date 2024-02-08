@@ -58,10 +58,6 @@ class WissKiImpressumForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Get info from config
-    $config = array_keys(\Drupal::configFactory()->get('wisski_impressum.languages')->getRawData());
-    unset($config['_core']);
-
   // Fields
   // type of render array element
   // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
@@ -76,13 +72,13 @@ class WissKiImpressumForm extends FormBase {
   $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
   unset($options['_core']);
 
-  $langOptions = array();
+  $lang_options = array();
 
   foreach ($options as $key => $value) {
-    $langOptions[$key] = $value['option'];
+    $lang_options[$key] = $value['option'];
   }
 
-  $options = array_merge(["0" => 'Please select'], $langOptions);
+  $options = array_merge(["0" => 'Please select'], $lang_options);
 
   // Field: Language Selector
   $form['Select_Language'] = array(
@@ -93,7 +89,7 @@ class WissKiImpressumForm extends FormBase {
 
     $form['Select_Language']['Chosen_Language'] = array(
       '#type'          => 'select',
-      '#title'         => t('Choose the Language in Which the Legal Notice Should Be Generated<br /><br />'),
+      '#title'         => t('Choose the language in which the legal notice should be generated<br /><br />'),
       '#options'       => $options,
       '#ajax'          => [
         'callback'        => '::ajaxCallback',
@@ -116,19 +112,33 @@ class WissKiImpressumForm extends FormBase {
 
   $input = $form_state->getUserInput();
 
-  // Reset all values for form keys but ensure that Chosen_Language is NOT reset
-  $unsetKey = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Show_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
+  // Reset All Form Values EXCEPT Chosen_Language
+  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
 
-  foreach ($unsetKey as $key) {
+  foreach ($unset_key as $key) {
    unset($input[$key]);
   }
 
   $form_state->setUserInput($input);
 
-  // !!!!!!!!!!!!!! Data Type and Identical Operator
   if($lang == 0 || empty($lang)){
     return $form;
   }
+
+  // Error Message: Language Is not Installed
+  $all_langs = \Drupal::LanguageManager()->getLanguages();
+
+  if(!array_key_exists($lang, $all_langs)){
+
+    $path = '/admin/config/regional/language';
+
+    $message = t('Error: Language not installed ('.$lang.')<br/>Please <a href=":href">go to language settings</a> and add the language to the list', array(':href' => $path));
+
+    \Drupal::messenger()->addError($message, 'status', TRUE);
+
+    return $form;
+
+  } else {
 
   // Fields: General
   $form['Lang_Specific_Form']['General'] = array(
@@ -145,10 +155,7 @@ class WissKiImpressumForm extends FormBase {
 
     $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
       '#type'          => 'textfield',
-      '#wrapper_attributes' => [
-        'colspan' =>  2,
-      ],
-      '#title'         => t('WissKI URL'),
+      '#title'         => t('Legal Notice Applies to Content Under the Following Domain(s)'),
       '#required'      => TRUE,
       );
 
@@ -180,27 +187,18 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Name'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Name Publisher'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Address'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Street Name and House Number'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_PLZ'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Postal Code'),
         '#required'      => TRUE,
         );
@@ -213,10 +211,7 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Email'] = array(
         '#type'          => 'email',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('E-mail Publisher'),
+        '#title'         => t('E-Mail Publisher'),
         '#required'      => TRUE,
         );
 
@@ -229,7 +224,8 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form'] = array(
         '#type'          => 'textarea',
-        '#title'         => t('Custom Information (Leave Empty To Display FAU Specific Text)'),
+        '#title'         => t('Custom Information'),
+        '#description'   => t('<i>REPLACES DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
         '#required'      => FALSE,
         );
 
@@ -244,28 +240,19 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Name'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Name Contact Person'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone'] = array(
         '#type'          => 'tel',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Phone Contact Person'),
         '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Email'] = array(
         '#type'          => 'email',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('E-mail Contact Person'),
+        '#title'         => t('E-Mail Contact Person'),
         '#required'      => TRUE,
         );
 
@@ -285,28 +272,20 @@ class WissKiImpressumForm extends FormBase {
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
           '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
           '#title'         => t('Hompage Support and Hosting'),
           '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
           '#type'          => 'email',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('E-mail Support and Hosting'),
+          '#title'         => t('E-Mail Support and Hosting'),
           '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff'] = array(
           '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('Staff ("; " As Separator - e.g. "Eda Employee; Sujin Staff;...")'),
+          '#title'         => t('Staff'),
+          '#description'   => t('"; " As Separator - e.g. "Eda Employee; Sujin Staff;..."'),
           '#required'      => TRUE,
           );
 
@@ -326,18 +305,12 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Street Name and House Number'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Postal Code'),
         '#required'      => TRUE,
         );
@@ -350,10 +323,7 @@ class WissKiImpressumForm extends FormBase {
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('URL Supervisory Authority'),
+        '#title'         => t('Supervisory Authority URL'),
         '#required'      => TRUE,
         );
 
@@ -368,40 +338,51 @@ class WissKiImpressumForm extends FormBase {
         $form['Lang_Specific_Form']['Copyright']['Licence_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Licence Title'),
+          '#states' => [
+            'required' => [
+            [':input[id="licence_url"]' => [
+              '!value' => ''
+              ],
+            ],
+          ],
+          ],
           '#required'      => FALSE,
           );
 
         $form['Lang_Specific_Form']['Copyright']['Licence_URL'] = array(
           '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
           '#title'         => t('Licence URL'),
+          '#id'            => 'licence_url',
           '#required'      => FALSE,
           );
 
         $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template'] = array(
           '#type'          => 'checkbox',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('Use Of FAU Corporate Design'),
-          '#required'      => FALSE,
-          );
-
-        $form['Lang_Specific_Form']['Copyright']['No_Default_Text'] = array(
-          '#type'          => 'checkbox',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('\'Custom Information On Licence(s)\' INSTEAD OF Standard Text in \'Copyright\' (Text On Content Not protected by Copyright Law and Private Use Will Still Be Displayed)'),
+          '#title'         => t('Use Of FAU Corporate Design (with or Without Modifications)'),
           '#required'      => FALSE,
           );
 
         $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text'] = array(
-          '#type'          => 'textarea',
-          '#title'         => t('Custom Information On Licence(s)'),
+            '#type'          => 'textarea',
+            '#title'         => t('Custom Information On Licence(s)'),
+            '#description'   => t('<i>DISPLAYED IN ADDITION TO DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
+            '#states' => [
+              'required' => [
+              [':input[id="no_default_txt"]' => [
+                'checked' => TRUE,
+                ],
+              ],
+            ],
+            ],
+            '#required'      => FALSE,
+            );
+
+        $form['Lang_Specific_Form']['Copyright']['No_Default_Text'] = array(
+          '#type'          => 'checkbox',
+          '#title'         => t('Display text in textarea \'Custom Information On Licence(s)\' instead of default text in section \'Copyright\''),
+          '#description'   => t('<i>REPLACES ALL EXCEPT INFO ON private use AND ON content not protected by copyright law</i>'),
           '#required'      => FALSE,
+          '#id'            => 'no_default_txt',
           );
 
 
@@ -415,6 +396,7 @@ class WissKiImpressumForm extends FormBase {
         $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Custom Information On Liability Exclusion'),
+          '#description'   => t('<i>ADDED AFTER DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
           '#required'      => FALSE,
           );
 
@@ -422,22 +404,21 @@ class WissKiImpressumForm extends FormBase {
     // Field and Checkbox: Diclaimer External Links
     $form['Lang_Specific_Form']['Disclaimer'] = array(
       '#type'  => 'details',
-      '#title' => t('Haftung für Links / Disclaimer External Links'),
+      '#title' => t('Disclaimer External Links'),
       '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Disclaimer']['Show_Disclaimer'] = array(
+        $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer'] = array(
           '#type'          => 'checkbox',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
-          '#title'         => t('Section \'Links and References (Disclaimer)\' Should Not Be Displayed'),
+          '#title'         => t('No External Links Are Used'),
+          '#description'   => t('<i>WHOLE SECTION WILL BE HIDDEN. NEITHER DEFAULT TEXT NOR CUSTOM TEXT FROM TEXTAREA BELOW WILL BE DISPLAYED</i>'),
           '#required'      => FALSE,
           );
 
         $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer'] = array(
           '#type'          => 'textarea',
-          '#title'         => t('Custom Information on Liability For links (Leave Empty To Display Default Text)'),
+          '#title'         => t('Add Custom Information on Liability For links'),
+          '#description'   => t('<i>REPLACES DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
           '#required'      => FALSE,
           );
 
@@ -497,7 +478,7 @@ class WissKiImpressumForm extends FormBase {
 
     // Default Values
     $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
-    $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url'] ?? $defaultValues['intl']['wisski_url'];
+    $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url'] ?? \Drupal::request()->getSchemeAndHttpHost();
     $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
     $form['Lang_Specific_Form']['General']['Project_Name']['#default_value'] = $storedValues[$lang]['project_name']?? $defaultValues[$lang]['project_name'];
 
@@ -526,14 +507,14 @@ class WissKiImpressumForm extends FormBase {
     $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#default_value'] = $storedValues['intl']['auth_url']?? $defaultValues['intl']['auth_url'];
 
     $form['Lang_Specific_Form']['Copyright']['Licence_Title']['#default_value'] = $storedValues[$lang]['licence_title']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#default_value'] = $storedValues[$lang]['licence_url']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#default_value'] = $storedValues['intl']['licence_url']?? t('');
     $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $storedValues[$lang]['use_fau_temp']?? (FALSE);
-    $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $storedValues[$lang]['no_default_txt']?? (FALSE);
     $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $storedValues[$lang]['cust_licence_txt']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $storedValues[$lang]['no_default_txt']?? (FALSE);
 
     $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#default_value'] = $storedValues[$lang]['cust_exclusion']?? t('');
 
-    $form['Lang_Specific_Form']['Disclaimer']['Show_Disclaimer']['#default_value'] = $storedValues[$lang]['cust_disclaim']?? t('');
+    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#default_value'] = $storedValues['intl']['hide_disclaim']?? t('');
     $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#default_value'] = $storedValues[$lang]['cust_disclaim']?? t('');
 
     $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
@@ -542,10 +523,11 @@ class WissKiImpressumForm extends FormBase {
 
     return $form;
   }
+  }
 
 
   /**
-   * Called when user selects language
+   * Called When User Selects Language
    * {@inheritdoc}
    */
   public function ajaxCallback(array $form, FormStateInterface $form_state){
@@ -554,16 +536,16 @@ class WissKiImpressumForm extends FormBase {
 
 
   /**
-   * Called when user hits reset button
+   * Called When User Hits Reset Button
    * {@inheritdoc}
    */
-  public function resetAllValues(array &$valuesStoredInState, FormStateInterface $form_state, $lang) {
+  public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
 
     $content_state = \Drupal::state()->get('wisski_impressum.legal_notice');
 
 
     // Get Language Code Of Selected Form
-    $language = $valuesStoredInState['Select_Language']['Chosen_Language'];
+    $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
 
     $lang = $language['#value'];
 
@@ -587,7 +569,7 @@ class WissKiImpressumForm extends FormBase {
 
 
   /**
-   * Called when the user hits submit button
+   * Called When User Hits Submit Button
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
@@ -621,15 +603,18 @@ class WissKiImpressumForm extends FormBase {
     $licence_title        = $values['Licence_Title'];
     $licence_url          = $values['Licence_URL'];
     $use_fau_temp         = $values['Use_FAU_Design_Template'];
-    $no_default_txt       = $values['No_Default_Text'];
     $cust_licence_txt     = $values['Custom_Licence_Text'];
+    $no_default_txt       = $values['No_Default_Text'];
     $cust_exclusion       = $values['Custom_Exclusion_Liab'];
-    $show_disclaim        = $values['Show_Disclaimer'];
+    $hide_disclaim        = $values['Hide_Disclaimer'];
     $cust_disclaim        = $values['Custom_Disclaimer'];
     $date                 = $values['Date'];
     $overwrite_consent    = $values['Overwrite_Consent'];
 
+
     $sup_staff_array = explode('; ', $sup_staff);
+
+    $date = date('d.m.Y', strtotime($date));
 
     $data = [
               'lang'                   => $lang,
@@ -657,10 +642,10 @@ class WissKiImpressumForm extends FormBase {
               'licence_title'          => $licence_title,
               'licence_url'            => $licence_url,
               'use_fau_temp'           => $use_fau_temp,
-              'no_default_txt'         => $no_default_txt,
               'cust_licence_txt'       => $cust_licence_txt,
+              'no_default_txt'         => $no_default_txt,
               'cust_exclusion'         => $cust_exclusion,
-              'show_disclaim'          => $show_disclaim,
+              'hide_disclaim'          => $hide_disclaim,
               'cust_disclaim'          => $cust_disclaim,
               'date'                   => $date,
               'overwrite_consent'      => $overwrite_consent
@@ -669,7 +654,6 @@ class WissKiImpressumForm extends FormBase {
 
     // Parameters to  Call Service:
     $page_name = 'legal_notice';
-    $required_key = 'REQUIRED_LEGALNOTICE';
 
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
@@ -685,13 +669,13 @@ class WissKiImpressumForm extends FormBase {
                              'auth_city'             => '',
                              'licence_title'         => '',
                              'use_fau_temp'          => '',
-                             'no_default_txt'        => '',
                              'cust_licence_txt'      => '',
+                             'no_default_txt'        => '',
                              'cust_exclusion'        => '',
-                             'show_disclaim'         => '',
                              'cust_disclaim'         => '',
 
     );
+
 
     $state_keys_intl = array('wisski_url'            => '',
                              'pub_address'           => '',
@@ -705,11 +689,12 @@ class WissKiImpressumForm extends FormBase {
                              'auth_address'          => '',
                              'auth_plz'              => '',
                              'auth_url'              => '',
+                             'hide_disclaim'         => '',
                              'date'                  => '',
 
     );
 
-    $success =  \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $required_key, $page_name, $state_keys_lang, $state_keys_intl);
+    $success =  \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
 
     // Display Success Message:
     if($success === 'success'){

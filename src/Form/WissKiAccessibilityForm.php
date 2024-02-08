@@ -58,10 +58,6 @@ class WissKiAccessibilityForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    // Get info from config
-    $config = array_keys(\Drupal::configFactory()->get('wisski_impressum.languages')->getRawData());
-    unset($config['_core']);
-
     // Fields:
     // type of render array element
     // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
@@ -72,35 +68,35 @@ class WissKiAccessibilityForm extends FormBase {
 
 
     // Display Link to FAU Accessibility Guidelines (as reference)
+
+    $form = [];
+
     $form['Guidelines'] = array(
       '#type'  => 'details',
-      '#title' => t('Leitfaden zur digitalen Barrierefreiheit für Hochschulen für Angewandte Wissenschaft in Bayern'),
+      '#title' => t('Digital Accessibility Guidelines for Universities of Applied Sciences in Bavaria (Written in German)'),
       '#open'  => FALSE,
       );
 
         $form['Guidelines']['Complete_Guidelines_WS'] = array(
           '#type'   => 'item',
-          '#markup' => '<a href="https://www.wordpress.rrze.fau.de/tutorials/a11y/">Leitfaden zur digitalen Barrierefreiheit (FAU Webseite)</a>',
+          '#markup' => '<a href="https://www.wordpress.rrze.fau.de/tutorials/a11y/" target="_blank" rel="noopener noreferer">Digital Accessibility Guide (FAU Webseite)</a>',
           );
 
         $form['Guidelines']['Complete_Guidelines_GH'] = array(
           '#type'   => 'item',
-          '#markup' => '<a href="https://github.com/RZ-BY/Leitfaden-Barrierefreiheit/">Leitfaden zur digitalen Barrierefreiheit (RRZE GitHub)</a>',
+          '#markup' => '<a href="https://github.com/RZ-BY/Leitfaden-Barrierefreiheit/" target="_blank" rel="noopener noreferer">Digital Accessibility Guide (RRZE GitHub)</a>',
           );
-
-        $form = [];
 
     // Get languages from config
     $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
     unset($options['_core']);
 
-    $langOptions = array();
+    $lang_options = array();
 
     foreach ($options as $key => $value) {
-      $langOptions[$key] = $value['option'];
+      $lang_options[$key] = $value['option'];
     }
-
-    $options = array_merge(["0" => 'Please select'], $langOptions);
+    $options = array_merge(["0" => 'Please select'], $lang_options);
 
     // Field: Language Selector
     $form['Select_Language'] = array(
@@ -111,7 +107,7 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Select_Language']['Chosen_Language'] = array(
         '#type'          => 'select',
-        '#title'         => t('Choose the Language in Which the Accessibility Notice Should Be Generated<br /><br />'),
+        '#title'         => t('Choose the language in which the accessibility notice should be generated<br /><br />'),
         '#options'       => $options,
         '#ajax'          => [
           'callback'        => '::ajaxCallback',
@@ -134,20 +130,33 @@ class WissKiAccessibilityForm extends FormBase {
 
     $input = $form_state->getUserInput();
 
-    // Reset all values for form keys but ensure that Chosen_Language is NOT reset
+    // Reset All Form Values EXCEPT Chosen_Language
+    $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Conformity_Status', 'Assessment_Methodology', 'Creation_Date', 'Last_Revision_Date', 'Report_URL', 'Known_Issues', 'Justification_Statement', 'Alternative_Access', 'Contact_Access_Name', 'Contact_Access_Phone', 'Contact_Access_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Address', 'Sup_PLZ', 'Sup_City', 'Sup_Email', 'Oversight_Agency_Name', 'Oversight_Agency_Dept', 'Oversight_Address', 'Oversight_PLZ', 'Oversight_City', 'Oversight_Phone', 'Oversight_Email', 'Oversight_URL', 'Date', 'Overwrite_Consent');
 
-    $unsetKey = array('Title', 'WissKI_URL', 'Alias', 'Conformity_Status', 'Assessment_Methodology', 'Creation_Date', 'Last_Revision_Date', 'Report_URL', 'Known_Issues', 'Justification_Statement', 'Alternative_Access', 'Contact_Access_Name', 'Contact_Access_Phone', 'Contact_Access_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Address', 'Sup_PLZ', 'Sup_City', 'Sup_Email', 'Oversight_Agency_Name', 'Oversight_Agency_Dept', 'Oversight_Address', 'Oversight_PLZ', 'Oversight_City', 'Oversight_Phone', 'Oversight_Email', 'Oversight_URL', 'Date', 'Overwrite_Consent');
-
-    foreach ($unsetKey as $key) {
+    foreach ($unset_key as $key) {
      unset($input[$key]);
     }
 
     $form_state->setUserInput($input);
 
-    // !!!!!!!!!!!!!! Data Type and Identical Operator
     if($lang == 0 || empty($lang)){
       return $form;
     }
+
+    // Error Message: Language Is not Installed
+    $all_langs = \Drupal::LanguageManager()->getLanguages();
+
+    if(!array_key_exists($lang, $all_langs)){
+
+      $path = '/admin/config/regional/language';
+
+      $message = t('Error: Language not installed ('.$lang.')<br/>Please <a href=":href">go to language settings</a> and add the language to the list', array(':href' => $path));
+
+      \Drupal::messenger()->addError($message, 'status', TRUE);
+
+      return $form;
+
+    } else {
 
       // Fields: General
       $form['Lang_Specific_Form']['General'] = array(
@@ -164,10 +173,7 @@ class WissKiAccessibilityForm extends FormBase {
 
           $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
             '#type'          => 'textfield',
-            '#wrapper_attributes' => [
-              'colspan' =>  2,
-            ],
-            '#title'         => t('WissKI URL'),
+            '#title'         => t('Accessibility Statement Applies to Content Under the Following Domain(s)'),
             '#required'      => TRUE,
             );
 
@@ -179,20 +185,6 @@ class WissKiAccessibilityForm extends FormBase {
             );
 
 
-    // Display Link to FAU Accessibility Guidelines for Tests (as reference)
-    $form['Lang_Specific_Form']['Guidelines_Tests'] = array(
-      '#type'  => 'details',
-      '#title' => t('Guidelines to Test For Digital Accessibility'),
-      '#open'  => TRUE,
-      );
-
-        $form['Lang_Specific_Form']['Guidelines_Tests']['Complete_Guidelines'] = array(
-          '#type'   => 'item',
-          '#markup' => '<a href="https://www.wordpress.rrze.fau.de/tutorials/a11y/tests-der-barrierefreiheit/">Leitfaden der FAU zu Tests der digitalen Barrierefreiheit</a>',
-          );
-
-
-
     // Fields: Conformity
     $form['Lang_Specific_Form']['Conformity'] = array(
       '#type'        => 'details',
@@ -200,17 +192,19 @@ class WissKiAccessibilityForm extends FormBase {
       '#open'        => TRUE,
       );
 
+      $form['Lang_Specific_Form']['Conformity']['Test_Guidelines'] = array(
+        '#type'   => 'item',
+        '#markup' => '<a href="https://www.wordpress.rrze.fau.de/tutorials/a11y/tests-der-barrierefreiheit/" target="_blank" rel="noopener noreferer">FAU Guide to Digital Accessibility Testing (Written in German)</a>',
+        );
+
       $form['Lang_Specific_Form']['Conformity']['Conformity_Status'] = array(
         '#type'          => 'select',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Conformity Status'),
         '#required'      => TRUE,
-        '#name'          => 'conformity_status',
+        '#id'          => 'conformity_status',
         '#options'       => [
-          'Completely compliant' => $this->t('Completely compliant'),
-          'Partially compliant'   => $this->t('Partially compliant'),
+          'Completely compliant' => 'Completely compliant',
+          'Partially compliant'   => 'Partially compliant',
         ],
         );
 
@@ -222,27 +216,18 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Conformity']['Creation_Date'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Report Creation Date'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Conformity']['Last_Revision_Date'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('Date of Last Revision'),
+        '#title'         => t('Last Revision Date'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Conformity']['Report_URL'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Report URL'),
         '#required'      => FALSE,
         );
@@ -255,20 +240,29 @@ class WissKiAccessibilityForm extends FormBase {
       '#open'        => TRUE,
       '#states' => [
         'visible' => [
-          ':input[name="conformity_status"]' => [
-            'value' => 'Partially compliant',
+          ':input[id="conformity_status"]' => [
+            '!value' => 'Completely compliant',
           ],
+          'and',
+          '#required' => TRUE,
         ],
       ],
       );
 
       $form['Lang_Specific_Form']['Issues']['Known_Issues'] = array(
         '#type'           => 'textarea',
-        '#title'          => t('Content That Is Not Accessible to All ("; " As Separator For Problems)'),
-        '#states' => [
-          '#required' => [
-            ':input[name="conformity_status"]' => [
-                'value' => 'Partially compliant',
+        '#title'          => t('Content That Is Not Accessible to All'),
+        '#description'    => t('Using "; " as separator - e.g. "Issue 1; Issue 2;..." - will create an unordered list'),
+      '#states' => [
+          'visible' => [
+            ':input[id="conformity_status"]' => [
+              '!value' => 'Completely compliant',
+            ],
+          ],
+          'required' => [
+            [':input[id="conformity_status"]' => [
+              '!value' => 'Completely compliant'
+              ],
             ],
           ],
         ],
@@ -276,14 +270,40 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Issues']['Justification_Statement'] = array(
         '#type'           => 'textarea',
-        '#title'          => t('Justification ("; " As Separator For Subitems)'),
-        '#required'       => FALSE,
+        '#title'          => t('Justification'),
+        '#description'    => t('Using "; " as separator - e.g. "Justification 1; Justification 2;..." - will create an unordered list'),
+        '#states' => [
+          'visible' => [
+            ':input[id="conformity_status"]' => [
+              '!value' => 'Completely compliant',
+            ],
+          ],
+          'required' => [
+          [':input[id="conformity_status"]' => [
+            '!value' => 'Completely compliant'
+            ],
+          ],
+        ],
+        ],
         );
 
       $form['Lang_Specific_Form']['Issues']['Alternative_Access'] = array(
         '#type'           => 'textarea',
-        '#title'          => t('Alternative Access Paths ("; " As Separator For Subitems)'),
-        '#required'       => FALSE,
+        '#title'          => t('Alternative Ways of Access'),
+        '#description'    => t('Using "; " as separator - e.g. "Alternative 1; Alternative 2;..." - will create an unordered list'),
+       '#states' => [
+          'visible' => [
+            ':input[id="conformity_status"]' => [
+              '!value' => 'Completely compliant',
+            ],
+          ],
+          'required' => [
+          [':input[id="conformity_status"]' => [
+            '!value' => 'Completely compliant'
+            ],
+          ],
+        ],
+        ],
         );
 
 
@@ -296,28 +316,19 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Name Contact Person'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone'] = array(
         '#type'          => 'tel',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Phone Contact Person'),
         '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email'] = array(
         '#type'          => 'email',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('E-mail Contact Person'),
+        '#title'         => t('E-Mail Contact Person'),
         '#required'      => TRUE,
         );
 
@@ -337,29 +348,19 @@ class WissKiAccessibilityForm extends FormBase {
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
           '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-          ],
           '#title'         => t('URL Support and Hosting'),
-
           '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address'] = array(
           '#type'          => 'textfield',
-          '#wrapper_attributes' => [
-            'colspan' =>  2,
-        ],
-        '#title'         => t('Street name and house number'),
+        '#title'         => t('Street Name and House Number'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('Postal code'),
+        '#title'         => t('Postal Code'),
         '#required'      => TRUE,
         );
 
@@ -371,10 +372,7 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
         '#type'          => 'email',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('E-mail Support and Hosting'),
+        '#title'         => t('E-Mail Support and Hosting'),
         '#required'      => TRUE,
         );
 
@@ -400,18 +398,12 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Address'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('Straße und Hausnummer / Street name and house number'),
+        '#title'         => t('Street Name and House Number'),
         '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Postal Code'),
         '#required'      => TRUE,
         );
@@ -424,27 +416,18 @@ class WissKiAccessibilityForm extends FormBase {
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone'] = array(
         '#type'          => 'tel',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Phone Oversight Agency'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Email'] = array(
         '#type'          => 'email',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
-        '#title'         => t('E-mail Oversight Agency'),
+        '#title'         => t('E-Mail Oversight Agency'),
         '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_URL'] = array(
         '#type'          => 'textfield',
-        '#wrapper_attributes' => [
-          'colspan' =>  2,
-        ],
         '#title'         => t('Website Oversight Agency '),
         '#required'      => TRUE,
         );
@@ -505,7 +488,7 @@ $form['Lang_Specific_Form']['reset_button'] = array(
 
 // Default Values
 $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
-$form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url']?? $defaultValues['intl']['wisski_url'];
+$form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url']?? \Drupal::request()->getSchemeAndHttpHost();
 $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
 
 $form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $storedValues[$lang]['status']?? $defaultValues[$lang]['status'];
@@ -543,6 +526,7 @@ $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_dat
 $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#default_value'] = FALSE;
 
 return $form;
+ }
 }
 
 
@@ -559,13 +543,13 @@ public function ajaxCallback(array $form, FormStateInterface $form_state){
  * Called when user hits reset button
  * {@inheritdoc}
  */
-public function resetAllValues(array &$valuesStoredInState, FormStateInterface $form_state) {
+public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
 
   // Get State Array
   $content_state = \Drupal::state()->get('wisski_impressum.accessibility');
 
   // Get Language Code Of Selected Form
-  $language = $valuesStoredInState['Select_Language']['Chosen_Language'];
+  $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
 
   $lang = $language['#value'];
 
@@ -574,15 +558,11 @@ public function resetAllValues(array &$valuesStoredInState, FormStateInterface $
 
     unset($content_state[$lang]);
 
-    dpm($content_state, 'What is in state');
-
     if(!empty($content_state['intl'])){
 
       unset($content_state['intl']);
 
       $new_state_vars = array('wisski_impressum.accessibility' => $content_state);
-
-      dpm($new_state_vars, 'What should be state');
 
       \Drupal::state()->setMultiple($new_state_vars);
 
@@ -636,6 +616,8 @@ public function resetAllValues(array &$valuesStoredInState, FormStateInterface $
     $statement_array = explode('; ', $statement);
     $alternatives_array = explode('; ', $alternatives);
 
+    $date = date('d.m.Y', strtotime($date));
+
 
     $data = [
       'lang'                     => $lang,
@@ -671,7 +653,6 @@ public function resetAllValues(array &$valuesStoredInState, FormStateInterface $
 
     // Parameters to Call Service:
     $page_name = 'accessibility';
-    $required_key = 'REQUIRED_ACCESSIBILITY';
 
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
@@ -707,7 +688,7 @@ public function resetAllValues(array &$valuesStoredInState, FormStateInterface $
                              'date'                  => '',
     );
 
-    \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $required_key, $page_name, $state_keys_lang, $state_keys_intl);
+    \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
   }
 }
 
