@@ -3,13 +3,15 @@
 namespace Drupal\wisski_impressum\Generator;
 
 use \Drupal\node\Entity\Node;
-use Drupal\path_alias\Entity\PathAlias;
+use \Drupal\path_alias\Entity\PathAlias;
 use \Drupal\Core\Language;
 use \Drupal\Component\Render\MarkupInterface;
 use \Drupal\Core\Messenger\Messenger;
 use \Drupal\Core\Url;
 use \Drupal\Core\Link;
+use \Drupal\Core\Entity;
 use \Drupal\Core\StringTranslation\TranslatableMarkup;
+use \Drupal\Core\Entity\ContentEntityBase;
 
 
 class WisskiLegalGenerator {
@@ -127,8 +129,7 @@ class WisskiLegalGenerator {
                                                                               'data_comm_title'       => 'der Bayerische Landesbeauftragte für den Datenschutz',
                                                                               'data_comm_city'        => 'München',
                                                                              ),
-                                                               'intl' => array('wisski_url'            => '',
-                                                                               'sec_off_address'       => 'Bürgerstraße 81',
+                                                               'intl' => array('sec_off_address'       => 'Bürgerstraße 81',
                                                                                'sec_off_plz'           => '01127',
                                                                                'sec_off_phone'         => '+49 9131 85-25860',
                                                                                'sec_off_fax'           => '',
@@ -140,7 +141,7 @@ class WisskiLegalGenerator {
                                                             ),
   ];
 
-  public function validateDataBeforeGeneration(array $data, String $default_key, String $title, String $alias){
+  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias){
 
     // Check If All Required Keys Are in Data Array and Is NOT Empty + Title and Alias are not Empty
 
@@ -148,7 +149,7 @@ class WisskiLegalGenerator {
 
     $lang = $data['lang'];
 
-    $required = WisskiLegalGenerator::REQUIRED_DATA_ALL[$default_key][$lang];
+    $required = WisskiLegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
 
     // Loop over Required Array
     foreach ($required as $k => $v){
@@ -179,7 +180,7 @@ class WisskiLegalGenerator {
   public $template;
 
 
-  function generateNode($title, $alias, $body, $lang): Node {
+  function generateNode(string $title, string $alias, $body, string $lang): Node {
 
     $node = Node::create([
         'type'    => 'page',
@@ -200,7 +201,7 @@ class WisskiLegalGenerator {
 
   }
 
-  function updateNode ($title, $alias, $body, $node): string {
+  function updateNode (string $title, string $alias, $body, Node $node): string {
 
     // Update Values for Body
     $node-> title =  $title;
@@ -254,7 +255,7 @@ class WisskiLegalGenerator {
       return $node_id;
   }
 
-  function updateTranslation ($title, $alias, $body, $lang, $node): string {
+  function updateTranslation (string $title, string $alias, $body, string $lang, Node $node): string {
 
       $exist_trans = $node->getTranslation($lang);
 
@@ -278,12 +279,50 @@ class WisskiLegalGenerator {
   }
 
 
-  function checkPage ($title, $alias, $body, $lang, $overwrite, $node): array|NULL {
+  function generateEmptyDefault(string $default_lang, string $required_key, string $page_name): Node {
+
+    // Access Data from Config
+    $config = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
+
+    // Get "Empty Text" from Config
+    $text = $config[$default_lang]['empty_text'];
+
+    $state_key = 'wisski_impressum.'.$page_name;
+
+    $stored_values = \Drupal::state()->get($state_key);
+
+    $default_values = WisskiLegalGenerator::REQUIRED_DATA_ALL[$required_key];
+
+    $title = $stored_values[$default_lang]['title'] ?? $default_values[$default_lang]['title'];
+
+    $alias = $stored_values[$default_lang]['alias'] ?? $default_values[$default_lang]['alias'];
+
+
+    $node = Node::create([
+      'type'    => 'page',
+      'title'   => t($title),
+      'activeLangcode' => $default_lang,
+      'body'    => array(
+        //'summary' => "this is the summary",
+          'value'     => $text,
+          'format'    => 'full_html',
+        ),
+      // set alias for page
+      'path'     => array('alias' => "/$alias"),
+    ]);
+
+    $node->save();
+
+    return $node;
+
+  }
+
+
+  function checkPage (string $title, string $alias, $body, string $lang, string $overwrite, string $required_key, string $page_name,$node): array|NULL {
 
     // Get Default Language
     $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
 
-    $return_array = [];
 
     // 1) NO NODE
 
@@ -294,27 +333,22 @@ class WisskiLegalGenerator {
 
         $node_id = $this->generateNode($title, $alias, $body, $default_lang)->id();
 
-        array_push($return_array, $node_id, '');
-
         // Return Node ID
-        return $return_array;
+        return [$node_id, ''];
 
       } else {
 
       // B) NOT Default Language
 
         // a) Generate Empty Default Lang
-
-        $node = $this->generateNode($title, $alias, $body, $default_lang);
+        $node = $this->generateEmptyDefault($default_lang, $required_key, $page_name);
 
 
         // b) Generate Non Default Lang
         $this->generateTranslation($title, $alias, $body, $lang, $node);
 
-        array_push($return_array, $node->id(), 'Empty Default', $default_lang);
-
         // Return Node ID
-        return $return_array;
+        return [$node->id(), 'Empty Default'];
 
       }
     } else {
@@ -322,12 +356,9 @@ class WisskiLegalGenerator {
     // 2) NODE EXISTS
 
       // A) Overwrite NOT Ticked
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Identical Operator and Other
       if ($overwrite == 0){
 
-        array_push($return_array, NULL, 'No Overwrite');
-
-        return $return_array;
+        return [$node->id(), 'No Overwrite'];
 
       } else {
 
@@ -339,9 +370,7 @@ class WisskiLegalGenerator {
 
           $node_id = $this->updateNode($title, $alias, $body, $node);
 
-          array_push($return_array, $node_id, '');
-
-          return $return_array;
+          return [$node_id, ''];
 
         } else {
 
@@ -356,9 +385,7 @@ class WisskiLegalGenerator {
 
             $node_id = $this->generateTranslation($title, $alias, $body, $lang, $node);
 
-            array_push($return_array, $node_id, '');
-
-            return $return_array;
+            return [$node_id, ''];
 
           } else {
 
@@ -366,9 +393,7 @@ class WisskiLegalGenerator {
 
             $node_id = $this->updateTranslation($title, $alias, $body, $lang, $node);
 
-            array_push($return_array, $node_id, '');
-
-            return $return_array;
+            return [$node_id, ''];
           }
         }
       }
@@ -376,9 +401,22 @@ class WisskiLegalGenerator {
   }
 
 
-  public function generatePage(array $data, string $title, string $alias, string $lang, string $required_key, string $page_name, array $state_keys_lang, array $state_keys_intl) {
+  public function generatePage(array $data, string $title, string $alias, string $lang, string $page_name, array $state_keys_lang, array $state_keys_intl) {
 
-    // Ad
+    // Get Key to Access Required and Default Data
+    if($page_name === 'legal_notice'){
+      $required_key = 'REQUIRED_LEGALNOTICE';
+
+    } else if ($page_name === 'accessibility'){
+      $required_key = 'REQUIRED_ACCESSIBILITY';
+
+    } else if ($page_name === 'privacy'){
+      $required_key = 'REQUIRED_PRIVACY';
+
+    }
+
+
+    // Check That All Required Values Are Available
     $validity = \Drupal::service('wisski_impressum.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias);
 
 
@@ -393,8 +431,8 @@ class WisskiLegalGenerator {
       // Create Template from Form Data Array
       $template = ['#theme' => $templ1];
       foreach ($data as $key => $val) {
-        $newKey = "#{$key}";
-        $template[$newKey] = $val;
+        $new_key = "#{$key}";
+        $template[$new_key] = $val;
       }
 
       // Delete Language and Overwrite from Template
@@ -410,14 +448,14 @@ class WisskiLegalGenerator {
     $state_vals = \Drupal::state()->get($state_of_page);
 
     if(!empty($state_vals)){
-    $nid = $state_vals['node_id'];
+    $nid = (string) $state_vals['node_id'];
 
-    $node = Node::load((string)$nid);
+    $node = Node::load($nid);
     } else {
       $node = NULL;
     }
 
-    $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $node);
+    $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $required_key, $page_name, $node);
 
     $node_id = $pageArray[0];
 
@@ -439,22 +477,32 @@ class WisskiLegalGenerator {
         }else if($k === 'alias'){
           $val_array[$k] = $alias;
 
+        } else if($k === 'sup_staff_array'){
+
+          $val_array[$k] = implode("; ", $data[$k]);
+
+        } else if ($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
+
+          $val_array[$k] = implode("; ", $data[$k]);
+
         }else{
           $val_array[$k] = $data[$k];
         }
       }
       $merged[$key] = $val_array;
+
     }
 
     // Add Node ID to Values Array for State
-    $valuesStoredInState = array_merge($merged, $state_node);
+    $values_stored_in_state = array_merge($merged, $state_node);
 
     // Check if Values in State
     if(!empty($state_vals)){
 
-    $state_keys = array_replace($state_vals, $valuesStoredInState);
+      $state_keys = array_replace($state_vals, $values_stored_in_state);
+
     } else {
-      $state_keys = $valuesStoredInState;
+      $state_keys = $values_stored_in_state;
 
     }
 
@@ -463,17 +511,11 @@ class WisskiLegalGenerator {
     // Store Current Language Specific Input in State:
     \Drupal::state()->setMultiple($toSaveInState);
 
-    /* TEST STARTS HERE */
-
-
-
-
-    /* TEST ENDS HERE */
 
     // Info to User
     if($userInfo === 'No Overwrite'){
 
-      $text = 'Unfortunately an error ocurred: Page already exists and cannot be overwritten<br/>Overwriting was not permitted by user (overwrite checkbox at the end of the form NOT checked)';
+      $text = 'Unfortunately an error ocurred: Page already exists and cannot be overwritten<br/>Overwriting was not permitted by user (Checkbox above "Generate" button NOT checked)';
       $rendered_text = \Drupal\Core\Render\Markup::create($text);
       $error_message = new TranslatableMarkup ('@message', array('@message' => $rendered_text));
 
@@ -483,30 +525,36 @@ class WisskiLegalGenerator {
 
     } else {
 
-        if($userInfo === 'Empty Default'){
 
-          $domain = \Drupal::request()->getHost();
-          $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
-          $url = \Drupal\Core\Url::fromUri('https://'.$domain.'/'.$default_lang.'/'.$alias)->toString();
-          $message = t('<a href=":href">Empty default language page created</a> ('.$pageArray[2].') <b>Please ensure to manually generate this page again with all required values</b>', array(':href' => $url));
+      $node = Node::load($node_id);
 
-          \Drupal::messenger()->addStatus($message, 'status', TRUE);
+      // Display Info About Created Empty Default Language Page
+      if($userInfo === 'Empty Default'){
 
+        $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
 
-    } else {
+        //$default_lang_obj = $node->getTranslation($default_lang);
 
-      // Generate Success Messages:
-      $domain = \Drupal::request()->getHost();
-      $url = \Drupal\Core\Url::fromUri('https://'.$domain.'/'.$lang.'/'.$alias)->toString();
-      $message = t('<a href=":href">Page generated successfully</a>'.' ('.$lang.')', array(':href' => $url));
+        $url_object = $node->toUrl();
+        $url_string = $url_object->toString();
+
+        $message = t('<a href=":href" target="_blank" rel="noopener noreferer">Empty default language page created</a> ('.$default_lang.') <b>Please ensure to manually generate this page again with all required values</b>', array(':href' => $url_string));
+
+        \Drupal::messenger()->addStatus($message, 'status', TRUE);
+
+      }
+
+      // Display Success Messages:
+      $lang_object = $node->getTranslation($lang);
+
+      $url_object = $lang_object->toUrl();
+      $url_string = $url_object->toString();
+
+      $message = t('<a href=":href" target="_blank" rel="noopener noreferer">Page generated successfully</a>'.' ('.$lang.')', array(':href' => $url_string));
 
       \Drupal::messenger()->addStatus($message, 'status', TRUE);
 
-
-
-    }
-    }
-
+  }
 
   } else {
     // Info to User
