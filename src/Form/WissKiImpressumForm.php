@@ -121,7 +121,7 @@ class WissKiImpressumForm extends FormBase {
 
   $form_state->setUserInput($input);
 
-  if($lang == 0 || empty($lang)){
+  if(empty($lang)){
     return $form;
   }
 
@@ -673,7 +673,7 @@ class WissKiImpressumForm extends FormBase {
                              'no_default_txt'        => '',
                              'cust_exclusion'        => '',
                              'cust_disclaim'         => '',
-
+                             'overwrite_consent'     => '',
     );
 
 
@@ -691,7 +691,6 @@ class WissKiImpressumForm extends FormBase {
                              'auth_url'              => '',
                              'hide_disclaim'         => '',
                              'date'                  => '',
-
     );
 
     $success =  \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);

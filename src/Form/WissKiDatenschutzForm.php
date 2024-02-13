@@ -131,7 +131,7 @@ class WissKiDatenschutzForm extends FormBase{
 
       $form_state->setUserInput($input);
 
-      if ($lang == 0 || empty($lang)) {
+      if (empty($lang)) {
         return $form;
       }
 
