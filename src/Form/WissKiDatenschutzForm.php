@@ -367,7 +367,6 @@ class WissKiDatenschutzForm extends FormBase{
         '#prefix'        => '<p>',
         '#title'         => t('<strong>OVERWRITE existent privacy declaration</strong>'),
         '#suffix'        => '</p>',
-        '#id'            => 'overwrite_consent',
         '#required'      => FALSE,
         );
 
@@ -376,7 +375,6 @@ class WissKiDatenschutzForm extends FormBase{
       $form['Lang_Specific_Form']['submit_button'] = array(
         '#type'   => 'submit',
         '#value'  => t('Generate'),
-        '#id'     => 'submit_button',
       );
 
       // Reset Form Contents to Default

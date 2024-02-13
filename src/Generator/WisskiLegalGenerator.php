@@ -356,7 +356,7 @@ class WisskiLegalGenerator {
     // 2) NODE EXISTS
 
       // A) Overwrite NOT Ticked
-      if ($overwrite == 0){
+      if ($overwrite == FALSE){
 
         return [$node->id(), 'No Overwrite'];
 
