@@ -62,13 +62,26 @@ class WissKiImpressumForm extends FormBase {
   // type of render array element
   // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
+  // Get State Values for Form
   $storedValues = $this->getStateValues();
-
   $defaultValues = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_LEGALNOTICE'];
+
+  // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
+  $state_vals = \Drupal::state()->get('wisski_impressum.legal_notice');
+
+  if(!empty($state_vals)){
+      $nid = (string) $state_vals['node_id'];
+
+      $node = Node::load($nid);
+
+  } else {
+
+      $node = NULL;
+  }
 
   $form = [];
 
-  // Get languages from config
+  // Get Languages from Config
   $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
   unset($options['_core']);
 
@@ -91,6 +104,7 @@ class WissKiImpressumForm extends FormBase {
       '#type'          => 'select',
       '#title'         => t('Choose the language in which the legal notice should be generated<br /><br />'),
       '#options'       => $options,
+      // Language Selection Triggers AJAX
       '#ajax'          => [
         'callback'        => '::ajaxCallback',
         'event'           => 'change',
@@ -99,7 +113,7 @@ class WissKiImpressumForm extends FormBase {
       ],
     );
 
-  // Ajax Form
+  // AJAX Form
   $form['Lang_Specific_Form'] = [
     '#type'  => 'item',
     '#prefix' => '<div id="formDiv">',
@@ -125,7 +139,7 @@ class WissKiImpressumForm extends FormBase {
     return $form;
   }
 
-  // Error Message: Language Is not Installed
+  // Error Message: Language Is not Installed in Drupal
   $all_langs = \Drupal::LanguageManager()->getLanguages();
 
   if(!array_key_exists($lang, $all_langs)){
@@ -182,7 +196,7 @@ class WissKiImpressumForm extends FormBase {
       $form['Lang_Specific_Form']['Publisher']['Pub_Institute'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Institute'),
-        '#required'      => TRUE,
+        '#required'      => FALSE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Name'] = array(
@@ -338,6 +352,7 @@ class WissKiImpressumForm extends FormBase {
         $form['Lang_Specific_Form']['Copyright']['Licence_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Licence Title'),
+          // Condition: Input Required if Licence URL Entered by User
           '#states' => [
             'required' => [
             [':input[id="licence_url"]' => [
@@ -366,6 +381,7 @@ class WissKiImpressumForm extends FormBase {
             '#type'          => 'textarea',
             '#title'         => t('Custom Information On Licence(s)'),
             '#description'   => t('<i>DISPLAYED IN ADDITION TO DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
+            // Condition (Checkbox 'No Default Text' is Checked): Input Required
             '#states' => [
               'required' => [
               [':input[id="no_default_txt"]' => [
@@ -382,6 +398,7 @@ class WissKiImpressumForm extends FormBase {
           '#title'         => t('Display text in textarea \'Custom Information On Licence(s)\' instead of default text in section \'Copyright\''),
           '#description'   => t('<i>REPLACES ALL EXCEPT INFO ON private use AND ON content not protected by copyright law</i>'),
           '#required'      => FALSE,
+          // Used for Condition
           '#id'            => 'no_default_txt',
           );
 
@@ -430,6 +447,7 @@ class WissKiImpressumForm extends FormBase {
       '#open'  => TRUE,
       );
 
+        // Get Today Time
         $current_timestamp = \Drupal::time()->getCurrentTime();
         $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
 
@@ -452,31 +470,57 @@ class WissKiImpressumForm extends FormBase {
 
     // Field: Consent Overwrite
     $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent'] = array(
-      '#type'          => 'checkbox',
-      '#prefix' => '<p>',
-      '#title'         => t('<strong>OVERWRITE existent legal notice</strong>'),
-      '#suffix' => '</p>',
-      '#required'      => FALSE,
+      '#type'     => 'checkbox',
+      '#prefix'   => '<p>',
+      '#title'    => t('<strong>OVERWRITE existent legal notice</strong>'),
+      '#suffix'   => '</p>',
+      // Ensure Set to TRUE to Avoid Data Loss when Generate without Ticked Checkbox
+      '#required' => TRUE,
       );
 
+      // Condition (Page Does NOT Exist Yet): Do Not Display Overwrite Checkbox
+      // Node Does NOT Exist:
+      if($node == NULL){
 
-    // Sumbit Form and Populate Template
+        // Do NOT Show Overwrite Checkbox
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+        // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+
+        // Node Exists: Check if Translation Exists
+      } else {
+
+        $default_lang = \Drupal::languageManager()->getDefaultLanguage()->getId();
+        $trans_exist = $node->hasTranslation($lang);
+
+        // Page Language is NOT Default Language and Language Page Does NOT Exist:
+        if($lang != $default_lang and !$trans_exist){
+
+          // Do NOT Show Overwrite Checkbox
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+          // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+        }
+      }
+
+    // Button: Sumbit Form and Populate Template
     $form['Lang_Specific_Form']['submit_button'] = array(
         '#type'  => 'submit',
         '#value' => t('Generate'),
         );
 
-
-    // Reset Form Contents to Default
+    // Button: Reset Form Contents to Default
     $form['Lang_Specific_Form']['reset_button'] = array(
-      '#class' => 'button',
-      '#type' => 'submit',
-      '#value' => t('Reset to Default'),
+      '#class'  => 'button',
+      '#type'   => 'submit',
+      '#value'  => t('Reset to Default'),
       '#submit' => [[$this, 'resetAllValues']],
       );
 
 
-    // Default Values
+    // Populate Fields with Default Values
     $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
     $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url'] ?? \Drupal::request()->getSchemeAndHttpHost();
     $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
@@ -528,6 +572,7 @@ class WissKiImpressumForm extends FormBase {
 
   /**
    * Called When User Selects Language
+   * Build Form with Default Values for Selected Language
    * {@inheritdoc}
    */
   public function ajaxCallback(array $form, FormStateInterface $form_state){
@@ -541,6 +586,7 @@ class WissKiImpressumForm extends FormBase {
    */
   public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
 
+    // Get Array from State
     $content_state = \Drupal::state()->get('wisski_impressum.legal_notice');
 
 
@@ -549,7 +595,7 @@ class WissKiImpressumForm extends FormBase {
 
     $lang = $language['#value'];
 
-    // If For Language Values are Stored in State
+    // Condition (Already Values Stored in State): Replace with Default Values
     if(!empty($content_state[$lang])){
 
       unset($content_state[$lang]);
@@ -557,7 +603,6 @@ class WissKiImpressumForm extends FormBase {
       if(!empty($content_state['intl'])){
 
         unset($content_state['intl']);
-
 
         $new_state_vars = array('wisski_impressum.legal_notice' => $content_state);
 
@@ -574,6 +619,7 @@ class WissKiImpressumForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 
+    // Get Values Entered by User
     $values = $form_state->getValues();
 
     $lang                 = $values['Chosen_Language'];
@@ -611,10 +657,12 @@ class WissKiImpressumForm extends FormBase {
     $date                 = $values['Date'];
     $overwrite_consent    = $values['Overwrite_Consent'];
 
-
+    // Convert Staff Info in String to Array to Display as Unordered List on Page
     $sup_staff_array = explode('; ', $sup_staff);
 
+    // Change Date Format
     $date = date('d.m.Y', strtotime($date));
+
 
     $data = [
               'lang'                   => $lang,
@@ -652,9 +700,12 @@ class WissKiImpressumForm extends FormBase {
     ];
 
 
-    // Parameters to  Call Service:
+    // Parameters to Call Service:
+
+    // a) Key to Select Correct Template for Page Generation
     $page_name = 'legal_notice';
 
+    // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
                              'project_name'          => '',
@@ -676,7 +727,7 @@ class WissKiImpressumForm extends FormBase {
                              'overwrite_consent'     => '',
     );
 
-
+    // c) Keys to Use for Storage in State
     $state_keys_intl = array('wisski_url'            => '',
                              'pub_address'           => '',
                              'pub_plz'               => '',
@@ -693,6 +744,7 @@ class WissKiImpressumForm extends FormBase {
                              'date'                  => '',
     );
 
+    // Let Service Generate Page
     $success =  \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
 
     // Display Success Message:

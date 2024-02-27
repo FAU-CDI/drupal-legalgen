@@ -62,15 +62,26 @@ class WissKiAccessibilityForm extends FormBase {
     // type of render array element
     // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
+    // Get State Values for Form
     $storedValues = $this->getStateValues();
-
     $defaultValues = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_ACCESSIBILITY'];
 
+    // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
+    $state_vals = \Drupal::state()->get('wisski_impressum.accessibility');
 
-    // Display Link to FAU Accessibility Guidelines (as reference)
+    if(!empty($state_vals)){
+        $nid = (string) $state_vals['node_id'];
+
+        $node = Node::load($nid);
+
+    } else {
+
+        $node = NULL;
+    }
 
     $form = [];
 
+    // Display Link to FAU Accessibility Guidelines (as reference)
     $form['Guidelines'] = array(
       '#type'  => 'details',
       '#title' => t('Digital Accessibility Guidelines for Universities of Applied Sciences in Bavaria (Written in German)'),
@@ -117,7 +128,7 @@ class WissKiAccessibilityForm extends FormBase {
         ],
       );
 
-    // Ajax Form
+    // AJAX Form
     $form['Lang_Specific_Form'] = [
       '#type'  => 'item',
       '#prefix' => '<div id="formDiv">',
@@ -238,6 +249,7 @@ class WissKiAccessibilityForm extends FormBase {
       '#type'        => 'details',
       '#title'       => t('Contents Not Accessible to All'),
       '#open'        => TRUE,
+      // Condition (Conformity Status == Completely Compliant): Fields Visible and Required
       '#states' => [
         'visible' => [
           ':input[id="conformity_status"]' => [
@@ -253,7 +265,8 @@ class WissKiAccessibilityForm extends FormBase {
         '#type'           => 'textarea',
         '#title'          => t('Content That Is Not Accessible to All'),
         '#description'    => t('Using "; " as separator - e.g. "Issue 1; Issue 2;..." - will create an unordered list'),
-      '#states' => [
+        // Condition (Conformity Status == Completely Compliant): Field Visible and Required
+        '#states' => [
           'visible' => [
             ':input[id="conformity_status"]' => [
               '!value' => 'Completely compliant',
@@ -272,6 +285,7 @@ class WissKiAccessibilityForm extends FormBase {
         '#type'           => 'textarea',
         '#title'          => t('Justification'),
         '#description'    => t('Using "; " as separator - e.g. "Justification 1; Justification 2;..." - will create an unordered list'),
+
         '#states' => [
           'visible' => [
             ':input[id="conformity_status"]' => [
@@ -291,7 +305,8 @@ class WissKiAccessibilityForm extends FormBase {
         '#type'           => 'textarea',
         '#title'          => t('Alternative Ways of Access'),
         '#description'    => t('Using "; " as separator - e.g. "Alternative 1; Alternative 2;..." - will create an unordered list'),
-       '#states' => [
+       // Condition (Conformity Status == Completely Compliant): Field Visible and Required
+        '#states' => [
           'visible' => [
             ':input[id="conformity_status"]' => [
               '!value' => 'Completely compliant',
@@ -440,6 +455,7 @@ class WissKiAccessibilityForm extends FormBase {
       '#open'  => TRUE,
       );
 
+        // Get Today Date
         $current_timestamp = \Drupal::time()->getCurrentTime();
         $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
 
@@ -462,22 +478,49 @@ $form['Lang_Specific_Form']['Notice'] = array(
 
 // Field: Consent Overwrite
 $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent'] = array(
-  '#type'          => 'checkbox',
-  '#prefix' => '<p>',
-  '#title'         => t('<strong>OVERWRITE existent accessibility declaration</strong>'),
-  '#suffix' => '</p>',
-  '#required'      => FALSE,
+  '#type'      => 'checkbox',
+  '#prefix'    => '<p>',
+  '#title'     => t('<strong>OVERWRITE existent accessibility declaration</strong>'),
+  '#suffix'    => '</p>',
+  // Ensure Set to TRUE to Avoid Data Loss when Generate without Ticked Checkbox
+  '#required'  => TRUE,
   );
 
+      // Condition (Page Does NOT Exist Yet): Do Not Display Overwrite Checkbox
+      // Node Does NOT Exist:
+      if($node == NULL){
 
-// Submit Form Contents and Populate Template
+        // Do NOT Show Overwrite Checkbox
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+        // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+
+        // Node Exists: Check if Translation Exists
+      } else {
+
+        $default_lang = \Drupal::languageManager()->getDefaultLanguage()->getId();
+        $trans_exist = $node->hasTranslation($lang);
+
+        // Page Language is NOT Default Language and Language Page Does NOT Exist:
+        if($lang != $default_lang and !$trans_exist){
+
+          // Do NOT Show Overwrite Checkbox
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+          // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+        }
+      }
+
+// Button: Submit Form Contents and Populate Template
     $form['Lang_Specific_Form']['submit_button'] = array(
         '#type'  => 'submit',
         '#value' => t('Generate'),
         );
 
 
-// Reset Form Contents to Default
+// Button: Reset Form Contents to Default
 $form['Lang_Specific_Form']['reset_button'] = array(
   '#class' => 'button',
   '#type' => 'submit',
@@ -486,7 +529,7 @@ $form['Lang_Specific_Form']['reset_button'] = array(
   );
 
 
-// Default Values
+// Populate Fields with Default Values
 $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
 $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url']?? \Drupal::request()->getSchemeAndHttpHost();
 $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
@@ -532,6 +575,7 @@ return $form;
 
 /**
  * Called when user selects language
+ * Build Form with Default Values for Selected Language
  * {@inheritdoc}
  */
 public function ajaxCallback(array $form, FormStateInterface $form_state){
@@ -545,7 +589,7 @@ public function ajaxCallback(array $form, FormStateInterface $form_state){
  */
 public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
 
-  // Get State Array
+  // Get Array from State
   $content_state = \Drupal::state()->get('wisski_impressum.accessibility');
 
   // Get Language Code Of Selected Form
@@ -553,7 +597,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
 
   $lang = $language['#value'];
 
-  // If Values For Language Are Stored in State
+  // Condition (Already Values Stored in State): Replace with Default Values
   if(!empty($content_state[$lang])){
 
     unset($content_state[$lang]);
@@ -577,6 +621,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 
+    // Get Values Entered by User
     $values = $form_state->getValues();
 
     $lang                  = $values['Chosen_Language'];
@@ -611,11 +656,12 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
     $date                  = $values['Date'];
     $overwrite_consent     = $values['Overwrite_Consent'];
 
-
+    // Convert Info in String to Array to Display as Unordered List on Page
     $issues_array = explode('; ', $known_issues);
     $statement_array = explode('; ', $statement);
     $alternatives_array = explode('; ', $alternatives);
 
+    // Change Date Format
     $date = date('d.m.Y', strtotime($date));
 
 
@@ -652,8 +698,11 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
     ];
 
     // Parameters to Call Service:
+
+    // a) Key to Select Correct Template for Page Generation
     $page_name = 'accessibility';
 
+    // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
                              'status'                => '',
@@ -670,6 +719,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
                              'overwrite_consent'     => '',
     );
 
+    // c) Keys to Use for Storage in State
     $state_keys_intl = array('wisski_url'            => '',
                              'creation_date'         => '',
                              'last_revis_date'       => '',
@@ -688,7 +738,20 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
                              'date'                  => '',
     );
 
-    \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+    // Let Service Generate Page
+    $success = \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+
+    // Display Success Message:
+    if($success === 'success'){
+      \Drupal::messenger()->addMessage('<a href="/'.$alias.'">Legal notice in '.$lang.'generated successfully</a>', 'status', TRUE);
+    } else {
+      if($success === 'invalid'){
+        \Drupal::messenger()->addError('Unfortunately an error ocurred: Required Values Missing', 'status', TRUE);
+
+      } else if ($success === 'unable') {
+        \Drupal::messenger()->addError('Unfortunately an error ocurred: Unable to Generate Page for the Following Language: '.$lang, 'status', TRUE);
+      }
+    }
   }
 }
 

@@ -72,10 +72,24 @@ class WissKiDatenschutzForm extends FormBase{
 
     // Get State Values for Form
     $stored_values = $this->getStateValues();
+    $default_values = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_PRIVACY'];
+    // Get Legal Notice URL from State
     $values_from_legalnotice = \Drupal::state()->get('wisski_impressum.legal_notice');
 
-    // Get Default Values for Form
-    $default_values = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_PRIVACY'];
+    // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
+    $state_vals = \Drupal::state()->get('wisski_impressum.privacy');
+
+    if(!empty($state_vals)){
+        $nid = (string) $state_vals['node_id'];
+
+        $node = Node::load($nid);
+
+    } else {
+
+        $node = NULL;
+    }
+
+    $form = [];
 
     // Get Languages from Config
     $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
@@ -100,6 +114,7 @@ class WissKiDatenschutzForm extends FormBase{
       '#type'          => 'select',
       '#title'         => t('Choose the language in which the privacy notice should be generated<br /><br />'),
       '#options'       => $options,
+      // Language Selection Triggers AJAX
       '#ajax'          => [
         'callback'        => '::ajaxCallback',
         'event'           => 'change',
@@ -108,7 +123,7 @@ class WissKiDatenschutzForm extends FormBase{
       ],
     );
 
-    // Ajax Form
+    // AJAX Form
     $form['Lang_Specific_Form'] = [
       '#type'  => 'item',
       '#prefix' => '<div id="formDiv">',
@@ -135,7 +150,7 @@ class WissKiDatenschutzForm extends FormBase{
         return $form;
       }
 
-      // Error Message: Language Is not Installed
+      // Error Message: Language Is not Installed in Drupal
       $all_langs = \Drupal::LanguageManager()->getLanguages();
 
       if(!array_key_exists($lang, $all_langs)){
@@ -207,7 +222,8 @@ class WissKiDatenschutzForm extends FormBase{
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Line 2'),
-          '#required'      => FALSE,
+          // Might Not be Required When Data Security Official Changes
+          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address'] = array(
@@ -259,12 +275,14 @@ class WissKiDatenschutzForm extends FormBase{
           '#type'          => 'textfield',
           '#title'         => t('Name Third Party Service'),
           '#description'   => t('<i>LEAVE EMPTY TO NOT DISPLAY WHOLE SECTION</i>'),
+          // Used for Condition
           '#id'            => 'third_party',
         );
 
         $form['Lang_Specific_Form']['Third_Party_Services']['Third_Descr_Data_Coll'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Description and Scope Data Processing'),
+          // Condition (Third Party Service Provider Exists): Input Required
           '#states'        => [
             'required' => [
               [':input[id="third_party"]' => [
@@ -278,6 +296,7 @@ class WissKiDatenschutzForm extends FormBase{
         $form['Lang_Specific_Form']['Third_Party_Services']['Third_Legal_Basis_Data_Coll'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Legal Basis for Processing of Personal Data'),
+          // Condition (Third Party Service Provider Exists): Input Required
           '#states'        => [
             'required' => [
               [':input[id="third_party"]' => [
@@ -291,6 +310,7 @@ class WissKiDatenschutzForm extends FormBase{
         $form['Lang_Specific_Form']['Third_Party_Services']['Third_Objection_Data_Coll'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Objection and Elimination'),
+          // Condition (Third Party Service Provider Exists): Input Required
           '#states'        => [
             'required' => [
               [':input[id="third_party"]' => [
@@ -341,6 +361,7 @@ class WissKiDatenschutzForm extends FormBase{
         '#open'  => TRUE,
       );
 
+        // Get Today Time
         $current_timestamp = \Drupal::time()->getCurrentTime();
         $todays_date = \Drupal::service('date.formatter')->format($current_timestamp, 'custom', 'Y-m-d');
 
@@ -363,21 +384,48 @@ class WissKiDatenschutzForm extends FormBase{
 
       // Field: Consent Overwrite
       $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent'] = array(
-        '#type'          => 'checkbox',
-        '#prefix'        => '<p>',
-        '#title'         => t('<strong>OVERWRITE existent privacy declaration</strong>'),
-        '#suffix'        => '</p>',
-        '#required'      => FALSE,
+        '#type'      => 'checkbox',
+        '#prefix'    => '<p>',
+        '#title'     => t('<strong>OVERWRITE existent privacy declaration</strong>'),
+        '#suffix'    => '</p>',
+        // Ensure Set to TRUE to Avoid Data Loss when Generate without Ticked Checkbox
+        '#required'  => TRUE,
         );
 
+      // Condition (Page Does NOT Exist Yet): Do Not Display Overwrite Checkbox
+      // Node Does NOT Exist:
+      if($node == NULL){
 
-      // Submit Form and Populate Template
+        // Do NOT Show Overwrite Checkbox
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+        // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+        $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+
+        // Node Exists: Check if Translation Exists
+      } else {
+
+        $default_lang = \Drupal::languageManager()->getDefaultLanguage()->getId();
+        $trans_exist = $node->hasTranslation($lang);
+
+        // Page Language is NOT Default Language and Language Page Does NOT Exist:
+        if($lang != $default_lang and !$trans_exist){
+
+          // Do NOT Show Overwrite Checkbox
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#type'] = 'value';
+
+          // Overwrite Checkbox is NOT Required (Enable Submission Irrespective of Checkbox)
+          $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#required'] = FALSE;
+        }
+      }
+
+      // Button: Submit Form and Populate Template
       $form['Lang_Specific_Form']['submit_button'] = array(
         '#type'   => 'submit',
         '#value'  => t('Generate'),
       );
 
-      // Reset Form Contents to Default
+      // Button: Reset Form Contents to Default
       $form['Lang_Specific_Form']['reset_button'] = array(
         '#class'  => 'button',
         '#type'   => 'submit',
@@ -386,7 +434,7 @@ class WissKiDatenschutzForm extends FormBase{
       );
 
 
-      // Default Values
+      // Populate Fields with Default Values
       $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $stored_values[$lang]['title'] ?? $default_values[$lang]['title'];
       $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias'] ?? $default_values[$lang]['alias'];
       $form['Lang_Specific_Form']['General']['Not_FAU']['#default_value'] = $stored_values[$lang]['not_fau'] ?? t('');
@@ -433,11 +481,12 @@ class WissKiDatenschutzForm extends FormBase{
 
   /**
    * Called when user hits reset button
+   * Build Form with Default Values for Selected Language
    * {@inheritdoc}
    */
   public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state){
 
-    // Get State Array
+    // Get Array from State
     $content_state = \Drupal::state()->get('wisski_impressum.privacy');
 
     // Get Language Code Of Selected Form
@@ -445,7 +494,7 @@ class WissKiDatenschutzForm extends FormBase{
 
     $lang = $language['#value'];
 
-    // If For Language Values are Stored in State
+    // Condition (Already Values Stored in State): Replace with Default Values
     if (!empty($content_state[$lang])) {
 
       unset($content_state[$lang]);
@@ -469,6 +518,7 @@ class WissKiDatenschutzForm extends FormBase{
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 
+    // Get Values Entered by User
     $values = $form_state->getValues();
 
     $lang                               = $values['Chosen_Language'];
@@ -496,7 +546,7 @@ class WissKiDatenschutzForm extends FormBase{
     $date                               = $values['Date'];
     $overwrite_consent                  = $values['Overwrite_Consent'];
 
-
+    // Change Date Format
     $date = date('d.m.Y', strtotime($date));
 
 
@@ -527,8 +577,11 @@ class WissKiDatenschutzForm extends FormBase{
 
 
     // Parameters to Call Service:
+
+    // a) Key to Select Correct Template for Page Generation
     $page_name = 'privacy';
 
+    // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                          => '',
                              'alias'                          => '',
                              'not_fau'                        => '',
@@ -545,6 +598,7 @@ class WissKiDatenschutzForm extends FormBase{
                              'overwrite_consent'              => '',
     	                      );
 
+    // c) Keys to Use for Storage in State
     $state_keys_intl = array('sec_off_address'                => '',
                              'sec_off_plz'                    => '',
                              'sec_off_phone'                  => '',
@@ -555,6 +609,19 @@ class WissKiDatenschutzForm extends FormBase{
                              'date'                           => '',
   	                        );
 
-    \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+    // Let Service Generate Page
+    $success = \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+
+    // Display Success Message:
+    if($success === 'success'){
+      \Drupal::messenger()->addMessage('<a href="/'.$alias.'">Legal notice in '.$lang.'generated successfully</a>', 'status', TRUE);
+    } else {
+      if($success === 'invalid'){
+        \Drupal::messenger()->addError('Unfortunately an error ocurred: Required Values Missing', 'status', TRUE);
+
+      } else if ($success === 'unable') {
+        \Drupal::messenger()->addError('Unfortunately an error ocurred: Unable to Generate Page for the Following Language: '.$lang, 'status', TRUE);
+      }
+    }
   }
 }
