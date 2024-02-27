@@ -127,7 +127,7 @@ class WissKiImpressumForm extends FormBase {
   $input = $form_state->getUserInput();
 
   // Reset All Form Values EXCEPT Chosen_Language
-  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
+  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title_Metadata', 'Licence_URL_Metadata', 'Licence_Title_Images', 'Licence_URL_Images', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
 
   foreach ($unset_key as $key) {
    unset($input[$key]);
@@ -341,6 +341,37 @@ class WissKiImpressumForm extends FormBase {
         '#required'      => TRUE,
         );
 
+    // Fields: ID Numbers
+    $form['Lang_Specific_Form']['ID_Numbers'] = array(
+      '#type'   => 'details',
+      '#title'  =>  t(''),
+      '#open'   =>  TRUE,
+      );
+
+      $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number'] = array(
+        '#type'       => 'textfield',
+        '#title'      => 'VAT Registration Number',
+        '#required'   => TRUE,
+      );
+
+      $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number'] = array(
+        '#type'       => 'textfield',
+        '#title'      => 'Tax Number',
+        '#required'   => TRUE,
+      );
+
+      $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number'] = array(
+        '#type'       => 'textfield',
+        '#title'      => 'DUNS Number',
+        '#required'   => TRUE,
+      );
+
+      $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number'] = array(
+        '#type'       => 'textfield',
+        '#title'      => 'EORI Number',
+        '#required'   => TRUE,
+      );
+
 
     // Fields: Copyright
     $form['Lang_Specific_Form']['Copyright'] = array(
@@ -349,13 +380,13 @@ class WissKiImpressumForm extends FormBase {
       '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Copyright']['Licence_Title'] = array(
+        $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata'] = array(
           '#type'          => 'textfield',
-          '#title'         => t('Licence Title'),
+          '#title'         => t('Metadata Licence Title'),
           // Condition: Input Required if Licence URL Entered by User
           '#states' => [
             'required' => [
-            [':input[id="licence_url"]' => [
+            [':input[id="licence_url_meta"]' => [
               '!value' => ''
               ],
             ],
@@ -364,12 +395,35 @@ class WissKiImpressumForm extends FormBase {
           '#required'      => FALSE,
           );
 
-        $form['Lang_Specific_Form']['Copyright']['Licence_URL'] = array(
+        $form['Lang_Specific_Form']['Copyright']['Licence_URL_Metadata'] = array(
           '#type'          => 'textfield',
-          '#title'         => t('Licence URL'),
-          '#id'            => 'licence_url',
+          '#title'         => t('Metadata Licence URL'),
+          '#id'            => 'licence_url_meta',
           '#required'      => FALSE,
           );
+
+          $form['Lang_Specific_Form']['Copyright']['Licence_Title_Images'] = array(
+            '#type'          => 'textfield',
+            '#title'         => t('Images Licence Title'),
+            '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL IMAGES HAVE/HAS SAME LICENCE</i>'),
+            // Condition: Input Required if Licence URL Entered by User
+            '#states' => [
+              'required' => [
+              [':input[id="licence_url_imgs"]' => [
+                '!value' => ''
+                ],
+              ],
+            ],
+            ],
+            '#required'      => FALSE,
+            );
+
+          $form['Lang_Specific_Form']['Copyright']['Licence_URL_Images'] = array(
+            '#type'          => 'textfield',
+            '#title'         => t('Images Licence URL'),
+            '#id'            => 'licence_url_imgs',
+            '#required'      => FALSE,
+            );
 
         $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template'] = array(
           '#type'          => 'checkbox',
@@ -550,8 +604,15 @@ class WissKiImpressumForm extends FormBase {
     $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#default_value'] = $storedValues[$lang]['auth_city']?? $defaultValues[$lang]['auth_city'];
     $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#default_value'] = $storedValues['intl']['auth_url']?? $defaultValues['intl']['auth_url'];
 
-    $form['Lang_Specific_Form']['Copyright']['Licence_Title']['#default_value'] = $storedValues[$lang]['licence_title']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#default_value'] = $storedValues['intl']['licence_url']?? t('');
+    $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#default_value'] = $storedValues['intl']['id_vat']?? $defaultValues['intl']['id_vat'];
+    $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#default_value'] = $storedValues['intl']['id_tax']?? $defaultValues['intl']['id_tax'];
+    $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number']['#default_value'] = $storedValues['intl']['id_duns']?? $defaultValues['intl']['id_duns'];
+    $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number']['#default_value'] = $storedValues['intl']['id_eori']?? $defaultValues['intl']['id_eori'];
+
+    $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata']['#default_value'] = $storedValues[$lang]['licence_title_metadata']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Licence_URL_Metadata']['#default_value'] = $storedValues['intl']['licence_url_metadata']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Licence_Title_Pictures']['#default_value'] = $storedValues[$lang]['licence_title_pictures']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Licence_URL_Pictures']['#default_value'] = $storedValues['intl']['licence_url_pictures']?? t('');
     $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $storedValues[$lang]['use_fau_temp']?? (FALSE);
     $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $storedValues[$lang]['cust_licence_txt']?? t('');
     $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $storedValues[$lang]['no_default_txt']?? (FALSE);
@@ -646,8 +707,14 @@ class WissKiImpressumForm extends FormBase {
     $auth_plz             = $values['Auth_PLZ'];
     $auth_city            = $values['Auth_City'];
     $auth_url             = $values['Auth_URL'];
-    $licence_title        = $values['Licence_Title'];
-    $licence_url          = $values['Licence_URL'];
+    $id_vat               = $values['VAT_Number'];
+    $id_tax               = $values['Tax_Number'];
+    $id_duns              = $values['DUNS_Number'];
+    $id_eori              = $values['EORI_Number'];
+    $licence_title_meta   = $values['Licence_Title_Metadata'];
+    $licence_url_meta     = $values['Licence_URL_Metadata'];
+    $licence_title_imgs   = $values['Licence_Title_Images'];
+    $licence_url_imgs     = $values['Licence_URL_Images'];
     $use_fau_temp         = $values['Use_FAU_Design_Template'];
     $cust_licence_txt     = $values['Custom_Licence_Text'];
     $no_default_txt       = $values['No_Default_Text'];
@@ -687,8 +754,14 @@ class WissKiImpressumForm extends FormBase {
               'auth_plz'               => $auth_plz,
               'auth_city'              => $auth_city,
               'auth_url'               => $auth_url,
-              'licence_title'          => $licence_title,
-              'licence_url'            => $licence_url,
+              'id_vat'                 => $id_vat,
+              'id_tax'                 => $id_tax,
+              'id_duns'                => $id_duns,
+              'id_eori'                => $id_eori,
+              'licence_title_meta'     => $licence_title_meta,
+              'licence_url_meta'       => $licence_url_meta,
+              'licence_title_imgs'     => $licence_title_imgs,
+              'licence_url_imgs'       => $licence_url_imgs,
               'use_fau_temp'           => $use_fau_temp,
               'cust_licence_txt'       => $cust_licence_txt,
               'no_default_txt'         => $no_default_txt,
@@ -718,7 +791,8 @@ class WissKiImpressumForm extends FormBase {
                              'sup_staff_array'       => '',
                              'auth_name'             => '',
                              'auth_city'             => '',
-                             'licence_title'         => '',
+                             'licence_title_meta'    => '',
+                             'licence_title_imgs'    => '',
                              'use_fau_temp'          => '',
                              'cust_licence_txt'      => '',
                              'no_default_txt'        => '',
@@ -736,10 +810,15 @@ class WissKiImpressumForm extends FormBase {
                              'contact_email'         => '',
                              'sup_url'               => '',
                              'sup_email'             => '',
-                             'licence_url'           => '',
+                             'licence_url_meta'      => '',
+                             'licence_url_imgs'      => '',
                              'auth_address'          => '',
                              'auth_plz'              => '',
                              'auth_url'              => '',
+                             'id_vat'                => '',
+                             'id_tax'                => '',
+                             'id_duns'               => '',
+                             'id_eori'               => '',
                              'hide_disclaim'         => '',
                              'date'                  => '',
     );

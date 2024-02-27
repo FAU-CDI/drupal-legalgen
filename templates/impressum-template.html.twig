@@ -80,6 +80,16 @@
         </div>
 
         <div>
+            <h3>Identifikationsnummern</h3>
+            <p>Die Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz lautet: {{ id_vat }}<br />
+                Steuernummer: {{ id_tax }}<br />
+                DUNS-Nummer: {{ id_duns }}<br />
+                EORI-Nummer: {{ id_eori }}<br />
+            </p>
+        </div>
+        </div>
+
+        <div>
             {{ include('@wisski_impressum/legalnotice-template/misuse-resources-template_de.html.twig') }}
         </div>
 
@@ -98,15 +108,27 @@
         <div>
             {% if no_default_txt %}
 
-                {% if licence_title %}
-
+                {% if licence_title_meta %}
                     <p>
-                        <strong>Lizenz:</strong> {{ licence_title }}<br />
-                        {% if licence_url %}
 
-                        <a href="{{ licence_url }}">{{ licence_url }}</a>
+                    {% if licence_url_meta %}
+                        <strong>Lizenzbedinungen für Metadaten:</strong><a href="{{ licence_url_meta }}">{{ licence_title_meta }}</a><br />
+                    {% else %}
+                        <strong>Lizenzbedinungen für Metadaten:</strong>{{ licence_title_meta }}<br />
+                    {% endif %}
+                    </p>
 
-                        {% endif %}
+                {% endif %}
+
+                {% if licence_title_imgs %}
+
+                 <p>
+
+                    {% if licence_url_imgs %}
+                        <strong>Lizenzbedinungen für Abbilder:</strong><a href="{{ licence_url_imgs }}">{{ licence_title_imgs }}</a><br />
+                    {% else %}
+                        <strong>Lizenzbedinungen für Abbilder:</strong>{{ licence_title_imgs }}<br />
+                    {% endif %}
                     </p>
 
                 {% endif %}
@@ -143,10 +165,27 @@
                 {% endif %}
                 </p>
 
-                {% if licence_title %}
+                {% if licence_title_meta %}
                     <p>
-                        <strong>Lizenz:</strong> {{ licence_title }}<br />
-                        <a href="{{ licence_url }}">{{ licence_url }}</a>
+
+                    {% if licence_url_meta %}
+                        <strong>Lizenzbedinungen für Metadaten:</strong><a href="{{ licence_url_meta }}">{{ licence_title_meta }}</a><br />
+                    {% else %}
+                        <strong>Lizenzbedinungen für Metadaten:</strong>{{ licence_title_meta }}<br />
+                    {% endif %}
+                    </p>
+
+                {% endif %}
+
+                {% if licence_title_imgs %}
+
+                 <p>
+
+                    {% if licence_url_imgs %}
+                        <strong>Lizenzbedinungen für Abbilder:</strong><a href="{{ licence_url_imgs }}">{{ licence_title_imgs }}</a><br />
+                    {% else %}
+                        <strong>Lizenzbedinungen für Abbilder:</strong>{{ licence_title_imgs }}<br />
+                    {% endif %}
                     </p>
 
                 {% endif %}

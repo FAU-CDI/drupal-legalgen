@@ -1,10 +1,18 @@
 en:
     option: "English"
-    legal_notice : "legalnotice_template"
+    legal_notice: "legalnotice_template"
     accessibility: "accessibility_template"
     privacy: "privacy_template"
+    empty_text: "Page not available"
 de:
     option: "Deutsch"
     legal_notice: "impressum_template"
     accessibility: "barrierefreiheit_template"
     privacy: "datenschutz_template"
+    empty_text: "Seite nicht verfügbar"
+fr:
+    option: "Francais"
+    legal_notice : "mentionslegales_template"
+    accessibility: "accessibilite_template"
+    privacy: "protectiondesdonnees_template"
+    empty_text: "Page n'est pas disponible"
