@@ -344,7 +344,7 @@ class WissKILegalnoticeForm extends FormBase {
     // Fields: ID Numbers
     $form['Lang_Specific_Form']['ID_Numbers'] = array(
       '#type'   => 'details',
-      '#title'  =>  t(''),
+      '#title'  =>  t('Identification Numbers'),
       '#open'   =>  TRUE,
       );
 
@@ -383,6 +383,7 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Metadata Licence Title'),
+          '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL HAS/HAVE SAME LICENCE.<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD</i>'),
           // Condition: Input Required if Licence URL Entered by User
           '#states' => [
             'required' => [
@@ -405,7 +406,7 @@ class WissKILegalnoticeForm extends FormBase {
           $form['Lang_Specific_Form']['Copyright']['Licence_Title_Images'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Images Licence Title'),
-            '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL IMAGES HAVE/HAS SAME LICENCE</i>'),
+            '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL HAS/HAVE SAME LICENCE.<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD</i>'),
             // Condition: Input Required if Licence URL Entered by User
             '#states' => [
               'required' => [

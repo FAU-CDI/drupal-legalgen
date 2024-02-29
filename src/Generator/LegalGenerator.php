@@ -148,13 +148,10 @@ class LegalGenerator {
    /**
    * Check if All Values Required for Page Generation Were Passed Through Data Array, Title and Alias Variable
    */
-  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias){
+  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias, String $lang){
 
     // Empty Array to Store Missing/Empty Required Values
     $missingValues = [];
-
-    // Get Page Language
-    $lang = $data['lang'];
 
     // Get Keys for Required Values from Constant
     $required = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
@@ -470,7 +467,7 @@ class LegalGenerator {
     }
 
     // Check That All Required Values Are Available
-    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias);
+    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias, $lang);
 
     if(empty($validity)){
 
