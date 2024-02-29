@@ -12,13 +12,13 @@ We give no guarantee and assume no liability for the topicality and legal correc
 
 ## Customization
 
-Generates above-mentioned legal statements in English and German. To enable generation in another language, add specifications for this language to the config and the respective template to the template folder.
+Generates the above-mentioned legal statements in English and German. To enable generation in another language, add specifications for this language to the config and the respective template to the template folder.
 
 A limited number of customization options are available (see below).
 </br>
 </br>
 
-## Service: WisskiLegalGenerator
+## Service: LegalGenerator
 
 Each of the three legal statements can be generated through the following function:
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\wisski_impressum\Form;
+namespace Drupal\legalgen\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\wisski_impressum\Generator\WisskiLegalGenerator;
+use Drupal\legalgen\Generator\LegalGenerator;
 use \Drupal\node\Entity\Node;
 use \Drupal\Core\Language;
 use \Drupal\Core\Url;
@@ -20,10 +20,10 @@ use Drupal\Core\Controller\ControllerBase;
 /**
  * Configure example settings for this site.
  */
-class WissKiDatenschutzForm extends FormBase{
+class WissKIPrivacyForm extends FormBase{
 
   /**
-   * @var \Drupal\wisski_impressum\Generator\WisskiLegalGenerator
+   * @var \Drupal\legalgen\Generator\LegalGenerator
    */
   protected $generator;
 
@@ -31,8 +31,8 @@ class WissKiDatenschutzForm extends FormBase{
    * {@inheritdoc}
    */
   public function __construct(){
-    /** @var \Drupal\wisski_impressum\Generator\WisskiLegalGenerator */
-    $this->generator = \Drupal::service('wisski_impressum.generator');
+    /** @var \Drupal\legalgen\Generator\LegalGenerator */
+    $this->generator = \Drupal::service('legalgen.generator');
   }
 
   /**
@@ -53,8 +53,8 @@ class WissKiDatenschutzForm extends FormBase{
    * {@inheritdoc}
    */
   public function getStateValues(){
-    if (!empty(\Drupal::state()->get('wisski_impressum.privacy'))) {
-      return \Drupal::state()->get('wisski_impressum.privacy');
+    if (!empty(\Drupal::state()->get('legalgen.privacy'))) {
+      return \Drupal::state()->get('legalgen.privacy');
     } else {
       return NULL;
     }
@@ -72,12 +72,12 @@ class WissKiDatenschutzForm extends FormBase{
 
     // Get State Values for Form
     $stored_values = $this->getStateValues();
-    $default_values = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_PRIVACY'];
+    $default_values = LegalGenerator::REQUIRED_DATA_ALL['REQUIRED_PRIVACY'];
     // Get Legal Notice URL from State
-    $values_from_legalnotice = \Drupal::state()->get('wisski_impressum.legal_notice');
+    $values_from_legalnotice = \Drupal::state()->get('legalgen.legal_notice');
 
     // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
-    $state_vals = \Drupal::state()->get('wisski_impressum.privacy');
+    $state_vals = \Drupal::state()->get('legalgen.privacy');
 
     if(!empty($state_vals)){
         $nid = (string) $state_vals['node_id'];
@@ -92,7 +92,7 @@ class WissKiDatenschutzForm extends FormBase{
     $form = [];
 
     // Get Languages from Config
-    $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
+    $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
     unset($options['_core']);
 
     $lang_options = array();
@@ -438,7 +438,7 @@ class WissKiDatenschutzForm extends FormBase{
       $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $stored_values[$lang]['title'] ?? $default_values[$lang]['title'];
       $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias'] ?? $default_values[$lang]['alias'];
       $form['Lang_Specific_Form']['General']['Not_FAU']['#default_value'] = $stored_values[$lang]['not_fau'] ?? t('');
-      $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#default_value'] = $values_from_legalnotice[$lang]['alias'] ?? WisskiLegalGenerator::REQUIRED_LEGAL_NOTICE_ALIAS_DE;
+      $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#default_value'] = $values_from_legalnotice[$lang]['alias'] ?? LegalGenerator::REQUIRED_LEGAL_NOTICE_ALIAS_DE;
 
       $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title']['#default_value'] = $stored_values[$lang]['sec_off_title'] ?? $default_values[$lang]['sec_off_title'];
       $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name']['#default_value'] = $stored_values[$lang]['sec_off_name'] ?? $default_values[$lang]['sec_off_name'];
@@ -487,7 +487,7 @@ class WissKiDatenschutzForm extends FormBase{
   public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state){
 
     // Get Array from State
-    $content_state = \Drupal::state()->get('wisski_impressum.privacy');
+    $content_state = \Drupal::state()->get('legalgen.privacy');
 
     // Get Language Code Of Selected Form
     $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
@@ -503,7 +503,7 @@ class WissKiDatenschutzForm extends FormBase{
 
         unset($content_state['intl']);
 
-        $new_state_vars = array('wisski_impressum.privacy' => $content_state);
+        $new_state_vars = array('legalgen.privacy' => $content_state);
 
         \Drupal::state()->setMultiple($new_state_vars);
 
@@ -610,7 +610,7 @@ class WissKiDatenschutzForm extends FormBase{
   	                        );
 
     // Let Service Generate Page
-    $success = \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+    $success = \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
 
     // Display Success Message:
     if($success === 'success'){

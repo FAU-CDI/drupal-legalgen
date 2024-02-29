@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\wisski_impressum\Generator;
+namespace Drupal\legalgen\Generator;
 
 use \Drupal\node\Entity\Node;
 use \Drupal\path_alias\Entity\PathAlias;
@@ -14,7 +14,7 @@ use \Drupal\Core\StringTranslation\TranslatableMarkup;
 use \Drupal\Core\Entity\ContentEntityBase;
 
 
-class WisskiLegalGenerator {
+class LegalGenerator {
 
   // Consants used in REQUIRED_DATA_ALL array for legal notice and privacy
   const REQUIRED_LEGAL_NOTICE_ALIAS_DE = 'impressum';
@@ -157,7 +157,7 @@ class WisskiLegalGenerator {
     $lang = $data['lang'];
 
     // Get Keys for Required Values from Constant
-    $required = WisskiLegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
+    $required = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
 
     // Loop over Required Array: Check if Value Exists and Not Empty
     foreach ($required as $k => $v){
@@ -306,15 +306,15 @@ class WisskiLegalGenerator {
   function generateEmptyDefault(string $default_lang, string $required_key, string $page_name): Node {
 
     // Access Data from Config
-    $config = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
+    $config = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
     // Get "Empty" Text from Config
     $text = $config[$default_lang]['empty_text'];
 
     // Get Required Values from State
-    $state_key = 'wisski_impressum.'.$page_name;
+    $state_key = 'legalgen.'.$page_name;
     $stored_values = \Drupal::state()->get($state_key);
-    $default_values = WisskiLegalGenerator::REQUIRED_DATA_ALL[$required_key];
+    $default_values = LegalGenerator::REQUIRED_DATA_ALL[$required_key];
     $title = $stored_values[$default_lang]['title'] ?? $default_values[$default_lang]['title'];
     $alias = $stored_values[$default_lang]['alias'] ?? $default_values[$default_lang]['alias'];
 
@@ -470,12 +470,12 @@ class WisskiLegalGenerator {
     }
 
     // Check That All Required Values Are Available
-    $validity = \Drupal::service('wisski_impressum.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias);
+    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias);
 
     if(empty($validity)){
 
       // Get Info from Config
-      $config_langs = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
+      $config_langs = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
       // Get Template Name from Config
       $templ1 = $config_langs[$lang][$page_name];
@@ -496,7 +496,7 @@ class WisskiLegalGenerator {
 
 
       // Access Page Info from State
-      $state_of_page = 'wisski_impressum.'.$page_name;
+      $state_of_page = 'legalgen.'.$page_name;
       $state_vals = \Drupal::state()->get($state_of_page);
 
       // Get Node ID from State if Available

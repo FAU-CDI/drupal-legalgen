@@ -1,21 +1,21 @@
 <?php
 
-namespace Drupal\wisski_impressum\Form;
+namespace Drupal\legalgen\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\wisski_impressum\Generator\WisskiLegalGenerator;
+use Drupal\legalgen\Generator\LegalGenerator;
 use \Drupal\node\Entity\Node;
 use \Drupal\Core\Language;
 
 /**
  * Configure example settings for this site.
  */
-class WissKiAccessibilityForm extends FormBase {
+class WissKIAccessibilityForm extends FormBase {
 
   /**
-   * @var \Drupal\wisski_impressum\Generator\WisskiLegalGenerator
+   * @var \Drupal\legalgen\Generator\LegalGenerator
    */
   protected $generator;
 
@@ -23,8 +23,8 @@ class WissKiAccessibilityForm extends FormBase {
    * {@inheritdoc}
    */
   public function __construct(){
-    /** @var \Drupal\wisski_impressum\Generator\WisskiLegalGenerator */
-    $this->generator = \Drupal::service('wisski_impressum.generator');
+    /** @var \Drupal\legalgen\Generator\LegalGenerator */
+    $this->generator = \Drupal::service('legalgen.generator');
   }
 
   /**
@@ -45,8 +45,8 @@ class WissKiAccessibilityForm extends FormBase {
    * {@inheritdoc}
    */
   public function getStateValues(){
-    if (!empty(\Drupal::state()->get('wisski_impressum.accessibility'))) {
-      return \Drupal::state()->get('wisski_impressum.accessibility');
+    if (!empty(\Drupal::state()->get('legalgen.accessibility'))) {
+      return \Drupal::state()->get('legalgen.accessibility');
     } else {
       return NULL;
     }
@@ -64,10 +64,10 @@ class WissKiAccessibilityForm extends FormBase {
 
     // Get State Values for Form
     $storedValues = $this->getStateValues();
-    $defaultValues = WisskiLegalGenerator::REQUIRED_DATA_ALL['REQUIRED_ACCESSIBILITY'];
+    $defaultValues = LegalGenerator::REQUIRED_DATA_ALL['REQUIRED_ACCESSIBILITY'];
 
     // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
-    $state_vals = \Drupal::state()->get('wisski_impressum.accessibility');
+    $state_vals = \Drupal::state()->get('legalgen.accessibility');
 
     if(!empty($state_vals)){
         $nid = (string) $state_vals['node_id'];
@@ -99,7 +99,7 @@ class WissKiAccessibilityForm extends FormBase {
           );
 
     // Get languages from config
-    $options = \Drupal::configFactory()->get('wisski_impressum.languages')->getRawData();
+    $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
     unset($options['_core']);
 
     $lang_options = array();
@@ -590,7 +590,7 @@ public function ajaxCallback(array $form, FormStateInterface $form_state){
 public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
 
   // Get Array from State
-  $content_state = \Drupal::state()->get('wisski_impressum.accessibility');
+  $content_state = \Drupal::state()->get('legalgen.accessibility');
 
   // Get Language Code Of Selected Form
   $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
@@ -606,7 +606,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
 
       unset($content_state['intl']);
 
-      $new_state_vars = array('wisski_impressum.accessibility' => $content_state);
+      $new_state_vars = array('legalgen.accessibility' => $content_state);
 
       \Drupal::state()->setMultiple($new_state_vars);
 
@@ -739,7 +739,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
     );
 
     // Let Service Generate Page
-    $success = \Drupal::service('wisski_impressum.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+    $success = \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
 
     // Display Success Message:
     if($success === 'success'){

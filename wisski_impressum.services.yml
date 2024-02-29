@@ -1,3 +1,0 @@
-services:
-  wisski_impressum.generator:
-    class: \Drupal\wisski_impressum\Generator\WisskiLegalGenerator

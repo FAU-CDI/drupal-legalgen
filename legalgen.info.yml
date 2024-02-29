@@ -1,4 +1,4 @@
-name: WissKI Impressum
+name: LegalGenerator
 description: Generate legal notice, accessibility statement, and privacy policy
 core: 8.x
 package: WissKI

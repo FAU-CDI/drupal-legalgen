@@ -1,0 +1,3 @@
+services:
+  legalgen.generator:
+    class: \Drupal\legalgen\Generator\LegalGenerator

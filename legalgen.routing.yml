@@ -1,35 +1,35 @@
 # path name
-wisski.wisski_impressum.impressum:
+wisski.legalgen.legalnotice:
   # URL suffix of the path that will be accessed by the user
-  path: '/admin/wisski/impressum'
+  path: '/admin/wisski/legalnotice'
   defaults:
     # handler that is called when accessing the path above
-    _form: '\Drupal\wisski_impressum\Form\WissKiImpressumForm'
+    _form: '\Drupal\legalgen\Form\WissKILegalnoticeForm'
     # page title
-    _title: "Impressum"
+    _title: "Legal Notice"
   requirements:
     _permission: 'administer wisski'
 
 # path name
-wisski.wisski_impressum.accessibility:
+wisski.legalgen.accessibility:
   # URL suffix of the path that will be accessed by the user
   path: '/admin/wisski/accessibility'
   defaults:
     # handler that is called when accessing the path above
-    _form: '\Drupal\wisski_impressum\Form\WissKiAccessibilityForm'
+    _form: '\Drupal\legalgen\Form\WissKIAccessibilityForm'
     # page title
-    _title: "Barrierefreiheit"
+    _title: "Accessibility"
   requirements:
     _permission: 'administer wisski'
 
 # path name
-wisski.wisski_impressum.datenschutz:
+wisski.legalgen.privacy:
   # URL suffix of the path that will be accessed by the user
-  path: '/admin/wisski/datenschutz'
+  path: '/admin/wisski/privacy'
   defaults:
     # handler that is called when accessing the path above
-    _form: '\Drupal\wisski_impressum\Form\WissKiDatenschutzForm'
+    _form: '\Drupal\legalgen\Form\WissKIPrivacyForm'
     # page title
-    _title: "Datenschutz"
+    _title: "Privacy"
   requirements:
     _permission: 'administer wisski'

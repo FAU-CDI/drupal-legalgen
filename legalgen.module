@@ -5,7 +5,7 @@
  */
 
 
-function wisski_impressum_theme($existing, $type, $theme, $path){
+function legalgen_theme($existing, $type, $theme, $path){
   return [
     'impressum_template' => [
       'variables' => [

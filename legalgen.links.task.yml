@@ -1,0 +1,13 @@
+configuration.legalgen.legalnotice:
+  route_name: wisski.legalgen.legalnotice
+  base_route: wisski.legalgen.legalnotice
+  title: Legal Notice
+configuration.legalgen.accessibility:
+  route_name: wisski.legalgen.accessibility
+  base_route: wisski.legalgen.legalnotice
+  title: Accessibility
+configuration.legalgen.privacy:
+  route_name: wisski.legalgen.privacy
+  base_route: wisski.legalgen.legalnotice
+  title: Privacy
+
