@@ -23,7 +23,11 @@ A limited number of customization options are available (see below).
 Each of the three legal statements can be generated through the following function:
 
 
-><span style="color:PapayaWhip">generatePage</span><span style="color:Gold">(</span><span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$data</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$title</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$alias</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$lang</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$page_name</span>, <span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$state_keys_lang</span>, <span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$state_keys_intl</span><span style="color:Gold">)</span></br>
+><span style="color:PapayaWhip">generatePage</span><span style="color:Gold">(</span><span style="color:CornflowerBlue">array</span><span style="color:SkyBlue">$data</span>,
+<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$title</span>,
+<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$alias</span>, <span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$page_name</span>,<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$lang</span>,
+<span style="color:CornflowerBlue"> array</span> <span style="color:SkyBlue">$state_keys_lang</span>,
+<span style="color:CornflowerBlue"> array</span> <span style="color:SkyBlue">$state_keys_intl</span><span style="color:Gold">)</span></br>
 
 </br>
 
@@ -34,8 +38,8 @@ Each of the three legal statements can be generated through the following functi
 |array|<span style="color:SkyBlue">$data</span>|Should contain all values to be added to the page identified by the keys specified below<br /> See 2.[123]. a)|
 |string|<span style="color:SkyBlue">$title</span>|Page title|
 |string|<span style="color:SkyBlue">$alias</span>|URL Path|
-|string|<span style="color:SkyBlue">$lang</span>|Language code<br />`Use: 'en' or 'de'`|
 |string|<span style="color:SkyBlue">$page_name</span>|Page type to be generated<br />`Use: 'legal_notice', 'accessibility' or 'privacy'`|
+|string|<span style="color:SkyBlue">$lang</span>|Language code<br />`Use: 'en' or 'de'`|
 |array|<span style="color:SkyBlue">$state_keys_lang</span>|All keys for language-specific values. See 2.[123]. b)|
 |array|<span style="color:SkyBlue">$state_keys_intl</span>|All keys for language non-specific values. See 2.[123]. c)|
 <br />

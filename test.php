@@ -139,8 +139,8 @@ $state_keys_intl_ln = array('wisski_url'            => '',
                            );
 
 
-$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $lang_ln_de, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
-$form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $lang_ln_en, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
+$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $page_name_ln, $lang_ln_de, $state_keys_lang_ln, $state_keys_intl_ln);
+$form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $page_name_ln, $lang_ln_en, $state_keys_lang_ln, $state_keys_intl_ln);
 
 
 // GENERATE ACCESSIBILITY STATEMENT
@@ -261,8 +261,8 @@ $state_keys_intl_a = array('wisski_url'            => '',
                            'date'                  => '',
 );
 
-$form->generatePage($data_a_de, $title_a_de, $alias_a_de, $lang_a_de, $page_name_a, $state_keys_lang_a, $state_keys_intl_a);
-$form->generatePage($data_a_en, $title_a_en, $alias_a_en, $lang_a_en, $page_name_a, $state_keys_lang_a, $state_keys_intl_a);
+$form->generatePage($data_a_de, $title_a_de, $alias_a_de, $page_name_a, $lang_a_de, $state_keys_lang_a, $state_keys_intl_a);
+$form->generatePage($data_a_en, $title_a_en, $alias_a_en, $page_name_a, $lang_a_en, $state_keys_lang_a, $state_keys_intl_a);
 
 
 // GENERATE PRIVACY STATEMENT
@@ -349,5 +349,5 @@ $state_keys_intl_p = array('sec_off_address'                => '',
 );
 
 
-$form->generatePage($data_p_de, $title_p_de, $alias_p_de, $lang_p_de, $page_name_p, $state_keys_lang_p, $state_keys_intl_p);
-$form->generatePage($data_p_en, $title_p_en, $alias_p_en, $lang_p_en, $page_name_p, $state_keys_lang_p, $state_keys_intl_p);
+$form->generatePage($data_p_de, $title_p_de, $alias_p_de, $page_name_p, $lang_p_de, $state_keys_lang_p, $state_keys_intl_p);
+$form->generatePage($data_p_en, $title_p_en, $alias_p_en, $page_name_p, $lang_p_en,$state_keys_lang_p, $state_keys_intl_p);

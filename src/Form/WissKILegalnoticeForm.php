@@ -823,7 +823,7 @@ class WissKILegalnoticeForm extends FormBase {
     );
 
     // Let Service Generate Page
-    $success =  \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $lang, $page_name, $state_keys_lang, $state_keys_intl);
+    $success =  \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
 
     // Display Success Message:
     if($success === 'success'){

@@ -455,7 +455,7 @@ class LegalGenerator {
    /**
    * Check Validity of Values Passed from Form, Prepare Body, Generate Page and Store Passed Values in State, Display Status or Error Message to User
    */
-  public function generatePage(array $data, string $title, string $alias, string $lang, string $page_name, array $state_keys_lang, array $state_keys_intl) {
+  public function generatePage(array $data, string $title, string $alias, string $page_name, string $lang, array $state_keys_lang, array $state_keys_intl) {
 
     // Get Key to Access Required Data and Default Data for Page Type
     if($page_name === 'legal_notice'){
