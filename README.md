@@ -1,6 +1,6 @@
 # WissKI Legal Information
 
-Generate Legal Notice, Accessibility Statement, and Privacy Statement. <br />Format and contents of the generated pages are based on the *[RRZE's 'Legal' WordPress plugin](https://github.com/RRZE-Webteam/rrze-legal/tree/main)* adapted to the requirements of WissKI.<br />
+Generates Legal Notice, Accessibility Statement, and Privacy Statement. <br />Format and contents of the generated pages are based on the *[RRZE's 'Legal' WordPress plugin](https://github.com/RRZE-Webteam/rrze-legal/tree/main)* adapted to the requirements of WissKI.
 </br>
 </br>
 
@@ -11,7 +11,8 @@ We give no guarantee and assume no liability for the topicality and legal correc
 </br>
 
 ## Customization
-All pages can be generated in English and German. To enable generation in another language, add specifications for this language to config and the respective template to the template folder.
+
+Generates above-mentioned legal statements in English and German. To enable generation in another language, add specifications for this language to the config and the respective template to the template folder.
 
 A limited number of customization options are available (see below).
 </br>
@@ -19,7 +20,7 @@ A limited number of customization options are available (see below).
 
 ## Service: WisskiLegalGenerator
 
-Each of the three legal statements can be generated through one function.
+Each of the three legal statements can be generated through the following function:
 
 
 ><span style="color:PapayaWhip">generatePage</span><span style="color:Gold">(</span><span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$data</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$title</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$alias</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$lang</span>, <span style="color:CornflowerBlue">string</span> <span style="color:SkyBlue">$page_name</span>, <span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$state_keys_lang</span>, <span style="color:CornflowerBlue">array</span> <span style="color:SkyBlue">$state_keys_intl</span><span style="color:Gold">)</span></br>
@@ -30,13 +31,13 @@ Each of the three legal statements can be generated through one function.
 
 |Type|Key|Description|
 |----:|----|---|
-|array|<span style="color:SkyBlue">$data</span>|Should contain all values to be added to the page identified by the keys specified below. See a)|
+|array|<span style="color:SkyBlue">$data</span>|Should contain all values to be added to the page identified by the keys specified below<br /> See 2.[123]. a)|
 |string|<span style="color:SkyBlue">$title</span>|Page title|
-|string|<span style="color:SkyBlue">$alias</span>|Endpoint|
-|string|<span style="color:SkyBlue">$lang</span>|Language code<br />Use: 'en' or 'de'|
-|string|<span style="color:SkyBlue">$page_name</span>|Page type which should be generated.<br />Use: 'legal_notice', 'accessibility' or 'privacy'|
-|array|<span style="color:SkyBlue">$state_keys_lang</span>|All keys for language-specific values. See b)|
-|array|<span style="color:SkyBlue">$state_keys_intl</span>|All keys for language non-specific values. See c)|
+|string|<span style="color:SkyBlue">$alias</span>|URL Path|
+|string|<span style="color:SkyBlue">$lang</span>|Language code<br />`Use: 'en' or 'de'`|
+|string|<span style="color:SkyBlue">$page_name</span>|Page type to be generated<br />`Use: 'legal_notice', 'accessibility' or 'privacy'`|
+|array|<span style="color:SkyBlue">$state_keys_lang</span>|All keys for language-specific values. See 2.[123]. b)|
+|array|<span style="color:SkyBlue">$state_keys_intl</span>|All keys for language non-specific values. See 2.[123]. c)|
 <br />
 
 <br />
@@ -70,8 +71,14 @@ Each of the three legal statements can be generated through one function.
 ||String|auth_plz|Postal code supervisory authority|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'11011'|
 ||String|auth_city|City supervisory authority|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Anytown'|
 ||String|auth_url|Supervisory authority URL|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'https://supervisory.authority.com/'|
-|**Copyright**|String|licence_title|Name copyright license|<span style="color:IndianRed">&#x2612;</span>|'lang'|'CC Licence Title'|
-||String|licence_url|Copyright license URL|<span style="color:IndianRed">&#x2612;</span>|'intl'|'https://creativecommons.org/licenses/some-licence-type'|
+|**ID Numbers**|String|id_vat|VAT registration number|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'DE 123456789'|
+||String|id_tax|Tax number|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'123/123/12345 (Tax and Revenue Office)'|
+||String|id_duns|DUNS number|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'123456789'|
+||String|id_eori|EORI number|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'DE1234567'|
+|**Copyright**|String|licence_title_meta|Name copyright license|<span style="color:IndianRed">&#x2612;</span>|'lang'|'CC Licence Title'|
+||String|licence_url_meta|Copyright license URL|<span style="color:IndianRed">&#x2612;</span>|'intl'|'https://creativecommons.org/licenses/some-licence-type'|
+||String|licence_title_pics|Name copyright license|<span style="color:IndianRed">&#x2612;</span>|'lang'|'CC Licence Title'|
+||String|licence_url_pics|Copyright license URL|<span style="color:IndianRed">&#x2612;</span>|'intl'|'https://creativecommons.org/licenses/some-licence-type'|
 ||**`Boolean`**|use_fau_temp|**`Checkbox:`** `INSTEAD OF default text display` costum information on copyright|<span style="color:IndianRed">&#x2612;</span>|'lang'|FALSE|
 ||**`Boolean`**|no_default_txt|**`Checkbox:`** WissKI uses FAU corporate design|<span style="color:IndianRed">&#x2612;</span>|'lang'|FALSE|
 ||String|cust_licence_txt|**`Free text:`** Costum information on copyright|<span style="color:IndianRed">&#x2612;</span>|'lang'|'Custom information on proprietary rights in general or for specific contents. Specifications on contents and works not protected under copyright law as well as on private use will always be displayed.'|
