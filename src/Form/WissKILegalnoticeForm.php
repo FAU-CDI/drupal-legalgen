@@ -732,7 +732,6 @@ class WissKILegalnoticeForm extends FormBase {
 
 
     $data = [
-              'lang'                   => $lang,
               'wisski_url'             => $wisski_url,
               'project_name'           => $project_name,
               'pub_institute'          => $pub_institute,

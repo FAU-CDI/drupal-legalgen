@@ -15,7 +15,6 @@ $lang_ln_en = 'en';
 
 
 $data_ln_en = array(
-      'lang'                           => 'en',
       'wisski_url'                     => 'a',
       'project_name'                   => 'b',
       'pub_institute'                  => 'c',
@@ -59,7 +58,6 @@ $data_ln_en = array(
 );
 
 $data_ln_de = array(
-      'lang'                           => 'de',
       'wisski_url'                     => 'a',
       'project_name'                   => 'b',
       'pub_institute'                  => 'c',
@@ -141,8 +139,8 @@ $state_keys_intl_ln = array('wisski_url'            => '',
                            );
 
 
-$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $lang_ln, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
-$form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $lang_ln, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
+$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $lang_ln_de, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
+$form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $lang_ln_en, $page_name_ln, $state_keys_lang_ln, $state_keys_intl_ln);
 
 
 // GENERATE ACCESSIBILITY STATEMENT
@@ -156,7 +154,6 @@ $lang_a_en = 'en';
 
 
 $data_a_en = array(
-      'lang'                        => 'en',
       'wisski_url'                  => 'a',
       'status'                      => 'b',
       'methodology'                 => 'c',
@@ -194,7 +191,6 @@ $data_a_en = array(
 );
 
 $data_a_de = array(
-      'lang'                        => 'de',
       'wisski_url'                  => 'a',
       'status'                      => 'b',
       'methodology'                 => 'c',
@@ -279,7 +275,6 @@ $lang_p_de = 'de';
 $lang_p_en = 'en';
 
 $data_p_en = array(
-      'lang'                           => 'en',
       'not_fau'                        => 'a',
       'legal_notice_url'               => 'b',
       'sec_off_title'                  => 'c',
@@ -304,7 +299,6 @@ $data_p_en = array(
 );
 
 $data_p_de = array(
-      'lang'                           => 'de',
       'not_fau'                        => 'a',
       'legal_notice_url'               => 'b',
       'sec_off_title'                  => 'c',
@@ -355,4 +349,5 @@ $state_keys_intl_p = array('sec_off_address'                => '',
 );
 
 
-$form->generatePage($data_p, $title_p, $alias_p, $lang_p, $page_name_p, $state_keys_lang_p, $state_keys_intl_p);
+$form->generatePage($data_p_de, $title_p_de, $alias_p_de, $lang_p_de, $page_name_p, $state_keys_lang_p, $state_keys_intl_p);
+$form->generatePage($data_p_en, $title_p_en, $alias_p_en, $lang_p_en, $page_name_p, $state_keys_lang_p, $state_keys_intl_p);

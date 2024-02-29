@@ -539,12 +539,12 @@ class LegalGenerator {
 
           } else if($k === 'sup_staff_array'){
 
-            // Change Staff Member List Back to String to Correctly Display in Form
+            // For Legal Notice: Change Staff Member List Back to String to Correctly Display in Form
             $val_array[$k] = implode("; ", $data[$k]);
 
           } else if ($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
 
-            // Change Respective List Back to String to Correctly Display in Form
+            // For Accessibility Statement: Change Respective List Back to String to Correctly Display in Form
             $val_array[$k] = implode("; ", $data[$k]);
 
           }else{
