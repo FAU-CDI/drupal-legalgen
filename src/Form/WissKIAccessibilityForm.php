@@ -471,7 +471,7 @@ $form['Lang_Specific_Form']['Notice'] = array(
 '#type'   => 'item',
 '#prefix' => '<br /><p><strong>',
 '#suffix' => '</strong></p>',
-'#markup' => t('No liability is assumed for the correctness of the data entered.<br />
+'#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
                 Please verify the accuracy of the generated pages.'),
 );
 

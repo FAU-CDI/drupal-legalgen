@@ -83,6 +83,8 @@ class WissKILegalnoticeForm extends FormBase {
 
   // Get Languages from Config
   $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
+
+  // Remove '_core' from Array
   unset($options['_core']);
 
   $lang_options = array();
@@ -518,7 +520,7 @@ class WissKILegalnoticeForm extends FormBase {
     '#type'   => 'item',
     '#prefix' => '<br / ><p><strong>',
     '#suffix' => '</strong></p>',
-    '#markup' => t('No liability is assumed for the correctness of the data entered.<br />
+    '#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
                     Please verify the accuracy of the generated pages.'),
     );
 

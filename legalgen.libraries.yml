@@ -1,0 +1,10 @@
+
+version: 1.x
+
+css:
+  layout:
+    css/legalgen.css: {}
+
+  theme:
+
+js:

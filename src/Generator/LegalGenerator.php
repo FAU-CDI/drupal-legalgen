@@ -22,7 +22,7 @@ class LegalGenerator {
 
   // Array Containing All Values Required for Page Generation
   const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('en' =>  array('title'             => 'Legal Notice',
-                                                                            'alias'             => 'legalnotice',
+                                                                            'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
                                                                             'project_name'      => '',
                                                                             'pub_institute'     => '',
                                                                             'pub_name'          => '',
@@ -34,7 +34,7 @@ class LegalGenerator {
                                                                             'auth_city'         => 'Munich',
                                                                             ),
                                                              'de' =>  array('title'             => 'Impressum',
-                                                                            'alias'             => 'impressum',
+                                                                            'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
                                                                             'project_name'      => '',
                                                                             'pub_institute'     => '',
                                                                             'pub_name'          => '',
@@ -68,9 +68,9 @@ class LegalGenerator {
                                                                                 'status'                => array('Completely compliant',
                                                                                                                  'Partially compliant',
                                                                                                                 ),
-                                                                                'issues_array'          => '',
-                                                                                'statement_array'       => '',
-                                                                                'alternatives_array'    => '',
+                                                                                'issues_array'          => '', // Required if status == Partially compliant
+                                                                                'statement_array'       => '', // Required if status == Partially compliant
+                                                                                'alternatives_array'    => '', // Required if status == Partially compliant
                                                                                 'methodology'           => '',
                                                                                 'contact_access_name'   => '',
                                                                                 'sup_institute'         => '',
@@ -84,9 +84,9 @@ class LegalGenerator {
                                                                                  'status'               => array('Completely compliant',
                                                                                                                  'Partially compliant',
                                                                                                             ),
-                                                                                'issues_array'          => '',
-                                                                                'statement_array'       => '',
-                                                                                'alternatives_array'    => '',
+                                                                                'issues_array'          => '', // Required if status == Partially compliant
+                                                                                'statement_array'       => '', // Required if status == Partially compliant
+                                                                                'alternatives_array'    => '', // Required if status == Partially compliant
                                                                                 'methodology'           => '',
                                                                                 'contact_access_name'   => '',
                                                                                 'sup_institute'         => '',
@@ -148,7 +148,7 @@ class LegalGenerator {
    /**
    * Check if All Values Required for Page Generation Were Passed Through Data Array, Title and Alias Variable
    */
-  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias, String $lang){
+  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias, String $page_name, String $lang){
 
     // Empty Array to Store Missing/Empty Required Values
     $missingValues = [];
@@ -156,19 +156,61 @@ class LegalGenerator {
     // Get Keys for Required Values from Constant
     $required = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
 
-    // Loop over Required Array: Check if Value Exists and Not Empty
+    // 1) Ensure that Language is Defined in Config
+    // Get Languages from Config
+    $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
+
+    // Remove '_core' from Array
+    unset($options['_core']);
+
+    // Check if Language is Configured
+    $key_exists = array_key_exists($lang, $options);
+
+    // Condition(Language NOT Specified in Config: Return Error Message Gernation for Language NOT Possible
+    if(!$key_exists){
+      return 'Generation for this Language not configured';
+    }
+
+
+    // 2) Check if Template for Page in Language Specified Exists
+
+    // Get Template File Name from Config
+    $template_name = $options[$lang][$page_name];
+
+    // Check if File Exits in Templates Folder
+    $file_exists = file_exists('/var/www/data/project/web/modules/legalgen/templates/'.$template_name.'.html.twig');
+
+    // Condition(Template File Does NOT Exist): Return Error Message Template NOT Available
+    if(!$file_exists){
+
+      // Clear File Status Cache if Entered Condition
+      clearstatcache();
+
+      return 'Template not available';
+    }
+
+    // Clear File Status Cache if Did not Enter Condition Above
+    clearstatcache();
+
+
+    // 3) Check if All Required Values Are Provided
+    // Loop Over Required Array: Check if Value Exists and Not Empty
     foreach ($required as $k => $v){
 
       $requiredKeyInData = array_key_exists($k, $data);
 
-      // Add to Missing Values if Key not in Data or Title or Alias OR if Value is Empty
+      // Add to Missing Values if Key from Required Array not in Data and is NOT Title and is NOT Alias OR if Value is Empty
       if(($requiredKeyInData === FALSE and $k !== 'title' and $k !== 'alias') or empty($data[$k]) === 0 or empty($title) === 0 or empty($alias) === 0){
 
-        if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
+        // Condition( Status = "Completely compliant"): Arrays Do NOT Need to Contain Information
+        if($page_name === 'accessibility'){
 
-          if ($required['status'] === 'Completely compliant'){
-            continue;
+          if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
 
+            if ($required['status'] === 'Completely compliant'){
+              continue;
+
+            }
           }
         }
         // Add Empty/Missing to Array
@@ -179,6 +221,58 @@ class LegalGenerator {
 
       continue;
     }
+
+
+    // 4) Check if All Conditionally Required Values Are Provided
+
+    // 4.1) Legal Notice
+
+    if($page_name === 'legal_notice'){
+
+      // Condition ():
+      if ($data['no_default_txt'] == TRUE and $data['cust_licence_txt'] === '') {
+        array_push($missingValues, 'cust_licence_txt');
+      }
+
+      if (!empty($data['licence_url_meta']) and empty($data['licence_title_meta'])) {
+        array_push($missingValues, 'licence_title_meta');
+      }
+
+      if (!empty($data['licence_url_imgs']) and empty($data['licence_title_imgs'])) {
+        array_push($missingValues, 'licence_title_imgs');
+      }
+    }
+
+    // 4.2) Privacy
+
+    if($page_name === 'privacy'){
+
+      // Condition (3rd Party Service Provider is Named): Legal Information on Data Collection is Provided
+      if(!empty($data['third_service_provider'])){
+
+        // List of Keys for Required Values if 3rd Party Service Provider
+        $required_vals = ['third_descr_data_coll', 'third_legal_basis_data_coll', 'third_objection_data_coll'];
+
+        foreach ($required_vals as $k){
+
+          // Check if Required Key in Data Array
+          $requiredKeyInData = array_key_exists($k, $data);
+
+          // Key NOT in Data Array
+          if($requiredKeyInData === FALSE){
+
+            array_push($missingValues, $k);
+
+            // Key IS in Data Array but has NO Value
+          } else {
+            if(empty($data[$k])){
+              array_push($missingValues, $k);
+            }
+          }
+        }
+      }
+    }
+
 
     // Convert Missing Values to String
     return implode(", ", $missingValues);
@@ -467,7 +561,7 @@ class LegalGenerator {
     }
 
     // Check That All Required Values Are Available
-    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias, $lang);
+    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias, $page_name, $lang);
 
     if(empty($validity)){
 
@@ -477,7 +571,7 @@ class LegalGenerator {
       // Get Template Name from Config
       $templ1 = $config_langs[$lang][$page_name];
 
-      // Create Template from Form Data Array
+      // Populate Template with Form Data from Data Array
       $template = ['#theme' => $templ1];
       foreach ($data as $key => $val) {
         $new_key = "#{$key}";
@@ -490,7 +584,6 @@ class LegalGenerator {
 
       // Render Page Body
       $body = \Drupal::service('renderer')->renderPlain($template);
-
 
       // Access Page Info from State
       $state_of_page = 'legalgen.'.$page_name;
@@ -618,7 +711,7 @@ class LegalGenerator {
 
   } else {
     // Error Message to User: Invalid Value(s) Given
-    \Drupal::messenger()->addError('Unfortunately an error ocurred: Required values invalid', 'status', TRUE);
+    \Drupal::messenger()->addError('Unfortunately an error ocurred: Required values invalid! '.$validity, 'status', TRUE);
   }
   }
 }

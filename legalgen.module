@@ -4,7 +4,6 @@
  * Impement hook_theme().
  */
 
-
 function legalgen_theme($existing, $type, $theme, $path){
   return [
     'impressum_template' => [

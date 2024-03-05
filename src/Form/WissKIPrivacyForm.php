@@ -274,7 +274,7 @@ class WissKIPrivacyForm extends FormBase{
         $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Provider'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Third Party Service'),
-          '#description'   => t('<i>LEAVE EMPTY TO NOT DISPLAY WHOLE SECTION</i>'),
+          '#description'   => t('<i>LEAVE THIS FIELD EMPTY TO NOT DISPLAY WHOLE SECTION</i>'),
           // Used for Condition
           '#id'            => 'third_party',
         );
@@ -377,7 +377,7 @@ class WissKIPrivacyForm extends FormBase{
         '#type'   => 'item',
         '#prefix' => '<br /><p><strong>',
         '#suffix' => '</strong></p>',
-        '#markup' => t('No liability is assumed for the correctness of the data entered.<br />
+        '#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
                         Please verify the accuracy of the generated pages.'),
       );
 
