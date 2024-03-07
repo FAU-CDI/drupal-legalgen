@@ -148,10 +148,51 @@ class LegalGenerator {
    /**
    * Check if All Values Required for Page Generation Were Passed and Are Valid
    */
-  public function validateDataBeforeGeneration(array $data, String $required_key, String $title, String $alias, String $page_name, String $lang, array $state_keys_lang, array $state_keys_intl){
+  public function validateBeforeGeneration(array $data, String $title, String $alias, String $page_name, String $lang, array $state_keys_lang, array $state_keys_intl): String|NULL {
 
-    // Empty Array to Store Missing/Empty Required Values
-    $missingValues = [];
+    $message = 'Unfortunately an error ocurred! The following required values are invalid: ';
+
+    // Validate Language
+    $valid_lang = \Drupal::service('legalgen.generator')->validateLang($lang);
+
+    // If Language is NOT Valid Return Error Message
+    if($valid_lang === FALSE){
+        return 'Generation for this Language NOT configured';
+    }
+    // If Page Name Is Valid Return Required Key to Check Arrays
+    $required_key = \Drupal::service('legalgen.generator')->validatePage($page_name);
+
+    // If Page Name NOT Valid Return Error Message
+    if($required_key === NULL){
+        return 'Page type NOT available';
+    }
+
+    // If Template Does NOT Exist Return Error Message
+    $template_exists = \Drupal::service('legalgen.generator')->validateTemplate($page_name, $lang);
+    if($template_exists === FALSE ){
+        return 'Template NOT available';
+    }
+
+    // If One or More Keys Invalid Return Names of Those Keys
+    $invalid_keys = \Drupal::service('legalgen.generator')->validateKeys($required_key, $lang, $state_keys_lang, $state_keys_intl);
+    if(empty($invalid_keys)){
+        return $invalid_keys;
+    }
+
+    // If Values in Data Array Invalid Return Keys for Those Values
+    $invalid_data = \Drupal::service('legalgen.generator')->validateData($data, $required_key, $title, $alias, $page_name, $lang);
+    if(empty($invalid_data)){
+        return $invalid_data;
+    }
+
+    return NULL;
+  }
+
+
+  /**
+  * Check if Valid Language is Passed
+  */
+  function validateLang(String $lang): Bool {
 
     // 1) Ensure that Language is Defined in Config
     // Get Languages from Config
@@ -165,16 +206,49 @@ class LegalGenerator {
 
     // Condition(Language NOT Specified in Config: Return Error Message Gernation for Language NOT Possible
     if(!$key_exists){
-      return 'Generation for this Language not configured';
+        return FALSE;
+    } else {
+        return TRUE;
     }
+  }
 
 
-    // 2) Check if Template for Page in Language Specified Exists
+  /**
+  * Check if Page Name is Valid
+  * If so Returns Key to Access Array with Keys for Required Values
+  */
+  function validatePage(String $page_name): String|NULL {
+
+    // 1) Check if Page Name is Valid
+    // Get Key to Access Required Data and Default Data for Page Type
+    if($page_name === 'legal_notice'){
+        return 'REQUIRED_LEGALNOTICE';
+
+    } else if ($page_name === 'accessibility'){
+        return'REQUIRED_ACCESSIBILITY';
+
+    } else if ($page_name === 'privacy'){
+        return 'REQUIRED_PRIVACY';
+
+    } else {
+        // No Such Page Available
+        return NULL;
+    }
+  }
+
+
+  /**
+  * Check if Template for Page in Language Specified Exists
+  */
+  function validateTemplate(String $page_name, String $lang): Bool {
+
+    // Get Languages from Config
+    $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
     // Get Template File Name from Config
     $template_name = $options[$lang][$page_name];
 
-    // Switch _ for -
+    // Switch _ with -
     $templ_name = str_replace('_', '-', $template_name);
 
     // Check if File Exits in Templates Folder
@@ -183,31 +257,74 @@ class LegalGenerator {
     // Condition(Template File Does NOT Exist): Return Error Message Template NOT Available
     if(!$file_exists){
 
-      // Clear File Status Cache if Entered Condition
-      clearstatcache();
+        // Clear File Status Cache if Entered Condition
+        clearstatcache();
 
-      return 'Template not available';
+        return FALSE;
+
+    } else {
+
+        // Clear File Status Cache if Did not Enter Condition Above
+        clearstatcache();
+        return TRUE;
     }
-
-    // Clear File Status Cache if Did not Enter Condition Above
-    clearstatcache();
+  }
 
 
-    // 3) Check if All Required Values Exist in Arrays
-    // Get Keys for Required Values from Constant
+  /**
+   * Check if All Keys Required for Page Generation Were Passed
+   */
+  function validateKeys(String $required_key, String $lang, array $state_keys_lang, array $state_keys_intl): String {
+
+    // Get Required Keys
     $required_lang = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
-
     $required_intl = LegalGenerator::REQUIRED_DATA_ALL[$required_key]['intl'];
 
-    $required = array_merge($required_lang, $required_intl);
+    // Empty Array to Store Missing/Empty Required Values
+    $missingValues = [];
 
+    // 1) Lang Array
+    foreach ($required_lang as $req_k => $va){
+        $requiredKeyInLang = array_key_exists($req_k, $state_keys_lang);
+
+        if($requiredKeyInLang === FALSE){
+            array_push($missingValues, $req_k);
+        }
+    }
+
+    // 2) Intl Array
+    foreach ($required_intl as $req_key => $var){
+      $requiredKeyInIntl = array_key_exists($req_key, $state_keys_intl);
+
+    if($requiredKeyInIntl === FALSE and $req_key !== 'title' and $req_key !== 'alias'){
+        array_push($missingValues, $req_key);
+        }
+    }
+
+    return implode(", ", $missingValues);
+  }
+
+
+  /**
+  * Check if All Values Required for Page Generation Were Passed and Are Valid
+  */
+  function validateData(array $data, String $required_key, String $title, String $alias, String $page_name, String $lang){
+
+    // Empty Array to Store Missing/Empty Required Values
+    $missingValues = [];
+
+    // Get Keys for Required Values from Constant
+    $required_lang = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
+    $required_intl = LegalGenerator::REQUIRED_DATA_ALL[$required_key]['intl'];
+
+    // Merge Language-Specific and International Array
+    $required = array_merge($required_lang, $required_intl);
 
     // Loop Over Required Array: Check if Value Exists and Not Empty
     foreach ($required as $k => $v){
 
       $requiredKeyInData = array_key_exists($k, $data);
 
-      // 3.1) Data Array
       // Add to Missing Values if Key from Required Array not in Data and is NOT Title and is NOT Alias OR if Value is Empty
       if(($requiredKeyInData === FALSE and $k !== 'title' and $k !== 'alias') or empty($data[$k]) === 0 or empty($title) === 0 or empty($alias) === 0){
 
@@ -218,54 +335,20 @@ class LegalGenerator {
 
             if ($required['status'] === 'Completely compliant'){
               continue;
-
             }
           }
         }
-
-
         // Add Empty/Missing to Array
         array_push($missingValues, $k);
         continue;
-
       }
-
       continue;
     }
 
 
-    // 3.2) Lang Array
+    // Check if All Conditionally Required Values Are Provided
 
-    foreach ($required_lang as $req_k => $va){
-
-      $requiredKeyInLang = array_key_exists($req_k, $state_keys_lang);
-
-      if($requiredKeyInLang === FALSE){
-
-        array_push($missingValues, $req_k);
-
-      }
-    }
-
-
-    // 3.3) Intl Array
-
-    foreach ($required_intl as $req_key => $var){
-
-      $requiredKeyInIntl = array_key_exists($req_key, $state_keys_intl);
-
-      if($requiredKeyInIntl === FALSE and $req_key !== 'title' and $req_key !== 'alias'){
-
-        array_push($missingValues, $req_key);
-
-      }
-    }
-
-
-    // 4) Check if All Conditionally Required Values Are Provided
-
-    // 4.1) Legal Notice
-
+    // For Legal Notice
     if($page_name === 'legal_notice'){
 
       // Condition ():
@@ -282,8 +365,7 @@ class LegalGenerator {
       }
     }
 
-    // 4.2) Privacy
-
+    // For Privacy
     if($page_name === 'privacy'){
 
       // Condition (3rd Party Service Provider is Named): Legal Information on Data Collection is Provided
@@ -302,7 +384,7 @@ class LegalGenerator {
 
             array_push($missingValues, $k);
 
-            // Key IS in Data Array but has NO Value
+          // Key IS in Data Array but has NO Value
           } else {
             if(empty($data[$k])){
               array_push($missingValues, $k);
@@ -311,11 +393,10 @@ class LegalGenerator {
         }
       }
     }
-
-
     // Convert Missing Values to String
     return implode(", ", $missingValues);
   }
+
 
 
   public $template;
@@ -473,7 +554,7 @@ class LegalGenerator {
    /**
    * Check if Node Already Exists and Generate Respective Page(s) Calling Functions Above
    */
-  function checkPage (string $title, string $alias, $body, string $lang, string $overwrite, string $required_key, string $page_name, $node): array|NULL {
+  function checkPage (string $title, string $alias, $body, string $lang, string $overwrite, string $page_name, $node): array|NULL {
 
     // Get Default Language
     $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
@@ -496,6 +577,8 @@ class LegalGenerator {
       // B) Generate NON Default Language
 
         // a) Generate Empty Default Lang
+        $required_key = \Drupal::service('legalgen.generator')->validatePage($page_name);
+
         $node = $this->generateEmptyDefault($default_lang, $required_key, $page_name);
 
 
@@ -587,22 +670,10 @@ class LegalGenerator {
    */
   public function generatePage(array $data, string $title, string $alias, string $page_name, string $lang, array $state_keys_lang, array $state_keys_intl) {
 
-    // Get Key to Access Required Data and Default Data for Page Type
-    if($page_name === 'legal_notice'){
-      $required_key = 'REQUIRED_LEGALNOTICE';
-
-    } else if ($page_name === 'accessibility'){
-      $required_key = 'REQUIRED_ACCESSIBILITY';
-
-    } else if ($page_name === 'privacy'){
-      $required_key = 'REQUIRED_PRIVACY';
-
-    }
-
     // Check That All Required Values Are Available
-    $validity = \Drupal::service('legalgen.generator')->validateDataBeforeGeneration($data, $required_key, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
+    $validated = \Drupal::service('legalgen.generator')->validateBeforeGeneration($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
 
-    if(empty($validity)){
+    if($validated == NULL){
 
       // Get Info from Config
       $config_langs = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
@@ -640,7 +711,7 @@ class LegalGenerator {
       }
 
       // Generate or Update Page According to Circumstances
-      $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $required_key, $page_name, $node);
+      $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $page_name, $node);
 
       // Store Info from Page Generation in Variables to Later Display to User
       $node_id = $pageArray[0];
@@ -751,7 +822,7 @@ class LegalGenerator {
 
   } else {
     // Error Message to User: Invalid Value(s) Given
-    \Drupal::messenger()->addError('Unfortunately an error ocurred! The following required values are invalid: '.$validity, 'status', TRUE);
+    \Drupal::messenger()->addError($validated, 'status', TRUE);
   }
   }
 }
