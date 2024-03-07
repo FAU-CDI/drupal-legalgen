@@ -79,14 +79,22 @@
             {{ include('@legalgen/legalnotice-template/controlling-authority-template_en.html.twig') }}
         </div>
 
-        <div>
-            <h3>ID numbers</h3>
-            <p>The VAT registration number pursuant to §27a Umsatzsteuergesetz is: {{ id_vat }}
-               Tax number: {{ id_tax }}
-               DUNS number: {{ id_duns }}
-               EORI number: {{ id_eori }}
-            </p>
+        <h3>Identification numbers</h3>
 
+        <p class="vat">The VAT registration number pursuant to §27a Umsatzsteuergesetz is: {{ id_vat }}</p>
+        <div class="rTableRow">
+        <div class="rTableCell">Tax number:</div>
+        <div class="rTableCell">{{ id_tax }}</div>
+        </div>
+
+        <div class="rTableRow">
+        <div class="rTableCell">DUNS number:</div>
+        <div class="rTableCell">{{ id_duns }}</div>
+        </div>
+
+        <div class="rTableRow">
+        <div class="rTableCell">EORI number:</div>
+        <div class="rTableCell">{{ id_eori }}</div>
         </div>
 
         <div>
@@ -97,7 +105,7 @@
     <br />
 
     <div>
-    <!-- Collapsibles: Start -->
+    {# Collapsibles: Start #}
     <details>
     <summary>
         Copyright
@@ -314,7 +322,7 @@
     </details>
     {% endif %}
 
-    <!-- Collapsibles: End -->
+    {# Collapsibles: End #}
     <br />
     <br />
     <div>
@@ -324,3 +332,5 @@
         </p>
     </div>
 </div>
+
+{% endapply %}
