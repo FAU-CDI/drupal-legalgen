@@ -385,7 +385,7 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Metadata Licence Title'),
-          '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL HAS/HAVE SAME LICENCE.<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD</i>'),
+          '#description'   => t('<i>USE ONLY IF MOST/ALL HAVE SAME LICENCE<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD BELOW</i>'),
           // Condition: Input Required if Licence URL Entered by User
           '#states' => [
             'required' => [
@@ -407,8 +407,8 @@ class WissKILegalnoticeForm extends FormBase {
 
           $form['Lang_Specific_Form']['Copyright']['Licence_Title_Images'] = array(
             '#type'          => 'textfield',
-            '#title'         => t('Images Licence Title'),
-            '#description'   => t('<i>ONLY USE IF MAJORITY OR ALL HAS/HAVE SAME LICENCE.<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD</i>'),
+            '#title'         => t('Images or Digital Representations Licence Title'),
+            '#description'   => t('<i>USE ONLY IF MOST/ALL HAVE SAME LICENCE<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD BELOW</i>'),
             // Condition: Input Required if Licence URL Entered by User
             '#states' => [
               'required' => [
@@ -423,7 +423,7 @@ class WissKILegalnoticeForm extends FormBase {
 
           $form['Lang_Specific_Form']['Copyright']['Licence_URL_Images'] = array(
             '#type'          => 'textfield',
-            '#title'         => t('Images Licence URL'),
+            '#title'         => t('Images or Digital Representations Licence URL'),
             '#id'            => 'licence_url_imgs',
             '#required'      => FALSE,
             );
@@ -453,7 +453,7 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Copyright']['No_Default_Text'] = array(
           '#type'          => 'checkbox',
           '#title'         => t('Display text in textarea \'Custom Information On Licence(s)\' instead of default text in section \'Copyright\''),
-          '#description'   => t('<i>REPLACES ALL EXCEPT INFO ON private use AND ON content not protected by copyright law</i>'),
+          '#description'   => t('<i>REPLACES ALL EXCEPT INFO ABOUT private use AND ABOUT content not protected by copyright law</i>'),
           '#required'      => FALSE,
           // Used for Condition
           '#id'            => 'no_default_txt',
