@@ -177,8 +177,11 @@ class LegalGenerator {
     // Get Template File Name from Config
     $template_name = $options[$lang][$page_name];
 
+    // Switch _ for -
+    $templ_name = str_replace('_', '-', $template_name);
+
     // Check if File Exits in Templates Folder
-    $file_exists = file_exists('/var/www/data/project/web/modules/legalgen/templates/'.$template_name.'.html.twig');
+    $file_exists = file_exists('/var/www/data/project/web/modules/legalgen/templates/'.$templ_name.'.html.twig');
 
     // Condition(Template File Does NOT Exist): Return Error Message Template NOT Available
     if(!$file_exists){
@@ -582,8 +585,11 @@ class LegalGenerator {
       unset($template['#lang']);
       unset($template['#overwrite']);
 
+
       // Render Page Body
       $body = \Drupal::service('renderer')->renderPlain($template);
+
+      dpm($body, 'Body');
 
       // Access Page Info from State
       $state_of_page = 'legalgen.'.$page_name;
