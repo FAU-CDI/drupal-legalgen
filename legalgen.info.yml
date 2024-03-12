@@ -7,3 +7,5 @@ core_version_requirement: ^8 || ^9 || ^10
 dependencies:
   - wisski:wisski_core
   - content_translation
+libraries:
+  - legalgen/legalpages_library

@@ -65,9 +65,6 @@ class LegalGenerator {
                                                           	),
                                 'REQUIRED_ACCESSIBILITY' => array('en' => array('title'                 => 'Accessibility',
                                                                                 'alias'                 => 'accessibility',
-                                                                                'status'                => array('Completely compliant',
-                                                                                                                 'Partially compliant',
-                                                                                                                ),
                                                                                 'issues_array'          => '', // Required if status == Partially compliant
                                                                                 'statement_array'       => '', // Required if status == Partially compliant
                                                                                 'alternatives_array'    => '', // Required if status == Partially compliant
@@ -81,9 +78,6 @@ class LegalGenerator {
                                                                                ),
                                                                   'de' =>  array('title'                => 'Barrierefreiheit',
                                                                                  'alias'                => 'barrierefreiheit',
-                                                                                 'status'               => array('Completely compliant',
-                                                                                                                 'Partially compliant',
-                                                                                                            ),
                                                                                 'issues_array'          => '', // Required if status == Partially compliant
                                                                                 'statement_array'       => '', // Required if status == Partially compliant
                                                                                 'alternatives_array'    => '', // Required if status == Partially compliant
@@ -96,6 +90,9 @@ class LegalGenerator {
                                                                                 'overs_city'            => 'München',
                                                                                 ),
                                                                   'intl' => array('wisski_url'            => '',
+                                                                                  'status'                => array('Completely compliant',
+                                                                                                                   'Partially compliant',
+                                                                                                                  ),
                                                                                   'creation_date'         => '',
                                                                                   'last_revis_date'       => '',
                                                                                   'contact_access_phone'  => '',

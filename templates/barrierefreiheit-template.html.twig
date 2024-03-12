@@ -1,3 +1,4 @@
+{{ attach_library('legalgen/legalpages_library') }}
 <div lang="de">
 
     <div>
@@ -19,13 +20,13 @@
 
     <div>
         {% if status == 'Completely compliant' %}
-            <div class="alert alert-secondary" aria-role="alert">
+            <div class="accessibility__conformity-complete">
                 <p>Vollständig konform: Der Inhalt entspricht ohne Ausnahmen vollständig dem Standard für Barrierefreiheit</p>
             </div>
         {% endif %}
 
         {% if status == 'Partially compliant' %}
-            <div class="alert alert-warning" aria-role="alert">
+            <div class="accessibility__conformity-partial">
                 <p>Teilweise konform: Einige Teile des Inhalts entsprechen nicht vollständig dem Standard für Barrierefreiheit</p>
             </div>
         {% endif %}
@@ -34,7 +35,6 @@
             <strong>Methodik der Prüfung:</strong>
             {{ methodology }}
         </p>
-
         <p>
             <strong>Erstellungsdatum:</strong>
             {{ creation_date }}
@@ -44,6 +44,23 @@
             <strong>Letzte Überprüfung:</strong>
             {{ last_revis_date }}
         </p>
+
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Methodik der Prüfung:</strong></div>
+        <div class="rTableCell">{{ methodology }}</div>
+        </div>
+
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Erstellungsdatum:</strong></div>
+        <div class="rTableCell">{{ creation_date }}</div>
+        </div>
+
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Letzte Überprüfung:</strong></div>
+        <div class="rTableCell">{{ last_revis_date }}</div>
+        </div>
+
+
 
         {% if report_url %}
             <p>

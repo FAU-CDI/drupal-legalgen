@@ -212,3 +212,12 @@ function legalgen_theme($existing, $type, $theme, $path){
     ],
   ];
 }
+
+
+function legalgen_page_attachments(array &$page) {
+  if (!\Drupal::currentUser()->hasPermission('access contextual links')) {
+    return;
+  }
+
+  $page['#attached']['library'][] = 'legalgen/legalpages_library';
+}

@@ -1,3 +1,4 @@
+{{ attach_library('legalgen/legalpages_library') }}
 <div lang="en">
 
     <div>
@@ -18,13 +19,15 @@
 
     <div>
         {% if status == 'Completely compliant' %}
-            <div class="alert alert-secondary" aria-role="alert">
-                <p>{{ status }}: The content is fully compliant with the accessibility standard without exceptions</p>
+            <div class="accessibility__conformity-complete">
+                <div>
+                    <p>{{ status }}: The content is fully compliant with the accessibility standard without exceptions</p>
+                </div>
             </div>
         {% endif %}
 
         {% if status == 'Partially compliant' %}
-            <div class="alert alert-warning" aria-role="alert">
+            <div class="accessibility__conformity-partial">
                 <p>{{ status }}: Some parts of the content are not fully compliant with the accessibility standard</p>
             </div>
         {% endif %}

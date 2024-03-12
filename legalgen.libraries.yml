@@ -1,10 +1,8 @@
-
-version: 1.x
-
-css:
-  layout:
-    css/legalgen.css: {}
-
+legalpages_library:
+ version: 1.x
+ css:
   theme:
+   css/legalpages_library.css: {}
+ js: {}
 
-js:
+ drupalSettings: null

@@ -147,7 +147,7 @@ Each of the three legal statements can be generated through the following functi
 |Section|Type|Key|Description|Required|Key Array|Example|
 |----|----|----|----|:----:|----|---|
 |**General**|String|wisski_url|WissKI URL|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'https://projectname.wisski.data.fau.de/'|
-|**Conformity**|String|status|Dropdown: Either `"Completely compliant"` or `"Partially compliant"`|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Partially compliant'|
+|**Conformity**|String|status|Dropdown: Either `"Completely compliant"` or `"Partially compliant"`|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'Partially compliant'|
 ||String|methodology|Assessment methodology|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Example Assessment Methodology'|
 ||String|creation_date|Date assessment|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'13.07.2021'|
 ||String|last_revis_date|Last revision assessment|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'27.08.2023'|
@@ -180,7 +180,6 @@ Each of the three legal statements can be generated through the following functi
 
 > $state_keys_lang = array('title'                 => '',
                            'alias'                 => '',
-                           'status'                => '',
                            'methodology'           => '',
                            'issues_array'          => '',
                            'statement_array'       => '',
@@ -199,6 +198,7 @@ Each of the three legal statements can be generated through the following functi
 ##### **c) <u>Intl Keys Array</u>**
 
 > $state_keys_intl = array('wisski_url'            => '',
+                           'status'                => '',
                            'creation_date'         => '',
                            'last_revis_date'       => '',
                            'report_url'            => '',

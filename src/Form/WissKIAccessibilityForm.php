@@ -534,7 +534,7 @@ $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValue
 $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url']?? \Drupal::request()->getSchemeAndHttpHost();
 $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
 
-$form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $storedValues[$lang]['status']?? $defaultValues[$lang]['status'];
+$form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $storedValues['intl']['status']?? $defaultValues['intl']['status'];
 $form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#default_value'] = $storedValues[$lang]['methodology']?? $defaultValues[$lang]['methodology'];
 $form['Lang_Specific_Form']['Conformity']['Creation_Date']['#default_value'] = $storedValues['intl']['creation_date']?? $defaultValues['intl']['creation_date'];
 $form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#default_value'] = $storedValues['intl']['last_revis_date']?? $defaultValues['intl']['last_revis_date'];
@@ -705,7 +705,6 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
     // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
-                             'status'                => '',
                              'methodology'           => '',
                              'issues_array'          => '',
                              'statement_array'       => '',
@@ -717,10 +716,12 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
                              'overs_dept'            => '',
                              'overs_city'            => '',
                              'overwrite_consent'     => '',
-    );
+                            );
+
 
     // c) Keys to Use for Storage in State
     $state_keys_intl = array('wisski_url'            => '',
+                             'status'                => '',
                              'creation_date'         => '',
                              'last_revis_date'       => '',
                              'report_url'            => '',
