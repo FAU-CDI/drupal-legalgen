@@ -184,7 +184,7 @@ class WissKIAccessibilityForm extends FormBase {
 
           $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
             '#type'          => 'textfield',
-            '#title'         => t('Accessibility Statement Applies to Content Under the Following Domain(s)'),
+            '#title'         => t('Accessibility Statement Applies to Content Under the Following URL(s)'),
             '#required'      => TRUE,
             );
 
@@ -264,7 +264,7 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Issues']['Known_Issues'] = array(
         '#type'           => 'textarea',
         '#title'          => t('Content That Is Not Accessible to All'),
-        '#description'    => t('Using "; " as separator - e.g. "Issue 1; Issue 2;..." - will create an unordered list'),
+        '#description'    => t('Using ";" as separator - e.g. "Issue 1; Issue 2;..." - will create an unordered list'),
         // Condition (Conformity Status == Completely Compliant): Field Visible and Required
         '#states' => [
           'visible' => [
@@ -284,7 +284,7 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Issues']['Justification_Statement'] = array(
         '#type'           => 'textarea',
         '#title'          => t('Justification'),
-        '#description'    => t('Using "; " as separator - e.g. "Justification 1; Justification 2;..." - will create an unordered list'),
+        '#description'    => t('Using ";" as separator - e.g. "Justification 1; Justification 2;..." - will create an unordered list'),
 
         '#states' => [
           'visible' => [
@@ -304,7 +304,7 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Issues']['Alternative_Access'] = array(
         '#type'           => 'textarea',
         '#title'          => t('Alternative Ways of Access'),
-        '#description'    => t('Using "; " as separator - e.g. "Alternative 1; Alternative 2;..." - will create an unordered list'),
+        '#description'    => t('Using ";" as separator - e.g. "Alternative 1; Alternative 2;..." - will create an unordered list'),
        // Condition (Conformity Status == Completely Compliant): Field Visible and Required
         '#states' => [
           'visible' => [
@@ -657,9 +657,17 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
     $overwrite_consent     = $values['Overwrite_Consent'];
 
     // Convert Info in String to Array to Display as Unordered List on Page
-    $issues_array = explode('; ', $known_issues);
-    $statement_array = explode('; ', $statement);
-    $alternatives_array = explode('; ', $alternatives);
+    $issues_array = explode(';', $known_issues);
+    var_dump($issues_array);
+    $issues_array = array_map('trim', $issues_array);
+
+    $statement_array = explode(';', $statement);
+    var_dump($statement_array);
+    $statement_array = array_map('trim', $statement_array);
+
+    $alternatives_array = explode(';', $alternatives);
+    var_dump($alternatives_array);
+    $alternatives_array = array_map('trim', $alternatives_array);
 
     // Change Date Format
     $date = date('d.m.Y', strtotime($date));

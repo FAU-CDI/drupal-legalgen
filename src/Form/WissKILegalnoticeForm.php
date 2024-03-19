@@ -171,7 +171,7 @@ class WissKILegalnoticeForm extends FormBase {
 
     $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
       '#type'          => 'textfield',
-      '#title'         => t('Legal Notice Applies to Content Under the Following Domain(s)'),
+      '#title'         => t('Legal Notice Applies to Content Under the Following URL(s)'),
       '#required'      => TRUE,
       );
 
@@ -288,7 +288,7 @@ class WissKILegalnoticeForm extends FormBase {
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
           '#type'          => 'textfield',
-          '#title'         => t('Hompage Support and Hosting'),
+          '#title'         => t('Homepage Support and Hosting'),
           '#required'      => TRUE,
           );
 
@@ -728,7 +728,9 @@ class WissKILegalnoticeForm extends FormBase {
     $overwrite_consent    = $values['Overwrite_Consent'];
 
     // Convert Staff Info in String to Array to Display as Unordered List on Page
-    $sup_staff_array = explode('; ', $sup_staff);
+    $sup_staff_array = explode(';', $sup_staff);
+    var_dump($sup_staff_array);
+    $sup_staff_array = array_map('trim', $sup_staff_array);
 
     // Change Date Format
     $date = date('d.m.Y', strtotime($date));
