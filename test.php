@@ -5,98 +5,98 @@ $form = \Drupal::service('legalgen.generator');
 
 // GENERATE LEGAL NOTICE
 
-$title_ln_de = 'GERMAN TITLE';
-$title_ln_en = 'ENGLISH TITLE';
-$alias_ln_de = 'GERMAN ALIAS';
-$alias_ln_en = 'ENGLISH ALIAS';
+$title_ln_de = 'Ger Title LN';
+$title_ln_en = 'ENG Title LN';
+$alias_ln_de = 'GERMANALIASLEGALNOTICE';
+$alias_ln_en = 'ENGLISHALIASLEGALNOTICE';
 $page_name_ln = 'legal_notice';
 $lang_ln_de = 'de';
 $lang_ln_en = 'en';
 
 
 $data_ln_en = array(
-      'wisski_url'                     => 'a',
-      'project_name'                   => 'b',
-      'pub_institute'                  => 'c',
-      'pub_name'                       => 'd',
-      'pub_address'                    => 'e',
-      'pub_plz'                        => 'f',
-      'pub_city'                       => 'g',
-      'pub_email'                      => 'h',
-      'cust_legal_form'                => 'i',
-      'contact_name'                   => 'j',
-      'contact_phone'                  => 'k',
-      'contact_email'                  => 'l',
-      'sup_institute'                  => 'm',
-      'sup_url'                        => 'n',
-      'sup_email'                      => 'o',
-      'sup_staff'                      => 'p; pp; ppp',
-      'sup_staff_array'                => array('1' => 'p',
-                                                '2' => 'pp',
-                                                '3' => 'ppp'),
-      'auth_name'                      => 'q',
-      'auth_address'                   => 'r',
-      'auth_plz'                       => 's',
-      'auth_city'                      => 't',
-      'auth_url'                       => 'u',
-      'id_vat'                         => 'vat',
-      'id_tax'                         => 'tax',
-      'id_duns'                        => 'duns',
-      'id_eori'                        => 'eori',
-      'licence_title_meta'             => 'vm',
-      'licence_url_meta'               => 'wm',
-      'licence_title_imgs'             => 'vi',
-      'licence_url_imgs'               => 'wi',
-      'use_fau_temp'                   => 'x',
-      'cust_licence_txt'               => 'y',
+      'wisski_url'                     => 'wisski/url',
+      'project_name'                   => 'Project Name',
+      'pub_institute'                  => 'Insitute Publisher',
+      'pub_name'                       => 'Name Publisher',
+      'pub_address'                    => 'Address Publisher',
+      'pub_plz'                        => 'Postal Code Publisher',
+      'pub_city'                       => 'City Publisher',
+      'pub_email'                      => 'E-mail Publisher',
+      'cust_legal_form'                => 'Legal Form',
+      'contact_name'                   => 'Contact Name',
+      'contact_phone'                  => 'Contact Phone',
+      'contact_email'                  => 'Contact E-mail',
+      'sup_institute'                  => 'Support Institute',
+      'sup_url'                        => 'Support URL',
+      'sup_email'                      => 'Support E-mail',
+      'sup_staff'                      => 'Staff1; Staff2; Staff3',
+      'sup_staff_array'                => array('1' => 'Staff1',
+                                                '2' => 'Staff2',
+                                                '3' => 'Staff3'),
+      'auth_name'                      => 'Authority Name',
+      'auth_address'                   => 'Authority Address',
+      'auth_plz'                       => 'Authority Postal Code',
+      'auth_city'                      => 'Authority City',
+      'auth_url'                       => 'Authority URL',
+      'id_vat'                         => 'vat id',
+      'id_tax'                         => 'tax id',
+      'id_duns'                        => 'duns id',
+      'id_eori'                        => 'eori id',
+      'licence_title_meta'             => 'Licence Title Meta',
+      'licence_url_meta'               => 'licence/url/meta',
+      'licence_title_imgs'             => 'Licence Title Images',
+      'licence_url_imgs'               => 'licence/url/imgs',
+      'use_fau_temp'                   => FALSE,
+      'cust_licence_txt'               => 'Some custom licence text will be displayed here.',
       'no_default_txt'                 => FALSE,
-      'cust_exclusion'                 => 'z',
-      'hide_disclaim'                  => 'FALSE',
-      'cust_disclaim'                  => 'aa',
-      'date'                           => '2000.06.20',
+      'cust_exclusion'                 => 'Some custom information on liability exclusion will be displayed here.',
+      'hide_disclaim'                  => FALSE,
+      'cust_disclaim'                  => 'Custom disclaimer regarding external links',
+      'date'                           => '20.06.2000',
       'overwrite_consent'     	   => TRUE,
 );
 
 $data_ln_de = array(
-      'wisski_url'                     => 'a',
-      'project_name'                   => 'b',
-      'pub_institute'                  => 'c',
-      'pub_name'                       => 'd',
-      'pub_address'                    => 'e',
-      'pub_plz'                        => 'f',
-      'pub_city'                       => 'g',
-      'pub_email'                      => 'h',
-      'cust_legal_form'                => 'i',
-      'contact_name'                   => 'j',
-      'contact_phone'                  => 'k',
-      'contact_email'                  => 'l',
-      'sup_institute'                  => 'm',
-      'sup_url'                        => 'n',
-      'sup_email'                      => 'o',
-      'sup_staff'                      => 'p; pp; ppp',
-      'sup_staff_array'                => array('1' => 'p',
-                                                '2' => 'pp',
-                                                '3' => 'ppp'),
-      'auth_name'                      => 'q',
-      'auth_address'                   => 'r',
-      'auth_plz'                       => 's',
-      'auth_city'                      => 't',
-      'auth_url'                       => 'u',
+      'wisski_url'                     => 'wissiki/url',
+      'project_name'                   => 'Name des Projekts',
+      'pub_institute'                  => 'Institut Herausgeber',
+      'pub_name'                       => 'Name Herausgeber',
+      'pub_address'                    => 'Adresse Herausgeber',
+      'pub_plz'                        => 'PLZ Herausgeber',
+      'pub_city'                       => 'Stadt Herausgeber',
+      'pub_email'                      => 'E-Mail Herausgeber',
+      'cust_legal_form'                => 'Rechtsform',
+      'contact_name'                   => 'Name Kontaktperson',
+      'contact_phone'                  => 'Telefonnummer Kontaktperson',
+      'contact_email'                  => 'E-Mail Kontaktperson',
+      'sup_institute'                  => 'Support Institut',
+      'sup_url'                        => 'Support URL',
+      'sup_email'                      => 'Support E-Mail',
+      'sup_staff'                      => 'Staff1; Staff2; Staff3',
+      'sup_staff_array'                => array('1' => 'Staff1',
+                                                '2' => 'Staff2',
+                                                '3' => 'Staff3'),
+      'auth_name'                      => 'Aufsichtsbehörde Name',
+      'auth_address'                   => 'Aufsichtsbehörde Adresse',
+      'auth_plz'                       => 'Aufsichtsbehörde PLZ',
+      'auth_city'                      => 'Aufsichtsbehörde Stadt',
+      'auth_url'                       => 'Aufsichtsbehörde URL',
       'id_vat'                         => 'vat',
       'id_tax'                         => 'tax',
       'id_duns'                        => 'duns',
       'id_eori'                        => 'eori',
-      'licence_title_meta'             => 'vm',
-      'licence_url_meta'               => 'wm',
+      'licence_title_meta'             => 'Lizenz Metadaten Titel',
+      'licence_url_meta'               => 'Lizenz Metadaten URL',
       'licence_title_imgs'             => 'vi',
       'licence_url_imgs'               => 'wi',
-      'use_fau_temp'                   => 'x',
+      'use_fau_temp'                   => FALSE,
       'cust_licence_txt'               => 'y',
       'no_default_txt'                 => FALSE,
       'cust_exclusion'                 => 'z',
-      'hide_disclaim'                  => 'FALSE',
+      'hide_disclaim'                  => FALSE,
       'cust_disclaim'                  => 'aa',
-      'date'                           => '2000.06.20',
+      'date'                           => '20.06.2000',
       'overwrite_consent'     	   => TRUE,
 
 );
@@ -113,7 +113,8 @@ $state_keys_lang_ln = array('title'                 => '',
                             'sup_staff_array'       => '',
                             'auth_name'             => '',
                             'auth_city'             => '',
-                            'licence_title'         => '',
+                            'licence_title_meta'    => '',
+                            'licence_title_imgs'    => '',
                             'use_fau_temp'          => '',
                             'cust_licence_txt'      => '',
                             'no_default_txt'        => '',
@@ -130,10 +131,15 @@ $state_keys_intl_ln = array('wisski_url'            => '',
                             'contact_email'         => '',
                             'sup_url'               => '',
                             'sup_email'             => '',
-                            'licence_url'           => '',
+                            'licence_url_meta'      => '',
+                            'licence_url_imgs'      => '',
                             'auth_address'          => '',
                             'auth_plz'              => '',
                             'auth_url'              => '',
+                            'id_vat'                => '',
+                            'id_tax'                => '',
+                            'id_duns'               => '',
+                            'id_eori'               => '',
                             'hide_disclaim'         => '',
                             'date'                  => '',
                            );
@@ -144,10 +150,10 @@ $form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $page_name_ln, $lan
 
 
 // GENERATE ACCESSIBILITY STATEMENT
-$title_a_de = 'GERMAN TITLE';
-$title_a_en = 'ENGLISH TITLE';
-$alias_a_de = 'GERMAN ALIAS';
-$alias_a_en = 'ENGLISH ALIAS';
+$title_a_de = 'GERMAN TITLE ACCESSIBILITY';
+$title_a_en = 'ENGLISH TITLE ACCESSIBILITY';
+$alias_a_de = 'GERMAN ALIAS ACCESSIBILITY';
+$alias_a_en = 'ENGLISH ALIAS ACCESSIBILITY';
 $page_name_a = 'accessibility';
 $lang_a_de = 'de';
 $lang_a_en = 'en';
@@ -186,7 +192,7 @@ $data_a_en = array(
       'overs_phone'                 => 'x',
       'overs_email'                 => 'y',
       'overs_url'                   => 'z',
-      'date'                        => '2023.01.29',
+      'date'                        => '20.01.2023',
       'overwrite_consent'           => TRUE,
 );
 
@@ -223,13 +229,12 @@ $data_a_de = array(
       'overs_phone'                 => 'x',
       'overs_email'                 => 'y',
       'overs_url'                   => 'z',
-      'date'                        => '2023.01.29',
+      'date'                        => '29.01.2023',
       'overwrite_consent'           => TRUE,
 );
 
 $state_keys_lang_a = array('title'                 => '',
                            'alias'                 => '',
-                           'status'                => '',
                            'methodology'           => '',
                            'issues_array'          => '',
                            'statement_array'       => '',
@@ -244,6 +249,7 @@ $state_keys_lang_a = array('title'                 => '',
 );
 
 $state_keys_intl_a = array('wisski_url'            => '',
+                           'status'                => '',
                            'creation_date'         => '',
                            'last_revis_date'       => '',
                            'report_url'            => '',
@@ -266,10 +272,10 @@ $form->generatePage($data_a_en, $title_a_en, $alias_a_en, $page_name_a, $lang_a_
 
 
 // GENERATE PRIVACY STATEMENT
-$title_p_de = 'GERMAN TITLE';
-$title_p_en = 'ENGLISH TITLE';
-$alias_p_de = 'GERMAN ALIAS';
-$alias_p_en = 'ENGLISH ALIAS';
+$title_p_de = 'GERMAN TITLE PRIVACY';
+$title_p_en = 'ENGLISH TITLE PRIVACY';
+$alias_p_de = 'GERMAN ALIAS PRIVACY';
+$alias_p_en = 'ENGLISH ALIAS PRIVACY';
 $page_name_p = 'privacy';
 $lang_p_de = 'de';
 $lang_p_en = 'en';
@@ -294,7 +300,7 @@ $data_p_en = array(
       'data_comm_address'              => 'q',
       'data_comm_plz'                  => 'r',
       'data_comm_city'                 => 's',
-      'date'                           => '2023.09.08',
+      'date'                           => '08.09.2023',
       'overwrite_consent'              => TRUE,
 );
 
@@ -318,7 +324,7 @@ $data_p_de = array(
       'data_comm_address'              => 'q',
       'data_comm_plz'                  => 'r',
       'data_comm_city'                 => 's',
-      'date'                           => '2023.09.08',
+      'date'                           => '08.09.2023',
       'overwrite_consent'              => TRUE,
 );
 

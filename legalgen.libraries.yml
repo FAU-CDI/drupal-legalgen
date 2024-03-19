@@ -3,6 +3,6 @@ legalpages_library:
  css:
   theme:
    css/legalpages_library.css: {}
- js: {}
+ js:
 
  drupalSettings: null
