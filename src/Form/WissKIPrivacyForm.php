@@ -584,6 +584,7 @@ class WissKIPrivacyForm extends FormBase{
     // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                          => '',
                              'alias'                          => '',
+                             'legal_notice_url'               => '',
                              'not_fau'                        => '',
                              'sec_off_title'                  => '',
                              'sec_off_name'                   => '',
