@@ -112,7 +112,7 @@ class WissKIPrivacyForm extends FormBase{
 
     $form['Select_Language']['Chosen_Language'] = array(
       '#type'          => 'select',
-      '#title'         => t('Choose the language in which the privacy notice should be generated<br /><br />'),
+      '#title'         => t('Choose the language in which the privacy notice should be generated<br />Please note: Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
       '#options'       => $options,
       // Language Selection Triggers AJAX
       '#ajax'          => [
