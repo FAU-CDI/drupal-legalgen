@@ -268,7 +268,7 @@ class LegalGenerator {
     $templ_name = str_replace('_', '-', $template_name);
 
     // Check if File Exits in Templates Folder
-    $file_exists = file_exists('/var/www/data/project/web/modules/legalgen/templates/'.$templ_name.'.html.twig');
+    $file_exists = file_exists(dirname(__FILE__) . '/../../templates/'.$templ_name.'.html.twig');
 
     // Condition(Template File Does NOT Exist): Return Error Message Template NOT Available
     if(!$file_exists){
