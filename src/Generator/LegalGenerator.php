@@ -24,7 +24,6 @@ class LegalGenerator {
   const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('en' =>  array('title'             => 'Legal Notice',
                                                                             'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
                                                                             'project_name'      => '',
-                                                                            'pub_institute'     => '',
                                                                             'pub_name'          => '',
                                                                             'pub_city'          => '',
                                                                             'contact_name'      => '',
@@ -36,7 +35,6 @@ class LegalGenerator {
                                                              'de' =>  array('title'             => 'Impressum',
                                                                             'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
                                                                             'project_name'      => '',
-                                                                            'pub_institute'     => '',
                                                                             'pub_name'          => '',
                                                                             'pub_city'          => '',
                                                                             'contact_name'      => '',
@@ -270,7 +268,7 @@ class LegalGenerator {
     // Check if File Exits in Templates Folder
     $file_exists = file_exists(dirname(__FILE__) . '/../../templates/'.$templ_name.'.html.twig');
 
-    // Condition(Template File Does NOT Exist): Return Error Message Template NOT Available
+    // Condition(Template File Does NOT Exist): Return Egror Message Template NOT Available
     if(!$file_exists){
 
         // Clear File Status Cache if Entered Condition
