@@ -52,7 +52,7 @@
 
         <div>
             <p>
-                This virtual research environment is based on the virtual research environment „Wissenschaftliche KommunikationsInfrastruktur" (WissKI, short for scientific communication infrastructure) (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
+                This application is based on the virtual research environment 'Wissenschaftliche KommunikationsInfrastruktur' (WissKI, short for scientific communication infrastructure) (<a href="https://wiss-ki.eu/">https://wiss-ki.eu/</a>).
             </p>
             <br />
             <br />
@@ -119,26 +119,13 @@
         <div>
             {% if no_default_txt %}
 
-                {% if licence_title_meta %}
+                {% if licence_title %}
                     <p>
 
-                    {% if licence_url_meta %}
-                        <strong>Lizenzbedinungen für Metadaten:</strong><a href="{{ licence_url_meta }}">{{ licence_title_meta }}</a><br />
+                    {% if licence_url %}
+                        <strong>Lizenzbedinungen für Daten:</strong><a href="{{ licence_url }}">{{ licence_title }}</a><br />
                     {% else %}
-                        <strong>Lizenzbedinungen für Metadaten:</strong>{{ licence_title_meta }}<br />
-                    {% endif %}
-                    </p>
-
-                {% endif %}
-
-                {% if licence_title_imgs %}
-
-                 <p>
-
-                    {% if licence_url_imgs %}
-                        <strong>Lizenzbedinungen für Abbilder:</strong><a href="{{ licence_url_imgs }}">{{ licence_title_imgs }}</a><br />
-                    {% else %}
-                        <strong>Lizenzbedinungen für Abbilder:</strong>{{ licence_title_imgs }}<br />
+                        <strong>Lizenzbedinungen für Daten:</strong>{{ licence_title }}<br />
                     {% endif %}
                     </p>
 
@@ -162,7 +149,7 @@
             {% else %}
                 <p>
                     Unless specified otherwise, all pages of this application are protected by copyright.
-                    This applies in particular to texts, images, charts, and files containing style, sound, video, or animation data.
+                    This applies, in particular, to texts, images, charts, and files containing style, sound, video, or animation data.
 
                 {% if use_fau_temp == true %}
                     And also includes the design.
@@ -176,30 +163,18 @@
                 {% endif %}
                 </p>
 
-                {% if licence_title_meta %}
+                {% if licence_title %}
                     <p>
 
-                    {% if licence_url_meta %}
-                        <strong>Lizenzbedinungen für Metadaten:</strong><a href="{{ licence_url_meta }}">{{ licence_title_meta }}</a><br />
+                    {% if licence_url %}
+                        <strong>Lizenzbedinungen für Daten:</strong><a href="{{ licence_url }}">{{ licence_title }}</a><br />
                     {% else %}
-                        <strong>Lizenzbedinungen für Metadaten:</strong>{{ licence_title_meta }}<br />
+                        <strong>Lizenzbedinungen für Daten:</strong>{{ licence_title }}<br />
                     {% endif %}
                     </p>
 
                 {% endif %}
 
-                {% if licence_title_imgs %}
-
-                 <p>
-
-                    {% if licence_url_imgs %}
-                        <strong>Lizenzbedinungen für Abbilder:</strong><a href="{{ licence_url_imgs }}">{{ licence_title_imgs }}</a><br />
-                    {% else %}
-                        <strong>Lizenzbedinungen für Abbilder:</strong>{{ licence_title_imgs }}<br />
-                    {% endif %}
-                    </p>
-
-                {% endif %}
 
                 {% if cust_licence_txt %}
 
@@ -211,8 +186,8 @@
 
                     <p>
                         Furthermore, texts, images, graphics, and other files may, in whole or in part, be subject to the copyright of third parties.
-                        All registered brands and trademarks mentioned on this website and possibly protected by third parties are subject without restriction to the respective applicable trademark law and the property rights of their respective owners. The mere mention of trademarks on this website does not indicate that they are not protected by third party rights.
-                        Those responsible for the content may provide you with more detailed information about the existence of possible rights of third parties, provided these rights have not already been identified by corresponding references on the website.
+                        All registered brands and trademarks mentioned are possibly protected by third parties. They are subject without restriction to the respective applicable trademark law and the property rights of their respective owners. The mere mention of trademarks does not indicate that they are not protected by third-party rights.
+                        Those responsible for the content may provide you with more detailed information about the existence of possible third-party rights, provided these rights have not already been identified by corresponding references on the application.
                     </p>
 
             {% endif %}
@@ -223,10 +198,10 @@
 
             <ul>
                 <li>
-                    Laws, legal ordinances, official decrees and announcements as well as decisions and officially drafted guidelines on decisions and
+                    Laws, legal ordinances, official decrees, and announcements, as well as decisions and officially drafted guidelines on decisions and
                 </li>
                 <li>
-                    other official works that have been published in the official interest for general information, with the restriction that the provisions on the prohibition of changes and the indication of sources in § 62 paragraphs 1 to 3 and § 63 paragraphs 1 and 2 <abrr title="<Urheberrechtsgesetz>">UrhG</abbr> are to be applied accordingly.
+                    other official works published in the official interest for general information, with the restriction that the provisions on the prohibition of changes and the indication of sources in § 62 paragraphs 1 to 3 and § 63 paragraphs 1 and 2 <abrr title="<Urheberrechtsgesetz>">UrhG</abbr> are to be applied accordingly.
                 </li>
             </ul>
 
@@ -234,7 +209,7 @@
                 As a private individual, you may use copyrighted material for private and other personal use within the framework of <a href="https://www.gesetze-im-internet.de/englisch_urhg/englisch_urhg.html#p0018">§ 53 UrhG</a>.
                 Reproduction or use of these pages or parts thereof in other electronic or printed publications and their publication is only permitted with our consent.
                 This consent is given upon request by those responsible for the content.
-                The reprint and evaluation of press releases and speeches are generally permitted provided the source is acknowledged.
+                The reprint and evaluation of press releases and speeches are generally permitted, provided the source is acknowledged.
             </p>
         </div>
     </div>
@@ -258,25 +233,25 @@
 
             <p>
                 The operator has compiled and verified all information provided with great care.
-                However, we cannot assume liability or furnish a guarantee that the data is correct, complete, or up-to-date, or regarding the quality or constant availability of the information provided.
-                A contractual relationship with the users of the website is not concluded.
+                However, we cannot assume liability or guarantee that the data is correct, complete, up-to-date, or constantly available at all times.
+                A contractual relationship with the application´s users does not come into existence.
 
             </p>
             <p>
-                We will not be liable for any damages arising from the use of this application.
+                We will not be liable for any damages arising from the usage of this application.
             </p>
             <p>
                 This exclusion of liability does not apply insofar as the provisions of <a href="https://www.gesetze-im-internet.de/englisch_bgb/">§ 839 German Civil Code</a> (liability for breach of official duties) are applicable.
-                We will not be liable for any damages arising from computer viruses or the installation and use of software when accessing or downloading data from this website.<br />
+                We will not be liable for any damages arising from computer viruses or the installation and use of software when accessing or downloading data from this application.<br />
             </p>
             <p>
                 Websites credited to an author reflect the opinions and insights of that author.<br />
                 As a service provider, we are responsible for our content on these pages according to § 7 Abs.1 <abbr title="German Telemedia Act">TMG</abbr>.
                 According to §§ 8 to 10 <abbr title="German Telemedia Act">TMG</abbr>, however, we as a service provider are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.<br />
                 Obligations to remove or block the use of information under general law remain unaffected.
-                Any liability in this regard, however, is contingent upon the point in time at which we became aware of a concrete legal infringement.
+                However, any liability in this regard is contingent upon the moment we became aware of a concrete legal infringement.
                 Upon notification of a violation, we will promptly remove the corresponding content.<br />
-                The operator expressly reserves the right to change, amend or delete individual web pages, services, or the entire application or to cease the publication temporarily or permanently without prior notice.
+                The operator expressly reserves the right to change, amend, or delete individual web pages, services, or the entire application or to cease the publication temporarily or permanently without prior notice.
             </p>
 
             {% if cust_exclusion %}
@@ -307,14 +282,12 @@
                     This original content is to be distinguished from links to the websites of other operators.<br />
                     Through these references marked as ‘external links’, the operator enables visitors to access ‘third-party content’.<br />
                     The operator is not responsible for this third-party content as he neither initiates the data transmission nor chooses the recipient of the information.
-                    Furthermore, he does not select or has any influence on the information transmitted.
+                    Furthermore, the operator has not selected or influenced the information transmitted.
                     Hence, no liability is assumed for such third-party content.
                     The respective provider or operator of the linked pages is always responsible for the respective content.<br />
-                    The methods used to provide access and link to this third-party information do not involve any automatic short-term storage.
-                    Thus, resulting in a complete exclusion of any liability for third-party content on the operator’s part.
-                    Due to the selected access and linking method this third-party information is neither in the short-term nor intermediately automatically stored.
+                    Due to the selected access and linking method, this third-party information is not automatically temporarily stored.
                     Therefore, the operator is not responsible for this third-party content.<br />
-                    When links to such websites were first added, however, the authors or the operator’s editors reviewed the external content to ascertain whether it would possibly entail liability under civil or criminal law.
+                    When links to such websites were first added, the authors or the operator´s editors reviewed the external content to ascertain whether it would possibly entail liability under civil or criminal law.
                     Should the operator become aware or be made aware by others that the content of a website linked from this virtual research environment could constitute a violation of civil or criminal law, the respective link will be immediately removed - given this is technically feasible and within reasonable expectation.
                     However, permanent monitoring of linked third-party content is not reasonable without concrete evidence of an infringement.<br />
                     Liability for illegal, inaccurate, or incomplete content and damages resulting from the use or non-use of the information provided by third parties shall lie exclusively with the respective operators of the linked sites.
