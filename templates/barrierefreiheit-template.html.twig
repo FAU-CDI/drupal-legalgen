@@ -3,7 +3,7 @@
 
     <div>
         <p>
-            Der Anbieter dieses Webangebots ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true" target="_blank" rel="noopener noreferer">gültigen Gesetzgebung</a>&nbsp;
+            Der Anbieter dieses Webangebots ist bemüht, das Angebot im Einklang mit der&nbsp;<a href="http://gesetze-bayern.de/Content/Document/BayBGG/true">gültigen Gesetzgebung</a>&nbsp;
             barrierefrei zugänglich zu machen.
         </p>
 
@@ -31,19 +31,6 @@
             </div>
         {% endif %}
 
-        <p>
-            <strong>Methodik der Prüfung:</strong>
-            {{ methodology }}
-        </p>
-        <p>
-            <strong>Erstellungsdatum:</strong>
-            {{ creation_date }}
-        </p>
-
-        <p>
-            <strong>Letzte Überprüfung:</strong>
-            {{ last_revis_date }}
-        </p>
 
         <div class="rTableRow">
         <div class="rTableCell"><strong>Methodik der Prüfung:</strong></div>
@@ -63,10 +50,10 @@
 
 
         {% if report_url %}
-            <p>
-                <strong>Bericht:</strong>
-                <a href="{{ report_url }}" target="_blank" rel="noopener noreferer">{{ report_url }}</a>
-            </p>
+            <div class="rTableRow">
+            <div class="rTableCell"><strong>Bericht:</strong></div>
+            <div class="rTableCell"><a href="{{ report_url }}">{{ report_url }}</a></div>
+            </div>
         {% endif %}
     </div>
 

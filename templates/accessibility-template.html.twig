@@ -10,7 +10,7 @@
         <p>
             This accessibility statement applies to content and applications available at:
             <strong>
-                &nbsp;<a href="{{ wisski_url }}">{{ wisski_url }}</a>
+                &nbsp;<a href="{{ wisski_url }}" target="_blank" rel="noopener noreferer">{{ wisski_url }}</a>
             </strong>
         </p>
     </div>
@@ -32,26 +32,27 @@
             </div>
         {% endif %}
 
-        <p>
-            <strong>Methodology:</strong>
-            {{ methodology }}
-        </p>
 
-        <p>
-            <strong>Date of Creation:</strong>
-            {{ creation_date }}
-        </p>
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Methodik der Prüfung:</strong></div>
+        <div class="rTableCell">{{ methodology }}</div>
+        </div>
 
-        <p>
-            <strong>Last Revision:</strong>
-            {{ last_revis_date }}
-        </p>
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Erstellungsdatum:</strong></div>
+        <div class="rTableCell">{{ creation_date }}</div>
+        </div>
+
+        <div class="rTableRow">
+        <div class="rTableCell"><strong>Letzte Überprüfung:</strong></div>
+        <div class="rTableCell">{{ last_revis_date }}</div>
+        </div>
 
         {% if report_url %}
-            <p>
-                <strong>Report:</strong>
-                <a href="{{ report_url }}" target="_blank" rel="noopener noreferer">{{ report_url }}</a>
-            </p>
+            <div class="rTableRow">
+            <div class="rTableCell"><strong>Report:</strong></div>
+             <div class="rTableCell"><a href="{{ report_url }}" target="_blank" rel="noopener noreferer">{{ report_url }}</a></div>
+            </div>
         {% endif %}
     </div>
 
