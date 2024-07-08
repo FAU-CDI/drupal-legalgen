@@ -3,9 +3,7 @@
 namespace Drupal\legalgen\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 

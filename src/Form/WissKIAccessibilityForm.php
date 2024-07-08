@@ -4,18 +4,11 @@ namespace Drupal\legalgen\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\State\StateInterface;
-use Drupal\legalgen\Generator\LegalGenerator;
 use \Drupal\node\Entity\Node;
-use \Drupal\Core\Language;
 use Symfony\Component\Yaml\Yaml;
 use \Drupal\Core\Url;
-use \Drupal\Core\Ajax;
 use \Drupal\Core\Ajax\AjaxResponse;
-use \Drupal\Core\Ajax\CommandInterface;
 use \Drupal\Core\Ajax\OpenModalDialogCommand;
-use \Drupal\Core\Ajax\CloseModalDialogCommand;
-use \Drupal\Core\Ajax\RedirectCommand;
 
 /**
  * Configure example settings for this site.

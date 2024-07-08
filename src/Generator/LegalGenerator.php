@@ -3,15 +3,7 @@
 namespace Drupal\legalgen\Generator;
 
 use \Drupal\node\Entity\Node;
-use \Drupal\path_alias\Entity\PathAlias;
-use \Drupal\Core\Language;
-use \Drupal\Component\Render\MarkupInterface;
-use \Drupal\Core\Messenger\Messenger;
-use \Drupal\Core\Url;
-use \Drupal\Core\Link;
-use \Drupal\Core\Entity;
 use \Drupal\Core\StringTranslation\TranslatableMarkup;
-use \Drupal\Core\Entity\ContentEntityBase;
 use Symfony\Component\Yaml\Yaml;
 
 
