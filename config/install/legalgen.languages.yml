@@ -10,9 +10,3 @@ de:
     accessibility: "barrierefreiheit_template"
     privacy: "datenschutz_template"
     empty_text: "Seite derzeit nicht verfügbar"
-fr:
-    option: "Francais"
-    legal_notice : "mentionslegales_template"
-    accessibility: "accessibilite_template"
-    privacy: "protectiondesdonnees_template"
-    empty_text: "Page actuellement indisponible"
