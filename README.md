@@ -1,54 +1,65 @@
-# WissKI Legal Information
+# WissKI LegalGenerator
 
-Generates Legal Notice, Accessibility Statement, and Privacy Statement. <br />Format and contents of the generated pages are based on the *[RRZE's 'Legal' WordPress plugin](https://github.com/RRZE-Webteam/rrze-legal/tree/main)* adapted to the requirements of WissKI.
-</br>
-</br>
 
-## Guarantee/Liability
-
-We give no guarantee and assume no liability for the topicality and legal correctness of the legal statements generated via this module. It is incumbent on the user to check the data supplied as well as the generated pages.
-</br>
-</br>
-
-## Customization
-
-Generates the above-mentioned legal statements in English and German. To enable generation in another language, add specifications for this language to the config and the respective template to the template folder.
+Generates Legal Notice, Accessibility Statement, and Privacy Statement in English and German. <br />Format and contents of the generated pages are based on the *[RRZE's 'Legal' WordPress plugin](https://github.com/RRZE-Webteam/rrze-legal/tree/main)* adapted to the requirements of WissKI.<br />
+To enable generation in another language, add specifications for this language to the config and the respective template to the template folder.
 
 A limited number of customization options are available (see below).
 </br>
 </br>
 
-## Service: LegalGenerator
+## Guarantee / Liability
+
+We give no guarantee and assume no liability for the topicality and legal correctness of the legal statements generated via this module. It is incumbent on the user to check the data supplied as well as the generated pages.
+</br>
+</br>
+
+
+## Table of Contents
+1. [Service: LegalGenerator](#paragraph1)
+    1. [Parameters](#subparagraph1)
+    2. [Keys and Values](#subparagraph2)
+2. [Forms](#paragraph2)
+3. [Required and Default Values](#paragraph3)
+4. [Controller](#paragraph4)
+5. [Config](#paragraph5)
+6. [CSS](#paragraph6)
+7. [Test.php](#paragraph7)
+
+<br />
+<br />
+
+## 1. Service: LegalGenerator
 
 Each of the three legal statements can be generated through the following function:
 
+```PHP
+generatePage(array $data, string $title, string $alias, string $page_name, string $lang, array $state_keys_lang, array $state_keys_intl)
+```
 
-><span style="color:PapayaWhip">generatePage</span><span style="color:Gold">(</span><span style="color:CornflowerBlue">array</span><span style="color:SkyBlue">$data</span>,
-<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$title</span>,
-<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$alias</span>, <span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$page_name</span>,<span style="color:CornflowerBlue"> string</span> <span style="color:SkyBlue">$lang</span>,
-<span style="color:CornflowerBlue"> array</span> <span style="color:SkyBlue">$state_keys_lang</span>,
-<span style="color:CornflowerBlue"> array</span> <span style="color:SkyBlue">$state_keys_intl</span><span style="color:Gold">)</span></br>
+!!!!!!!!!!!!!!!!!!!!!!!!! Add some more information about functioning here
 
 </br>
 
-### 1. Parameters
+### 1.1. Parameters
 
 |Type|Key|Description|
 |----:|----|---|
-|array|<span style="color:SkyBlue">$data</span>|Should contain all values to be added to the page identified by the keys specified below<br /> See 2.[123]. a)|
-|string|<span style="color:SkyBlue">$title</span>|Page title|
-|string|<span style="color:SkyBlue">$alias</span>|URL Path|
-|string|<span style="color:SkyBlue">$page_name</span>|Page type to be generated<br />`Use: 'legal_notice', 'accessibility' or 'privacy'`|
-|string|<span style="color:SkyBlue">$lang</span>|Language code<br />`Use: 'en' or 'de'`|
-|array|<span style="color:SkyBlue">$state_keys_lang</span>|All keys for language-specific values. See 2.[123]. b)|
-|array|<span style="color:SkyBlue">$state_keys_intl</span>|All keys for language non-specific values. See 2.[123]. c)|
-<br />
+|array|**$data**|Should contain all values to be added to the page identified by the keys specified below<br /> See 2.[123]. a)|
+|string|**$title**|Page title|
+|string|**$alias**|URL Path|
+|string|**$page_name**|Page type to be generated<br />Use: `'legal_notice'`, `'accessibility'` or `'privacy'`|
+|string|**$lang**|Language code<br />Use: `'en'` or `'de'`|
+|array|**$state_keys_lang**|All keys for language-specific values. See 2.[123]. b)|
+|array|**$state_keys_intl**|All keys for language non-specific values. See 2.[123]. c)|
 
 <br />
 
-### 2. Keys and Values
+<br />
 
-#### 2.1. Legal Notice
+### 1.2. Keys and Values
+
+#### 1.2.1. Legal Notice
 
 ##### a) <u>Data Array</u>
 
@@ -95,52 +106,55 @@ Each of the three legal statements can be generated through the following functi
 
 ##### **b) <u>Lang Array</u>**
 
-> $state_keys_lang = array('title'                 => '',
-                           'alias'                 => '',
-                           'project_name'          => '',
-                           'pub_institute'         => '',
-                           'pub_name'              => '',
-                           'pub_city'              => '',
-                           'cust_legal_form'       => '',
-                           'contact_name'          => '',
-                           'sup_institute'         => '',
-                           'sup_staff_array'       => '',
-                           'auth_name'             => '',
-                           'auth_city'             => '',
-                           'licence_title'         => '',
-                           'use_fau_temp'          => '',
-                           'cust_licence_txt'      => '',
-                           'no_default_txt'        => '',
-                           'cust_exclusion'        => '',
-                           'cust_disclaim'         => '',
-                           'overwrite_consent'     => '',
-                           );
+```PHP
+$state_keys_lang = array('title'              => '',
+                         'alias'              => '',
+                         'project_name'       => '',
+                         'pub_institute'      => '',
+                         'pub_name'           => '',
+                         'pub_city'           => '',
+                         'cust_legal_form'    => '',
+                         'contact_name'       => '',
+                         'sup_institute'      => '',
+                         'sup_staff_array'    => '',
+                         'auth_name'          => '',
+                         'auth_city'          => '',
+                         'licence_title'      => '',
+                         'use_fau_temp'       => '',
+                         'cust_licence_txt'   => '',
+                         'no_default_txt'     => '',
+                         'cust_exclusion'     => '',
+                         'cust_disclaim'      => '',
+                         'overwrite_consent'  => '',
+                        );
+```
 
 <br />
 
 ##### **c) <u>Intl Array</u>**
 
-> $state_keys_intl = array('wisski_url'            => '',
-                           'pub_address'           => '',
-                           'pub_plz'               => '',
-                           'pub_email'             => '',
-                           'contact_phone'         => '',
-                           'contact_email'         => '',
-                           'sup_url'               => '',
-                           'sup_email'             => '',
-                           'licence_url'           => '',
-                           'auth_address'          => '',
-                           'auth_plz'              => '',
-                           'auth_url'              => '',
-                           'hide_disclaim'         => '',
-                           'date'                  => '',
-                           );
-
+```PHP
+$state_keys_intl = array('wisski_url'      => '',
+                         'pub_address'     => '',
+                         'pub_plz'         => '',
+                         'pub_email'       => '',
+                         'contact_phone'   => '',
+                         'contact_email'   => '',
+                         'sup_url'         => '',
+                         'sup_email'       => '',
+                         'licence_url'     => '',
+                         'auth_address'    => '',
+                         'auth_plz'        => '',
+                         'auth_url'        => '',
+                         'hide_disclaim'   => '',
+                         'date'            => '',
+                        );
+```
 
 <br />
 <br />
 
-#### **2.2. Accessibility**
+#### **1.2.2. Accessibility**
 
 ##### **a) <u>Data Array</u>**
 
@@ -178,48 +192,52 @@ Each of the three legal statements can be generated through the following functi
 
 ##### **b) <u>Lang Keys Array</u>**
 
-> $state_keys_lang = array('title'                 => '',
-                           'alias'                 => '',
-                           'methodology'           => '',
-                           'issues_array'          => '',
-                           'statement_array'       => '',
-                           'alternatives_array'    => '',
-                           'contact_access_name'   => '',
-                           'sup_institute'         => '',
-                           'sup_city'              => '',
-                           'overs_name'            => '',
-                           'overs_dept'            => '',
-                           'overs_city'            => '',
-                           'overwrite_consent'     => '',
-                           );
+```PHP
+$state_keys_lang = array('title'                => '',
+                         'alias'                => '',
+                         'methodology'          => '',
+                         'issues_array'         => '',
+                         'statement_array'      => '',
+                         'alternatives_array'   => '',
+                         'contact_access_name'  => '',
+                         'sup_institute'        => '',
+                         'sup_city'             => '',
+                         'overs_name'           => '',
+                         'overs_dept'           => '',
+                         'overs_city'           => '',
+                         'overwrite_consent'    => '',
+                        );
+```
 
 <br />
 
 ##### **c) <u>Intl Keys Array</u>**
 
-> $state_keys_intl = array('wisski_url'            => '',
-                           'status'                => '',
-                           'creation_date'         => '',
-                           'last_revis_date'       => '',
-                           'report_url'            => '',
-                           'contact_access_phone'  => '',
-                           'contact_access_email'  => '',
-                           'sup_url'               => '',
-                           'sup_address'           => '',
-                           'sup_plz'               => '',
-                           'sup_email'             => '',
-                           'overs_address'         => '',
-                           'overs_plz'             => '',
-                           'overs_phone'           => '',
-                           'overs_email'           => '',
-                           'overs_url'             => '',
-                           'date'                  => '',
-                           );
+```PHP
+$state_keys_intl = array('wisski_url'            => '',
+                         'status'                => '',
+                         'creation_date'         => '',
+                         'last_revis_date'       => '',
+                         'report_url'            => '',
+                         'contact_access_phone'  => '',
+                         'contact_access_email'  => '',
+                         'sup_url'               => '',
+                         'sup_address'           => '',
+                         'sup_plz'               => '',
+                         'sup_email'             => '',
+                         'overs_address'         => '',
+                         'overs_plz'             => '',
+                         'overs_phone'           => '',
+                         'overs_email'           => '',
+                         'overs_url'             => '',
+                         'date'                  => '',
+                        );
+```
 
 <br />
 <br />
 
-#### **2.3. Privacy**
+#### **1.2.3. Privacy**
 
 ##### **a) <u>Data Array</u>**
 
@@ -249,32 +267,79 @@ Each of the three legal statements can be generated through the following functi
 
 ##### **b) <u>Lang Keys Array</u>**
 
-> $state_keys_lang = array('title'                          => '',
-                           'alias'                          => '',
-                           'not_fau'                        => '',
-                           'sec_off_title'                  => '',
-                           'sec_off_name'                   => '',
-                           'sec_off_add'                    => '',
-                           'sec_off_city'                   => '',
-                           'third_service_provider'         => '',
-                           'third_descr_data_coll'          => '',
-                           'third_legal_basis_data_coll'    => '',
-                           'third_objection_data_coll'      => '',
-                           'data_comm_title'                => '',
-                           'data_comm_city'                 => '',
-                           'overwrite_consent'              => '',
-                           );
+```PHP
+$state_keys_lang = array('title'                        => '',
+                         'alias'                        => '',
+                         'not_fau'                      => '',
+                         'sec_off_title'                => '',
+                         'sec_off_name'                 => '',
+                         'sec_off_add'                  => '',
+                         'sec_off_city'                 => '',
+                         'third_service_provider'       => '',
+                         'third_descr_data_coll'        => '',
+                         'third_legal_basis_data_coll'  => '',
+                         'third_objection_data_coll'    => '',
+                         'data_comm_title'              => '',
+                         'data_comm_city'               => '',
+                         'overwrite_consent'            => '',
+                        );
+```
 
 <br />
 
 ##### **c) <u>Intl Keys Array</u>**
 
-> $state_keys_intl = array('sec_off_address'                => '',
-                           'sec_off_plz'                    => '',
-                           'sec_off_phone'                  => '',
-                           'sec_off_fax'                    => '',
-                           'sec_off_email'                  => '',
-                           'data_comm_address'              => '',
-                           'data_comm_plz'                  => '',
-                           'date'                           => '',
-                           );
+```PHP
+$state_keys_intl = array('sec_off_address'    => '',
+                         'sec_off_plz'        => '',
+                         'sec_off_phone'      => '',
+                         'sec_off_fax'        => '',
+                         'sec_off_email'      => '',
+                         'data_comm_address'  => '',
+                         'data_comm_plz'      => '',
+                         'date'               => '',
+                        );
+```
+
+<br />
+<br />
+
+## 2. Forms
+A render array of the type select to choose the language to be used for form generation. After selection the complete form will be displayed. Please note that titles and explanations are in English for all forms irrespective of the language of the generated page. All form fields are pre-populated with values from the the state as saved during the last page generation, if applicable. If the page has never been generated before or values have been reset (see below), default values as specified in **legalgen.required.and.email.yml** (see below).<br />
+Values are differentiated into either language specific values and international values and are treated differently. The latter group contains all values that cannot be translated such as names, street name and house number, postal codes, phone numbers, fax numbers, urls, dates and e-mail addresses. This group is stored to the state in a separate array and if reset for one language version will be reset for all language version of the form for the same page.<br />
+Each form has a submit and a reset button. The first generates the page calling the service and storing the values submitted to the state. If the generation was completed succcessfully, a status message with a link to the generated page will be displayed. An error message is shown in unsuccessful cases.
+Clicking the reset button will open a modal dialog to ensure the user really wishes to reset. Upon confirming this, they will be forwarded to a controller (see below) which handles the request and returns the user to the form page they initially came from.
+
+<br />
+
+## 3. Required and Default Values
+The file **legalgen.required.and.email.yml** contains one array per page plus an extra array for the legal notice alias. The latter is stored separately, as it is also used in the templates for the accessibility as well as the privacy page.<br />
+All keys in the page specific array are set to required in the form. If their value is not empty the given string is used as default in case the page has never been generated or when values will be reset (see above).The function checking this is part of each form file.<br />
+There are a few exceptions: Whether those values are required or not depends on values in other fields.
++ For all pages the value for `'Overwrite'` is managed directly in Form via a condition at the bottom of the form's source code.
++ The following fields are managed directly in the respective render array of the specific form via the `#states` property:<br />
+**Legal Notice**: `'Licence_Title'` and `'Custom_Licence_Text'`<br />
+**Accessibility**: `'Known_Issues'`, `'Justification_Statement'`, and `'Alternative_Access'`<br />
+**Privacy**: `'Third_Party_Service'`
+
+<br />
+
+## 4. Controller
+The user is sent to the **LegalgenController** after clicking the reset button at the end of a form and subsequently confirming this choice in a modal dialog box. Through the query string information on the page type and chosen language is passed. The validity of those values will be checked before continuing. Thereafter, all values specific to the respective page in the chosen language as well as the international values for said page will be deleted from the state. The user is redirected to the page they initially came from and a success message will be displayed indicating whether the values were successfully reset or already the default values.
+
+<br />
+
+## 5. Config
+The file **legalgen.languages.yml** specifies all languages available for generation through stating the file name of each respective template for a page. Additionally, the specific language needs to be added to the language list. If this is not the case, the user will be prompted to do so when selecting the respective language instead of diplaying the form.<br />
+`option`: Specifies how this language option will be displayed in the language selector (drop down) when choosing the language to display the form.<br />
+`empty_text`: The text shown for a default language page generated "empty". This happens if the user generates a page for a non-default language when the page in the default language does currently not exist (either because it has never been generated or was deleted by the user). This happens as all language versions of a page are stored as translations in the node of the page in the default language.
+
+<br />
+
+## 6. CSS
+For accessibility reasons, the identification numbers (`VAT_Number`,`Tax_Number`, `DUNS_Number` and `EORI_Number`) in the legal notice are given a 'table'-like structure via CSS, thus avoiding the use of a table.
+
+<br />
+
+## 7. Test.php
+This file contains all variables and arrays with required keys and values necessary to test page generation via the service. All values provided are dummy variables only ment for testing purposes.

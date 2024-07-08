@@ -22,7 +22,7 @@ $data_ln_en = array(
       'pub_address'                    => 'Address Publisher',
       'pub_plz'                        => 'Postal Code Publisher',
       'pub_city'                       => 'City Publisher',
-      'pub_email'                      => 'E-mail Publisher',
+      'pub_email'                      => 'Email@Publisher.de',
       'cust_legal_form'                => 'Legal Form',
       'contact_name'                   => 'Contact Name',
       'contact_phone'                  => 'Contact Phone',
@@ -145,10 +145,10 @@ $state_keys_intl_ln = array('wisski_url'            => '',
                            );
 
 
-$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $page_name_ln, $lang_ln_de, $state_keys_lang_ln, $state_keys_intl_ln);
+//$form->generatePage($data_ln_de, $title_ln_de, $alias_ln_de, $page_name_ln, $lang_ln_de, $state_keys_lang_ln, $state_keys_intl_ln);
 $form->generatePage($data_ln_en, $title_ln_en, $alias_ln_en, $page_name_ln, $lang_ln_en, $state_keys_lang_ln, $state_keys_intl_ln);
 
-
+/*
 // GENERATE ACCESSIBILITY STATEMENT
 $title_a_de = 'GERMAN TITLE ACCESSIBILITY';
 $title_a_en = 'ENGLISH TITLE ACCESSIBILITY';
@@ -357,3 +357,4 @@ $state_keys_intl_p = array('sec_off_address'                => '',
 
 $form->generatePage($data_p_de, $title_p_de, $alias_p_de, $page_name_p, $lang_p_de, $state_keys_lang_p, $state_keys_intl_p);
 $form->generatePage($data_p_en, $title_p_en, $alias_p_en, $page_name_p, $lang_p_en,$state_keys_lang_p, $state_keys_intl_p);
+*/
