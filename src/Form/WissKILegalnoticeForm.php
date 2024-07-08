@@ -8,6 +8,15 @@ use Drupal\Core\State\StateInterface;
 use Drupal\legalgen\Generator\LegalGenerator;
 use \Drupal\node\Entity\Node;
 use \Drupal\Core\Language;
+use Symfony\Component\Yaml\Yaml;
+use \Drupal\Core\Url;
+use \Drupal\Core\Ajax;
+use \Drupal\Core\Ajax\AjaxResponse;
+use \Drupal\Core\Ajax\CommandInterface;
+use \Drupal\Core\Ajax\OpenModalDialogCommand;
+use \Drupal\Core\Ajax\CloseModalDialogCommand;
+use \Drupal\Core\Ajax\RedirectCommand;
+
 
 /**
  * Configure example settings for this site.
@@ -63,8 +72,15 @@ class WissKILegalnoticeForm extends FormBase {
   // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
   // Get State Values for Form
-  $storedValues = $this->getStateValues();
-  $defaultValues = LegalGenerator::REQUIRED_DATA_ALL['REQUIRED_LEGALNOTICE'];
+  // 1) Get Values From State
+  $stored_values = $this->getStateValues();
+
+  // 2) Get Default Values from YAML File
+  $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+  $file_contents = file_get_contents($file_path);
+  $default_values_all = Yaml::parse($file_contents);
+  $default_values = $default_values_all['REQUIRED_LEGALNOTICE'];
+
 
   // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
   $state_vals = \Drupal::state()->get('legalgen.legal_notice');
@@ -104,14 +120,13 @@ class WissKILegalnoticeForm extends FormBase {
 
     $form['Select_Language']['Chosen_Language'] = array(
       '#type'          => 'select',
-      '#title'         => t('Choose the language in which the legal notice should be generated<br />Please note: Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
+      '#title'         => t('Choose the language in which the legal notice should be generated<br /><br />Please note:<br />Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
       '#options'       => $options,
       // Language Selection Triggers AJAX
       '#ajax'          => [
         'callback'        => '::ajaxCallback',
         'event'           => 'change',
         'wrapper'         => 'formDiv',
-        'event'           => 'change',
       ],
     );
 
@@ -129,7 +144,7 @@ class WissKILegalnoticeForm extends FormBase {
   $input = $form_state->getUserInput();
 
   // Reset All Form Values EXCEPT Chosen_Language
-  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title_Metadata', 'Licence_URL_Metadata', 'Licence_Title_Images', 'Licence_URL_Images', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
+  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
 
   foreach ($unset_key as $key) {
    unset($input[$key]);
@@ -166,25 +181,21 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['General']['Title'] = array(
       '#type'          => 'textfield',
       '#title'         => t('Page Title'),
-      '#required'      => TRUE,
       );
 
     $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
       '#type'          => 'textfield',
-      '#title'         => t('Legal Notice Applies to Content Under the Following URL(s)'),
-      '#required'      => TRUE,
+      '#title'         => t('Legal Notice Applies to Content Under the Following URL'),
       );
 
     $form['Lang_Specific_Form']['General']['Alias'] = array(
       '#type'          => 'textfield',
       '#title'         => t('Page Alias'),
-      '#required'      => TRUE,
       );
 
     $form['Lang_Specific_Form']['General']['Project_Name'] = array(
       '#type'          => 'textfield',
       '#title'         => t('Project Name'),
-      '#required'      => TRUE,
       );
 
 
@@ -198,37 +209,31 @@ class WissKILegalnoticeForm extends FormBase {
       $form['Lang_Specific_Form']['Publisher']['Pub_Institute'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Institute'),
-        '#required'      => FALSE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Publisher'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Address'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Publisher']['Pub_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Publisher'),
-        '#required'      => TRUE,
         );
 
     // Fields: Legal Form and Representation
@@ -241,8 +246,7 @@ class WissKILegalnoticeForm extends FormBase {
       $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form'] = array(
         '#type'          => 'textarea',
         '#title'         => t('Custom Information'),
-        '#description'   => t('<i>REPLACES DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
-        '#required'      => FALSE,
+        '#description'   => t('<i>REPLACES FAU SPECIFIC DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
         );
 
 
@@ -257,19 +261,16 @@ class WissKILegalnoticeForm extends FormBase {
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Contact Person'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone'] = array(
         '#type'          => 'tel',
         '#title'         => t('Phone Contact Person'),
-        '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Contact_Content']['Contact_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Contact Person'),
-        '#required'      => TRUE,
         );
 
 
@@ -283,26 +284,22 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
-          '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Homepage Support and Hosting'),
-          '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
           '#type'          => 'email',
           '#title'         => t('E-Mail Support and Hosting'),
-          '#required'      => TRUE,
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Staff'),
-          '#description'   => t('"; " As Separator - e.g. "Eda Employee; Sujin Staff;..."'),
-          '#required'      => TRUE,
+          '#description'   => t('USE ";" AS SEPARATOR - E.G. "Eda Employee;Sujin Staff;..."'),
           );
 
 
@@ -316,31 +313,26 @@ class WissKILegalnoticeForm extends FormBase {
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Supervisory Authority'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Supervisory Authority URL'),
-        '#required'      => TRUE,
         );
 
     // Fields: ID Numbers
@@ -353,25 +345,21 @@ class WissKILegalnoticeForm extends FormBase {
       $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number'] = array(
         '#type'       => 'textfield',
         '#title'      => 'VAT Registration Number',
-        '#required'   => TRUE,
       );
 
       $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number'] = array(
         '#type'       => 'textfield',
         '#title'      => 'Tax Number',
-        '#required'   => TRUE,
       );
 
       $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number'] = array(
         '#type'       => 'textfield',
         '#title'      => 'DUNS Number',
-        '#required'   => TRUE,
       );
 
       $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number'] = array(
         '#type'       => 'textfield',
         '#title'      => 'EORI Number',
-        '#required'   => TRUE,
       );
 
 
@@ -382,14 +370,14 @@ class WissKILegalnoticeForm extends FormBase {
       '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata'] = array(
+        $form['Lang_Specific_Form']['Copyright']['Licence_Title'] = array(
           '#type'          => 'textfield',
-          '#title'         => t('Metadata Licence Title'),
-          '#description'   => t('<i>USE ONLY IF MOST/ALL HAVE SAME LICENCE<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD BELOW</i>'),
+          '#title'         => t('Licence Title'),
+          '#description'   => t('<i>USE ONLY IF PREDOMINANTLY THE SAME OR ONLY ONE LICENCE<br />ELSE CONSIDER USING THE CUSTOM INFORMATION FIELD BELOW</i>'),
           // Condition: Input Required if Licence URL Entered by User
           '#states' => [
             'required' => [
-            [':input[id="licence_url_meta"]' => [
+            [':input[id="licence_url"]' => [
               '!value' => ''
               ],
             ],
@@ -398,46 +386,22 @@ class WissKILegalnoticeForm extends FormBase {
           '#required'      => FALSE,
           );
 
-        $form['Lang_Specific_Form']['Copyright']['Licence_URL_Metadata'] = array(
+        $form['Lang_Specific_Form']['Copyright']['Licence_URL'] = array(
           '#type'          => 'textfield',
-          '#title'         => t('Metadata Licence URL'),
-          '#id'            => 'licence_url_meta',
-          '#required'      => FALSE,
+          '#title'         => t('Licence URL'),
+          '#id'            => 'licence_url',
           );
-
-          $form['Lang_Specific_Form']['Copyright']['Licence_Title_Images'] = array(
-            '#type'          => 'textfield',
-            '#title'         => t('Images or Digital Representations Licence Title'),
-            '#description'   => t('<i>USE ONLY IF MOST/ALL HAVE SAME LICENCE<br />ELSE CONSIDER USING CUSTOM INFORMATION FIELD BELOW</i>'),
-            // Condition: Input Required if Licence URL Entered by User
-            '#states' => [
-              'required' => [
-              [':input[id="licence_url_imgs"]' => [
-                '!value' => ''
-                ],
-              ],
-            ],
-            ],
-            '#required'      => FALSE,
-            );
-
-          $form['Lang_Specific_Form']['Copyright']['Licence_URL_Images'] = array(
-            '#type'          => 'textfield',
-            '#title'         => t('Images or Digital Representations Licence URL'),
-            '#id'            => 'licence_url_imgs',
-            '#required'      => FALSE,
-            );
 
         $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template'] = array(
           '#type'          => 'checkbox',
-          '#title'         => t('Use Of FAU Corporate Design (with or Without Modifications)'),
-          '#required'      => FALSE,
+          '#title'         => t('Use of FAU Corporate Design'),
+          '#description'   => t('<i>IF USED EITHER WITH OR WITHOUT MODIFICATIONS</i>'),
           );
 
         $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text'] = array(
             '#type'          => 'textarea',
             '#title'         => t('Custom Information On Licence(s)'),
-            '#description'   => t('<i>DISPLAYED IN ADDITION TO DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
+            '#description'   => t('<i>CONTENT DISPLAYED IN ADDITION TO DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
             // Condition (Checkbox 'No Default Text' is Checked): Input Required
             '#states' => [
               'required' => [
@@ -452,9 +416,8 @@ class WissKILegalnoticeForm extends FormBase {
 
         $form['Lang_Specific_Form']['Copyright']['No_Default_Text'] = array(
           '#type'          => 'checkbox',
-          '#title'         => t('Display text in textarea \'Custom Information On Licence(s)\' instead of default text in section \'Copyright\''),
-          '#description'   => t('<i>REPLACES ALL EXCEPT INFO ABOUT private use AND ABOUT content not protected by copyright law</i>'),
-          '#required'      => FALSE,
+          '#title'         => t('Display text \'Custom Information On Licence(s)\' instead of default text in section \'Copyright\''),
+          '#description'   => t('<i>REPLACES ALL TEXT ON LICENCES EXCEPT ON private use AND ON content not protected by copyright law</i>'),
           // Used for Condition
           '#id'            => 'no_default_txt',
           );
@@ -470,8 +433,7 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Custom Information On Liability Exclusion'),
-          '#description'   => t('<i>ADDED AFTER DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
-          '#required'      => FALSE,
+          '#description'   => t('<i>CONTENT ADDED AFTER DEFAULT TEXT. LEAVE EMPTY TO ONLY DISPLAY DEFAULT TEXT</i>'),
           );
 
 
@@ -484,16 +446,14 @@ class WissKILegalnoticeForm extends FormBase {
 
         $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer'] = array(
           '#type'          => 'checkbox',
-          '#title'         => t('No External Links Are Used'),
-          '#description'   => t('<i>WHOLE SECTION WILL BE HIDDEN. NEITHER DEFAULT TEXT NOR CUSTOM TEXT FROM TEXTAREA BELOW WILL BE DISPLAYED</i>'),
-          '#required'      => FALSE,
+          '#title'         => t('No external links are used'),
+          '#description'   => t('<i>IF CHECKED THE WHOLE SECTION WILL BE HIDDEN.<br />NEITHER DEFAULT TEXT NOR CUSTOM TEXT FROM TEXTAREA BELOW WILL BE DISPLAYED</i>'),
           );
 
         $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Add Custom Information on Liability For links'),
-          '#description'   => t('<i>REPLACES DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
-          '#required'      => FALSE,
+          '#description'   => t('<i>CONTENT REPLACES DEFAULT TEXT. LEAVE EMPTY TO DISPLAY DEFAULT TEXT</i>'),
           );
 
 
@@ -511,7 +471,6 @@ class WissKILegalnoticeForm extends FormBase {
         $form['Lang_Specific_Form']['Timestamp']['Date'] = array(
           '#type'          => 'date',
           '#title'         => t('Generation Date'),
-          '#required'      => TRUE,
         );
 
 
@@ -521,7 +480,7 @@ class WissKILegalnoticeForm extends FormBase {
     '#prefix' => '<br / ><p><strong>',
     '#suffix' => '</strong></p>',
     '#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
-                    Please verify the accuracy of the generated pages.'),
+                    Please verify the accuracy of the generated page.'),
     );
 
 
@@ -563,76 +522,152 @@ class WissKILegalnoticeForm extends FormBase {
       }
 
     // Button: Sumbit Form and Populate Template
-    $form['Lang_Specific_Form']['submit_button'] = array(
+    $form['Lang_Specific_Form']['Submit_Button'] = array(
         '#type'  => 'submit',
         '#value' => t('Generate'),
         );
 
-    // Button: Reset Form Contents to Default
-    $form['Lang_Specific_Form']['reset_button'] = array(
+
+    // Button: Opens Modal with Info on Reset to Default, 'Continue' Button and 'Return' Button
+    $form['Lang_Specific_Form']['Modal_Reset_Button'] = array (
       '#class'  => 'button',
-      '#type'   => 'submit',
+      '#type'   => 'button',
       '#value'  => t('Reset to Default'),
-      '#submit' => [[$this, 'resetAllValues']],
-      );
+      // Ensure Reset Button Bypasses Required Values Validation
+      '#limit_validation_errors' => array(),
+      // AJAX Callback Handler on Button Click
+      '#ajax' => array(
+        'callback' => '::ajax_modal_popup',
+      ),
+    );
 
 
     // Populate Fields with Default Values
-    $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
-    $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url'] ?? \Drupal::request()->getSchemeAndHttpHost();
-    $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
-    $form['Lang_Specific_Form']['General']['Project_Name']['#default_value'] = $storedValues[$lang]['project_name']?? $defaultValues[$lang]['project_name'];
+    $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $stored_values[$lang]['title']?? $default_values[$lang]['title'];
+    $form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $stored_values['intl']['wisski_url'] ?? \Drupal::request()->getSchemeAndHttpHost();
+    $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias']?? $default_values[$lang]['alias'];
+    $form['Lang_Specific_Form']['General']['Project_Name']['#default_value'] = $stored_values[$lang]['project_name']?? $default_values[$lang]['project_name'];
 
-    $form['Lang_Specific_Form']['Publisher']['Pub_Institute']['#default_value'] = $storedValues[$lang]['pub_institute']?? $defaultValues[$lang]['pub_institute'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_Name']['#default_value'] = $storedValues[$lang]['pub_name']?? $defaultValues[$lang]['pub_name'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_Address']['#default_value'] = $storedValues['intl']['pub_address']?? $defaultValues['intl']['pub_address'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_PLZ']['#default_value'] = $storedValues['intl']['pub_plz']?? $defaultValues['intl']['pub_plz'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_City']['#default_value'] = $storedValues[$lang]['pub_city']?? $defaultValues[$lang]['pub_city'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_Email']['#default_value'] = $storedValues['intl']['pub_email']?? $defaultValues['intl']['pub_email'];
+    $form['Lang_Specific_Form']['Publisher']['Pub_Institute']['#default_value'] = $stored_values[$lang]['pub_institute']?? t('');
+    $form['Lang_Specific_Form']['Publisher']['Pub_Name']['#default_value'] = $stored_values[$lang]['pub_name']?? $default_values[$lang]['pub_name'];
+    $form['Lang_Specific_Form']['Publisher']['Pub_Address']['#default_value'] = $stored_values['intl']['pub_address']?? $default_values['intl']['pub_address'];
+    $form['Lang_Specific_Form']['Publisher']['Pub_PLZ']['#default_value'] = $stored_values['intl']['pub_plz']?? $default_values['intl']['pub_plz'];
+    $form['Lang_Specific_Form']['Publisher']['Pub_City']['#default_value'] = $stored_values[$lang]['pub_city']?? $default_values[$lang]['pub_city'];
+    $form['Lang_Specific_Form']['Publisher']['Pub_Email']['#default_value'] = $stored_values['intl']['pub_email']?? $default_values['intl']['pub_email'];
 
-    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $storedValues[$lang]['cust_legal_form']?? t('');
+    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['cust_legal_form']?? t('');
 
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $storedValues[$lang]['contact_name']?? $defaultValues[$lang]['contact_name'];
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#default_value'] = $storedValues['intl']['contact_phone']?? $defaultValues['intl']['contact_phone'];
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#default_value'] = $storedValues['intl']['contact_email']?? $defaultValues['intl']['contact_email'];
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $stored_values[$lang]['contact_name']?? $default_values[$lang]['contact_name'];
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#default_value'] = $stored_values['intl']['contact_phone']?? $default_values['intl']['contact_phone'];
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#default_value'] = $stored_values['intl']['contact_email']?? $default_values['intl']['contact_email'];
 
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $storedValues[$lang]['sup_institute']?? $defaultValues[$lang]['sup_institute'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $storedValues['intl']['sup_url']?? $defaultValues['intl']['sup_url'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $storedValues['intl']['sup_email']?? $defaultValues['intl']['sup_email'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff']['#default_value'] =  $storedValues[$lang]['sup_staff_array']?? t('');
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $stored_values[$lang]['sup_institute']?? $default_values[$lang]['sup_institute'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $stored_values['intl']['sup_url']?? $default_values['intl']['sup_url'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $stored_values['intl']['sup_email']?? $default_values['intl']['sup_email'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff']['#default_value'] =  $stored_values[$lang]['sup_staff_array']?? t('');
 
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name']['#default_value'] = $storedValues[$lang]['auth_name']?? $defaultValues[$lang]['auth_name'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address']['#default_value'] = $storedValues['intl']['auth_address']?? $defaultValues['intl']['auth_address'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ']['#default_value'] = $storedValues['intl']['auth_plz']?? $defaultValues['intl']['auth_plz'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#default_value'] = $storedValues[$lang]['auth_city']?? $defaultValues[$lang]['auth_city'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#default_value'] = $storedValues['intl']['auth_url']?? $defaultValues['intl']['auth_url'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name']['#default_value'] = $stored_values[$lang]['auth_name']?? $default_values[$lang]['auth_name'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address']['#default_value'] = $stored_values['intl']['auth_address']?? $default_values['intl']['auth_address'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ']['#default_value'] = $stored_values['intl']['auth_plz']?? $default_values['intl']['auth_plz'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#default_value'] = $stored_values[$lang]['auth_city']?? $default_values[$lang]['auth_city'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#default_value'] = $stored_values['intl']['auth_url']?? $default_values['intl']['auth_url'];
 
-    $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#default_value'] = $storedValues['intl']['id_vat']?? $defaultValues['intl']['id_vat'];
-    $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#default_value'] = $storedValues['intl']['id_tax']?? $defaultValues['intl']['id_tax'];
-    $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number']['#default_value'] = $storedValues['intl']['id_duns']?? $defaultValues['intl']['id_duns'];
-    $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number']['#default_value'] = $storedValues['intl']['id_eori']?? $defaultValues['intl']['id_eori'];
+    $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#default_value'] = $stored_values['intl']['id_vat']?? $default_values['intl']['id_vat'];
+    $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#default_value'] = $stored_values['intl']['id_tax']?? $default_values['intl']['id_tax'];
+    $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number']['#default_value'] = $stored_values['intl']['id_duns']?? $default_values['intl']['id_duns'];
+    $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number']['#default_value'] = $stored_values['intl']['id_eori']?? $default_values['intl']['id_eori'];
 
-    $form['Lang_Specific_Form']['Copyright']['Licence_Title_Metadata']['#default_value'] = $storedValues[$lang]['licence_title_metadata']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Licence_URL_Metadata']['#default_value'] = $storedValues['intl']['licence_url_metadata']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Licence_Title_Pictures']['#default_value'] = $storedValues[$lang]['licence_title_pictures']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Licence_URL_Pictures']['#default_value'] = $storedValues['intl']['licence_url_pictures']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $storedValues[$lang]['use_fau_temp']?? (FALSE);
-    $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $storedValues[$lang]['cust_licence_txt']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $storedValues[$lang]['no_default_txt']?? (FALSE);
+    $form['Lang_Specific_Form']['Copyright']['Licence_Title']['#default_value'] = $stored_values[$lang]['licence_title']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#default_value'] = $stored_values['intl']['licence_url']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $stored_values[$lang]['use_fau_temp']?? (FALSE);
+    $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $stored_values[$lang]['cust_licence_txt']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $stored_values[$lang]['no_default_txt']?? (FALSE);
 
-    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#default_value'] = $storedValues[$lang]['cust_exclusion']?? t('');
+    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#default_value'] = $stored_values[$lang]['cust_exclusion']?? t('');
 
-    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#default_value'] = $storedValues['intl']['hide_disclaim']?? t('');
-    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#default_value'] = $storedValues[$lang]['cust_disclaim']?? t('');
+    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#default_value'] = $stored_values['intl']['hide_disclaim']?? t('');
+    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#default_value'] = $stored_values[$lang]['cust_disclaim']?? t('');
 
     $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
 
     $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#default_value'] = FALSE;
 
+
+    // Set Fields to Required/NOT Required Dependent on required.yml
+      // !!! 'Licence_Title' and 'Custom_Licence_Text' Managed Separately: Directly in Form Via #states
+      // !!! 'Overwrite' Managed Separately: Directly in Form Via Condition
+
+    // Get Required Values From YAML File (Default Values ≙ Required Values)
+    $req_lang = $default_values[$lang];
+    $req_intl = $default_values['intl'];
+
+    // Join Lang and Intl Array
+    $req_all = array_merge($req_lang, $req_intl);
+
+    // Set Required Status
+    $form['Lang_Specific_Form']['General']['Title']['#required'] = $this->isItRequired('title', $req_all);
+    $form['Lang_Specific_Form']['General']['WissKI_URL']['#required'] = $this->isItRequired('wisski_url', $req_all);
+    $form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequired('alias', $req_all);
+    $form['Lang_Specific_Form']['General']['Project_Name']['#required'] = $this->isItRequired('project_name', $req_all);
+
+    $form['Lang_Specific_Form']['Publisher']['Pub_Institute']['#required'] = $this->isItRequired('pub_institute', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Pub_Name']['#required'] = $this->isItRequired('pub_name', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Pub_Address']['#required'] = $this->isItRequired('pub_address', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Pub_PLZ']['#required'] = $this->isItRequired('pub_plz', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Pub_City']['#required'] = $this->isItRequired('pub_city', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Pub_Email']['#required'] = $this->isItRequired('pub_email', $req_all);
+
+    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#required'] = $this->isItRequired('cust_legal_form', $req_all);
+
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#required'] = $this->isItRequired('contact_name', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#required'] = $this->isItRequired('contact_phone', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#required'] = $this->isItRequired('contact_email', $req_all);
+
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#required'] = $this->isItRequired('sup_institute', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#required'] = $this->isItRequired('sup_url', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#required'] = $this->isItRequired('sup_email', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff']['#required'] =  $this->isItRequired('sup_staff_array', $req_all);
+
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name']['#required'] = $this->isItRequired('auth_name', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address']['#required'] = $this->isItRequired('auth_address', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ']['#required'] = $this->isItRequired('auth_plz', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#required'] = $this->isItRequired('auth_city', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#required'] = $this->isItRequired('auth_url', $req_all);
+
+    $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#required'] = $this->isItRequired('id_vat', $req_all);
+    $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#required'] = $this->isItRequired('id_tax', $req_all);
+    $form['Lang_Specific_Form']['ID_Numbers']['DUNS_Number']['#required'] = $this->isItRequired('id_duns', $req_all);
+    $form['Lang_Specific_Form']['ID_Numbers']['EORI_Number']['#required'] = $this->isItRequired('id_eori', $req_all);
+
+    // 'Licence_Title' and 'Custom_Licence_Text' Managed Separately: Directly in Form Via #states
+    $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#required'] = $this->isItRequired('licence_url', $req_all);
+    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#required'] = $this->isItRequired('use_fau_temp', $req_all);
+    $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#required'] = $this->isItRequired('no_default_txt', $req_all);
+
+    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#required'] = $this->isItRequired('cust_exclusion', $req_all);
+
+    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#required'] = $this->isItRequired('hide_disclaim', $req_all);
+    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#required'] = $this->isItRequired('cust_disclaim', $req_all);
+
+    $form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);
+
+    // 'Overwrite' Managed Separately: Directly in Form Via Condition
+
     return $form;
-  }
+   }
   }
 
+    /**
+   * Check in YAML File if Value is Required
+   */
+  function isItRequired($key, $req_all): bool {
+
+    if(array_key_exists($key, $req_all)){
+           return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
 
   /**
    * Called When User Selects Language
@@ -645,36 +680,53 @@ class WissKILegalnoticeForm extends FormBase {
 
 
   /**
-   * Called When User Hits Reset Button
-   * {@inheritdoc}
-   */
-  public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
+ * AJAX Callback Handler
+ * Called When User Clicks on 'Reset to Default'-Button
+ */
+ public function ajax_modal_popup($form, &$form_state){
 
-    // Get Array from State
-    $content_state = \Drupal::state()->get('legalgen.legal_notice');
+      // Set Title and Size of Modal
+      $title = t("Reset Values to Default");
+      $options = [
+        'width' => '70%'
+      ];
 
+      $content['#markup'] = "<br />Resetting values CANNOT be undone. Non language-specific values (such as phone numbers, postal codes, e-mail addresses etc.) will be reset for all other language versions of this form as well.<br />Already generated pages are NOT affected.<br /><br />Do you wish to continue?<br />";
+      $content['Close_Button'] = array (
+        '#class'  => 'button',
+        '#type'   => 'button',
+        '#value'  => t('Return to Form'),
+        '#prefix' => '<br />',
+        '#attributes' => [
+          'onclick' => "Drupal.dialog(document.getElementById('drupal-modal')).close(); return false;",
+        ],
+      );
 
-    // Get Language Code Of Selected Form
-    $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
+      // Build URL to Link to Controller with Query String
+      $lang_name = $form_state->getValue('Chosen_Language');
+      $page_name = 'legal_notice';
+      $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pn" => $page_name));
 
-    $lang = $language['#value'];
+      // Button to Confirm Reset to Default
+      // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
+      $content['Controller_Reset_Button'] = array (
+        '#type'   => 'link',
+        '#title'  => $this->t('Reset to Default'),
+        '#url'    => $url,
+        '#attributes' => [
+          'class' => [
+            'button',
+          ],
+        ],
+      );
 
-    // Condition (Already Values Stored in State): Replace with Default Values
-    if(!empty($content_state[$lang])){
+      // Create Modal
+      $response = new AjaxResponse();
+      $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
 
-      unset($content_state[$lang]);
-
-      if(!empty($content_state['intl'])){
-
-        unset($content_state['intl']);
-
-        $new_state_vars = array('legalgen.legal_notice' => $content_state);
-
-        \Drupal::state()->setMultiple($new_state_vars);
-
-      }
+      return $response;
     }
-  }
+
 
 
   /**
@@ -714,10 +766,8 @@ class WissKILegalnoticeForm extends FormBase {
     $id_tax               = $values['Tax_Number'];
     $id_duns              = $values['DUNS_Number'];
     $id_eori              = $values['EORI_Number'];
-    $licence_title_meta   = $values['Licence_Title_Metadata'];
-    $licence_url_meta     = $values['Licence_URL_Metadata'];
-    $licence_title_imgs   = $values['Licence_Title_Images'];
-    $licence_url_imgs     = $values['Licence_URL_Images'];
+    $licence_title        = $values['Licence_Title'];
+    $licence_url          = $values['Licence_URL'];
     $use_fau_temp         = $values['Use_FAU_Design_Template'];
     $cust_licence_txt     = $values['Custom_Licence_Text'];
     $no_default_txt       = $values['No_Default_Text'];
@@ -762,10 +812,8 @@ class WissKILegalnoticeForm extends FormBase {
               'id_tax'                 => $id_tax,
               'id_duns'                => $id_duns,
               'id_eori'                => $id_eori,
-              'licence_title_meta'     => $licence_title_meta,
-              'licence_url_meta'       => $licence_url_meta,
-              'licence_title_imgs'     => $licence_title_imgs,
-              'licence_url_imgs'       => $licence_url_imgs,
+              'licence_title'          => $licence_title,
+              'licence_url'            => $licence_url,
               'use_fau_temp'           => $use_fau_temp,
               'cust_licence_txt'       => $cust_licence_txt,
               'no_default_txt'         => $no_default_txt,
@@ -795,8 +843,7 @@ class WissKILegalnoticeForm extends FormBase {
                              'sup_staff_array'       => '',
                              'auth_name'             => '',
                              'auth_city'             => '',
-                             'licence_title_meta'    => '',
-                             'licence_title_imgs'    => '',
+                             'licence_title'         => '',
                              'use_fau_temp'          => '',
                              'cust_licence_txt'      => '',
                              'no_default_txt'        => '',
@@ -814,8 +861,7 @@ class WissKILegalnoticeForm extends FormBase {
                              'contact_email'         => '',
                              'sup_url'               => '',
                              'sup_email'             => '',
-                             'licence_url_meta'      => '',
-                             'licence_url_imgs'      => '',
+                             'licence_url'           => '',
                              'auth_address'          => '',
                              'auth_plz'              => '',
                              'auth_url'              => '',
@@ -827,6 +873,7 @@ class WissKILegalnoticeForm extends FormBase {
                              'date'                  => '',
     );
 
+
     // Let Service Generate Page
     $success =  \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
 
@@ -834,11 +881,12 @@ class WissKILegalnoticeForm extends FormBase {
     if($success === 'success'){
       \Drupal::messenger()->addMessage('<a href="/'.$alias.'">Legal notice in '.$lang.'generated successfully</a>', 'status', TRUE);
     } else {
+      // Display Error Message Related to Issue
       if($success === 'invalid'){
         \Drupal::messenger()->addError('Unfortunately an error ocurred: Required Values Missing', 'status', TRUE);
 
       } else if ($success === 'unable') {
-        \Drupal::messenger()->addError('Unfortunately an error ocurred: Unable to Generate Page for the Following Language: '.$lang, 'status', TRUE);
+        \Drupal::messenger()->addError("Unfortunately an error ocurred: Unable to Generate Page for the Following Language: {$lang}", 'status', TRUE);
       }
     }
   }

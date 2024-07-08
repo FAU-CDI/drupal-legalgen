@@ -1,9 +1,12 @@
 <?php
 
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+
 /**
  * Impement hook_theme().
  */
-
 function legalgen_theme($existing, $type, $theme, $path){
   return [
     'impressum_template' => [
@@ -33,10 +36,8 @@ function legalgen_theme($existing, $type, $theme, $path){
         'id_tax'                 => NULL,
         'id_duns'                => NULL,
         'id_eori'                => NULL,
-        'licence_title_meta'     => NULL,
-        'licence_url_meta'       => NULL,
-        'licence_title_imgs'     => NULL,
-        'licence_url_imgs'       => NULL,
+        'licence_title'          => NULL,
+        'licence_url'            => NULL,
         'use_fau_temp'           => NULL,
         'cust_licence_txt'       => NULL,
         'no_default_txt'         => NULL,
@@ -75,10 +76,8 @@ function legalgen_theme($existing, $type, $theme, $path){
         'id_tax'                 => NULL,
         'id_duns'                => NULL,
         'id_eori'                => NULL,
-        'licence_title_meta'     => NULL,
-        'licence_url_meta'       => NULL,
-        'licence_title_imgs'     => NULL,
-        'licence_url_imgs'       => NULL,
+        'licence_title'          => NULL,
+        'licence_url'            => NULL,
         'use_fau_temp'           => NULL,
         'cust_licence_txt'       => NULL,
         'no_default_txt'         => NULL,
@@ -214,10 +213,43 @@ function legalgen_theme($existing, $type, $theme, $path){
 }
 
 
+/**
+ * Implements hook_form_alter().
+ * Attach Library to Pages
+ */
 function legalgen_page_attachments(array &$page) {
   if (!\Drupal::currentUser()->hasPermission('access contextual links')) {
     return;
   }
 
   $page['#attached']['library'][] = 'legalgen/legalpages_library';
+}
+
+
+/**
+ * Implements hook_form_alter().
+ * Attach Library to Form
+ */
+function legalgen_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $formObject = $form_state->getFormObject();
+
+  if ($formObject instanceof FormStateInterface) {
+
+    // CHECK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    $entity= $formObject->FieldItemListInterface::getEntity();
+
+    if ($entity->getEntityTypeId() === 'node' && in_array($entity->bundle(), ['organisation', 'location', 'event', 'article'])) {
+
+      $form['#attached']['library'][] = 'legalgen/legalpages_library';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ * To Display Dialogs
+ */
+function mymodule_preprocess_node__page(array &$variables) : void {
+	//Module name: 'mymodule', library name: 'mymodule'.
+	$variables['#attached']['library'][] = 'legalgen/legalpages_library';
 }

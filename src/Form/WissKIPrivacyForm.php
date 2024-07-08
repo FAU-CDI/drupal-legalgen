@@ -16,6 +16,13 @@ use \Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Routing;
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\Yaml\Yaml;
+use \Drupal\Core\Ajax;
+use \Drupal\Core\Ajax\AjaxResponse;
+use \Drupal\Core\Ajax\CommandInterface;
+use \Drupal\Core\Ajax\OpenModalDialogCommand;
+use \Drupal\Core\Ajax\CloseModalDialogCommand;
+use \Drupal\Core\Ajax\RedirectCommand;
 
 /**
  * Configure example settings for this site.
@@ -72,7 +79,13 @@ class WissKIPrivacyForm extends FormBase{
 
     // Get State Values for Form
     $stored_values = $this->getStateValues();
-    $default_values = LegalGenerator::REQUIRED_DATA_ALL['REQUIRED_PRIVACY'];
+
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $default_values_all = Yaml::parse($file_contents);
+    $default_values = $default_values_all['REQUIRED_PRIVACY'];
+
+
     // Get Legal Notice URL from State
     $values_from_legalnotice = \Drupal::state()->get('legalgen.legal_notice');
 
@@ -112,7 +125,7 @@ class WissKIPrivacyForm extends FormBase{
 
     $form['Select_Language']['Chosen_Language'] = array(
       '#type'          => 'select',
-      '#title'         => t('Choose the language in which the privacy notice should be generated<br />Please note: Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
+      '#title'         => t('Choose the language in which the privacy notice should be generated<br /><br />Please note:<br />Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
       '#options'       => $options,
       // Language Selection Triggers AJAX
       '#ajax'          => [
@@ -178,22 +191,20 @@ class WissKIPrivacyForm extends FormBase{
           '#type'          => 'textfield',
           '#title'         => t('Page Title'),
           '#id'            => 'title',
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['General']['Alias'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Page Alias'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['General']['Not_FAU'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Information Regarding the Representative Within the Meaning of the General Data Protection Regulation'),
-          '#description'   => t('<i>REPLACES FAU-SPECIFIC TEXT. LEAVE EMPTY TO DISPLAY FAU-specific text</i>'),
-          '#required'      => FALSE,
+          '#description'   => t('<i>REPLACES FAU-SPECIFIC WITH CUSTOM TEXT. LEAVE EMPTY TO DISPLAY FAU-SPECIFIC TEXT</i>'),
         );
 
+        //
         $form['Lang_Specific_Form']['General']['Legal_Notice_URL'] = array(
           '#type'          => 'hidden',
           '#title'         => t('Legal Notice URL'),
@@ -210,56 +221,47 @@ class WissKIPrivacyForm extends FormBase{
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Title Security Official'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Data Security Official'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Line 2'),
           // Might Not be Required When Data Security Official Changes
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Street Name and House Number'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_PLZ'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Postal Code'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_City'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Phone'] = array(
           '#type'          => 'tel',
           '#title'         => t('Phone'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Fax'] = array(
           '#type'     => 'tel',
           '#title'    => t('Fax'),
-          '#required' => FALSE,
         );
 
         $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Email'] = array(
           '#type'          => 'email',
           '#title'         => t('E-Mail Data Security Official'),
-          '#required'      => TRUE,
         );
 
 
@@ -332,25 +334,21 @@ class WissKIPrivacyForm extends FormBase{
         $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Title Bavarian State Commissioner for Data Protection'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Street Name and House Number'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Postal Code'),
-          '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_City'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
-          '#required'      => TRUE,
         );
 
 
@@ -368,7 +366,6 @@ class WissKIPrivacyForm extends FormBase{
         $form['Lang_Specific_Form']['Timestamp']['Date'] = array(
           '#type'          => 'date',
           '#title'         => t('Date of Page Generation'),
-          '#required'      => TRUE,
         );
 
 
@@ -378,7 +375,7 @@ class WissKIPrivacyForm extends FormBase{
         '#prefix' => '<br /><p><strong>',
         '#suffix' => '</strong></p>',
         '#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
-                        Please verify the accuracy of the generated pages.'),
+                        Please verify the accuracy of the generated page.'),
       );
 
 
@@ -425,20 +422,27 @@ class WissKIPrivacyForm extends FormBase{
         '#value'  => t('Generate'),
       );
 
-      // Button: Reset Form Contents to Default
-      $form['Lang_Specific_Form']['reset_button'] = array(
+      // Button: Opens Modal with Info on Reset to Default, 'Continue' Button and 'Return' Button
+      $form['Lang_Specific_Form']['Modal_Reset_Button'] = array (
         '#class'  => 'button',
-        '#type'   => 'submit',
-        '#value'  => t('Reset to default'),
-        '#submit' => [[$this, 'resetAllValues']],
+        '#type'   => 'button',
+        '#value'  => t('Reset to Default'),
+        // Ensure Reset Button Bypasses Required Values Validation
+        '#limit_validation_errors' => array(),
+        // AJAX Callback Handler on Button Click
+        '#ajax' => array(
+          'callback' => '::ajax_modal_popup',
+        ),
       );
+
 
 
       // Populate Fields with Default Values
       $form['Lang_Specific_Form']['General']['Title']['#default_value'] = $stored_values[$lang]['title'] ?? $default_values[$lang]['title'];
       $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias'] ?? $default_values[$lang]['alias'];
       $form['Lang_Specific_Form']['General']['Not_FAU']['#default_value'] = $stored_values[$lang]['not_fau'] ?? t('');
-      $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#default_value'] = $values_from_legalnotice[$lang]['alias'] ?? LegalGenerator::REQUIRED_LEGAL_NOTICE_ALIAS_DE;
+
+      $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#default_value'] = $values_from_legalnotice[$lang]['alias'] ?? $default_values[$lang]['legal_notice_url']['name'];
 
       $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title']['#default_value'] = $stored_values[$lang]['sec_off_title'] ?? $default_values[$lang]['sec_off_title'];
       $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name']['#default_value'] = $stored_values[$lang]['sec_off_name'] ?? $default_values[$lang]['sec_off_name'];
@@ -455,7 +459,6 @@ class WissKIPrivacyForm extends FormBase{
       $form['Lang_Specific_Form']['Third_Party_Services']['Third_Legal_Basis_Data_Coll']['#default_value'] = $stored_values[$lang]['third_legal_basis_data_coll'] ?? t('');
       $form['Lang_Specific_Form']['Third_Party_Services']['Third_Objection_Data_Coll']['#default_value'] = $stored_values[$lang]['third_objection_data_coll'] ?? t('');
 
-
       $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title']['#default_value'] = $stored_values[$lang]['data_comm_title'] ?? $default_values[$lang]['data_comm_title'];
       $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address']['#default_value'] = $stored_values['intl']['data_comm_address'] ?? $default_values['intl']['data_comm_address'];
       $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ']['#default_value'] = $stored_values['intl']['data_comm_plz'] ?? $default_values['intl']['data_comm_plz'];
@@ -465,8 +468,62 @@ class WissKIPrivacyForm extends FormBase{
 
       $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#default_value'] = FALSE;
 
-      return $form;
+
+      // Set Fields to Required/NOT Required Dependent on required.yml
+        // !!! 'Third_Party_Service' Managed Separately: Directly in Form Via #states
+        // !!! 'Overwrite' Managed Separately: Directly in Form Via Condition
+
+      // Get Required Values From YAML File (Default Values ≙ Required Values)
+      $req_lang = $default_values[$lang];
+      $req_intl = $default_values['intl'];
+
+      // Join Lang and Intl Array
+      $req_all = array_merge($req_lang, $req_intl);
+
+
+      // Set Required Status
+      $form['Lang_Specific_Form']['General']['Title']['#required'] = $this->isItRequired('title', $req_all);
+      $form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequired('alias', $req_all);
+      $form['Lang_Specific_Form']['General']['Not_FAU']['#required'] = $this->isItRequired('not_fau', $req_all);
+
+      $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#required'] = $this->isItRequired('legal_notice_url', $req_all);
+
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title']['#required'] = $this->isItRequired('sec_off_title', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name']['#required'] = $this->isItRequired('sec_off_name', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add']['#required'] = $this->isItRequired('sec_off_add', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address']['#required'] = $this->isItRequired('sec_off_address', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_PLZ']['#required'] = $this->isItRequired('sec_off_plz', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_City']['#required'] = $this->isItRequired('sec_off_city', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Phone']['#required'] = $this->isItRequired('sec_off_phone', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Fax']['#required'] = $this->isItRequired('sec_off_fax', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Email']['#required'] = $this->isItRequired('sec_off_email', $req_all);
+
+      // 'Third_Party_Service' Managed Separately: Directly in Form Via #states
+
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title']['#required'] = $this->isItRequired('data_comm_title', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address']['#required'] = $this->isItRequired('data_comm_address', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ']['#required'] = $this->isItRequired('data_comm_plz', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_City']['#required'] = $this->isItRequired('data_comm_city', $req_all);
+
+      $form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);;
+
+      // 'Overwrite' Managed Separately: Directly in Form Via Condition
+
+
+    return $form;
    }
+  }
+
+  /**
+   * Check in YAML File if Value is Required
+   */
+  function isItRequired($key, $req_all): bool {
+
+    if(array_key_exists($key, $req_all)){
+           return TRUE;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -479,36 +536,52 @@ class WissKIPrivacyForm extends FormBase{
   }
 
 
-  /**
-   * Called when user hits reset button
-   * Build Form with Default Values for Selected Language
-   * {@inheritdoc}
+    /**
+   * AJAX Callback Handler
+   * Called When User Clicks on 'Reset to Default'-Button
    */
-  public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state){
+  public function ajax_modal_popup($form, &$form_state){
 
-    // Get Array from State
-    $content_state = \Drupal::state()->get('legalgen.privacy');
+    // Set Title and Size of Modal
+    $title = t("Reset Values to Default");
+    $options = [
+      'width' => '70%'
+    ];
 
-    // Get Language Code Of Selected Form
-    $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
+    $content['#markup'] = "<br />Resetting values CANNOT be undone. Non language-specific values (such as phone numbers, postal codes, e-mail addresses etc.) will be reset for all other language versions of this form as well.<br />Already generated pages are NOT affected.<br /><br />Do you wish to continue?<br />";
+    $content['Close_Button'] = array (
+      '#class'  => 'button',
+      '#type'   => 'button',
+      '#value'  => t('Return to Form'),
+      '#prefix' => '<br />',
+      '#attributes' => [
+        'onclick' => "Drupal.dialog(document.getElementById('drupal-modal')).close(); return false;",
+      ],
+    );
 
-    $lang = $language['#value'];
+    // Build URL to Link to Controller with Query String
+    $lang_name = $form_state->getValue('Chosen_Language');
+    $page_name = 'privacy';
+    $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pn" => $page_name));
 
-    // Condition (Already Values Stored in State): Replace with Default Values
-    if (!empty($content_state[$lang])) {
+      // Button to Confirm Reset to Default
+      // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
+    $content['Controller_Reset_Button'] = array (
+      '#type'   => 'link',
+      '#title'  => $this->t('Reset to Default'),
+      '#url'    => $url,
+      '#attributes' => [
+        'class' => [
+          'button',
+        ],
+      ],
+    );
 
-      unset($content_state[$lang]);
+    // Create Modal
+    $response = new AjaxResponse();
+    $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
 
-      if(!empty($content_state['intl'])){
-
-        unset($content_state['intl']);
-
-        $new_state_vars = array('legalgen.privacy' => $content_state);
-
-        \Drupal::state()->setMultiple($new_state_vars);
-
-      }
-    }
+    return $response;
   }
 
 
@@ -548,7 +621,6 @@ class WissKIPrivacyForm extends FormBase{
 
     // Change Date Format
     $date = date('d.m.Y', strtotime($date));
-
 
     $data = [
       'lang'                           => $lang,

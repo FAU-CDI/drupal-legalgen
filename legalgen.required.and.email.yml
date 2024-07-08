@@ -1,0 +1,132 @@
+REQUIRED_LEGAL_NOTICE_ALIAS:
+  en:
+    - alias: &alias-en
+        name: 'legalnotice'
+  de:
+    - alias: &alias-de
+        name: 'impressum'
+
+REQUIRED_LEGALNOTICE:
+  en:
+    title: Legal Notice
+    alias: *alias-en
+    project_name: ''
+    pub_name: ''
+    pub_city: ''
+    contact_name: ''
+    sup_institute: ''
+    sup_staff_array: ''
+    auth_name: Bavarian State Ministry of Science and Art
+    auth_city: Munich
+  de:
+    title: Impressum
+    alias: *alias-de
+    project_name: ''
+    pub_name: ''
+    pub_city: ''
+    contact_name: ''
+    sup_institute: ''
+    sup_staff_array: ''
+    auth_name: Bayerisches Staatsministerium für Wissenschaft und Kunst
+    auth_city: München
+  intl:
+    wisski_url: ''
+    pub_address: ''
+    pub_plz: ''
+    pub_email: ''
+    contact_phone: ''
+    contact_email: ''
+    sup_url: ''
+    sup_email: ''
+    auth_address: Salvatorstraße 2
+    auth_plz: '80327'
+    auth_url: www.stmwk.bayern.de
+    id_vat: DE 132507686
+    id_tax: 216/114/20045 (Finanzamt Erlangen)
+    id_duns: '327958716'
+    id_eori: DE4204891
+    date: ''
+REQUIRED_ACCESSIBILITY:
+  en:
+    title: Accessibility
+    alias: accessibility
+    methodology: ''
+    issues_array: '' #Required if status == Partially compliant
+    statement_array: '' # Required if status == Partially compliant
+    alternatives_array: '' # Required if status == Partially compliant
+    contact_access_name: ''
+    sup_institute: ''
+    sup_city: ''
+    overs_name: Agency for Digitalisation, High-Speed Internet and Surveying
+    overs_dept: IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology
+    overs_city: Munich
+  de:
+    title: Barrierefreiheit
+    alias: barrierefreiheit
+    methodology:  ''
+    issues_array: '' # Required if status == Partially compliant
+    statement_array: '' # Required if status == Partially compliant
+    alternatives_array: '' # Required if status == Partially compliant
+    contact_access_name: ''
+    sup_institute: ''
+    sup_city: ''
+    overs_name: Landesamt für Digitalisierung, Breitband und Vermessung
+    overs_dept: IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik
+    overs_city: München
+  intl:
+    wisski_url: ''
+    status: Partially compliant
+    creation_date: ''
+    last_revis_date: ''
+    contact_access_phone: ''
+    contact_access_email: ''
+    sup_url: ''
+    sup_address: ''
+    sup_plz: ''
+    sup_email: ''
+    overs_address: St.-Martin-Straße 47
+    overs_plz: '81541'
+    overs_phone: +49 89 2129-1111
+    overs_email: bitv@bayern.de
+    overs_url: https://www.ldbv.bayern.de/digitalisierung/bitv.html
+    date: ''
+REQUIRED_PRIVACY:
+  en:
+    title: Privacy
+    alias: privacy
+    legal_notice_url: *alias-en
+    sec_off_title: Data Security Official of the FAU
+    sec_off_name: Klaus Hoogestraat
+    sec_off_add: c/o ITM Gesellschaft für IT-Management mbH
+    sec_off_city: Dresden
+    data_comm_title: Bavarian State Commissioner for Data Protection
+    data_comm_city: Munich
+  de:
+    title: Datenschutz
+    alias: datenschutz
+    legal_notice_url: *alias-de
+    sec_off_title: Datenschutzbeauftragter der FAU
+    sec_off_name: Klaus Hoogestraat
+    sec_off_add: c/o ITM Gesellschaft für IT-Management mbH
+    sec_off_city: Dresden
+    data_comm_title: der Bayerische Landesbeauftragte für den Datenschutz
+    data_comm_city: München
+  intl:
+    sec_off_address: Bürgerstraße 81
+    sec_off_plz: '01127'
+    sec_off_phone: +49 9131 85-25860
+    sec_off_email: datenschutzbeauftragter@fau.de
+    data_comm_address: Wagmüllerstraße 18
+    data_comm_plz: '80538'
+    date: ''
+KEYS_EMAIL_VALUES:
+  legal_notice:
+    - pub_email
+    - contact_email
+    - sup_email
+  accessibility:
+    - contact_access_email
+    - sup_email
+    - overs_email
+  privacy:
+    - sec_off_email

@@ -12,133 +12,10 @@ use \Drupal\Core\Link;
 use \Drupal\Core\Entity;
 use \Drupal\Core\StringTranslation\TranslatableMarkup;
 use \Drupal\Core\Entity\ContentEntityBase;
+use Symfony\Component\Yaml\Yaml;
 
 
 class LegalGenerator {
-
-  // Consants used in REQUIRED_DATA_ALL array for legal notice and privacy
-  const REQUIRED_LEGAL_NOTICE_ALIAS_DE = 'impressum';
-  const REQUIRED_LEGAL_NOTICE_ALIAS_EN = 'legalnotice';
-
-  // Array Containing All Values Required for Page Generation
-  const REQUIRED_DATA_ALL = ['REQUIRED_LEGALNOTICE' => array('en' =>  array('title'             => 'Legal Notice',
-                                                                            'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
-                                                                            'project_name'      => '',
-                                                                            'pub_name'          => '',
-                                                                            'pub_city'          => '',
-                                                                            'contact_name'      => '',
-                                                                            'sup_institute'     => '',
-                                                                            'sup_staff_array'   => '',
-                                                                            'auth_name'         => 'Bavarian State Ministry of Science and Art',
-                                                                            'auth_city'         => 'Munich',
-                                                                            ),
-                                                             'de' =>  array('title'             => 'Impressum',
-                                                                            'alias'             => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
-                                                                            'project_name'      => '',
-                                                                            'pub_name'          => '',
-                                                                            'pub_city'          => '',
-                                                                            'contact_name'      => '',
-                                                                            'sup_institute'     => '',
-                                                                            'sup_staff_array'   => '',
-                                                                            'auth_name'         => 'Bayerisches Staatsministerium für Wissenschaft und Kunst',
-                                                                            'auth_city'         => 'München',
-                                                                           ),
-                                                             'intl' => array('wisski_url'        => '',
-                                                                             'pub_address'       => '',
-                                                                             'pub_plz'           => '',
-                                                                             'pub_email'         => '',
-                                                                             'contact_phone'     => '',
-                                                                             'contact_email'     => '',
-                                                                             'sup_url'           => '',
-                                                                             'sup_email'         => '',
-                                                                             'auth_address'      => 'Salvatorstraße 2',
-                                                                             'auth_plz'          => '80327',
-                                                                             'auth_url'          => 'www.stmwk.bayern.de',
-                                                                             'id_vat'            => 'DE 132507686',
-                                                                             'id_tax'            => '216/114/20045 (Finanzamt Erlangen)',
-                                                                             'id_duns'           => '327958716',
-                                                                             'id_eori'           => 'DE4204891',
-                                                                             'date'              => '',
-                                                                            ),
-                                                          	),
-                                'REQUIRED_ACCESSIBILITY' => array('en' => array('title'                 => 'Accessibility',
-                                                                                'alias'                 => 'accessibility',
-                                                                                'issues_array'          => '', // Required if status == Partially compliant
-                                                                                'statement_array'       => '', // Required if status == Partially compliant
-                                                                                'alternatives_array'    => '', // Required if status == Partially compliant
-                                                                                'methodology'           => '',
-                                                                                'contact_access_name'   => '',
-                                                                                'sup_institute'         => '',
-                                                                                'sup_city'              => '',
-                                                                                'overs_name'            => 'Agency for Digitalisation, High-Speed Internet and Surveying',
-                                                                                'overs_dept'            => 'IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology',
-                                                                                'overs_city'            => 'Munich',
-                                                                               ),
-                                                                  'de' =>  array('title'                => 'Barrierefreiheit',
-                                                                                 'alias'                => 'barrierefreiheit',
-                                                                                'issues_array'          => '', // Required if status == Partially compliant
-                                                                                'statement_array'       => '', // Required if status == Partially compliant
-                                                                                'alternatives_array'    => '', // Required if status == Partially compliant
-                                                                                'methodology'           => '',
-                                                                                'contact_access_name'   => '',
-                                                                                'sup_institute'         => '',
-                                                                                'sup_city'              => '',
-                                                                                'overs_name'            => 'Landesamt für Digitalisierung, Breitband und Vermessung',
-                                                                                'overs_dept'            => 'IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik',
-                                                                                'overs_city'            => 'München',
-                                                                                ),
-                                                                  'intl' => array('wisski_url'            => '',
-                                                                                  'status'                => array('Completely compliant',
-                                                                                                                   'Partially compliant',
-                                                                                                                  ),
-                                                                                  'creation_date'         => '',
-                                                                                  'last_revis_date'       => '',
-                                                                                  'contact_access_phone'  => '',
-                                                                                  'contact_access_email'  => '',
-                                                                                  'sup_url'               => '',
-                                                                                  'sup_address'           => '',
-                                                                                  'sup_plz'               => '',
-                                                                                  'sup_email'             => '',
-                                                                                  'overs_address'         => 'St.-Martin-Straße 47',
-                                                                                  'overs_plz'             => '81541',
-                                                                                  'overs_phone'           => '+49 89 2129-1111',
-                                                                                  'overs_email'           => 'bitv@bayern.de',
-                                                                                  'overs_url'             => 'https://www.ldbv.bayern.de/digitalisierung/bitv.html',
-                                                                                  'date'                  => '',
-                                                                                  ),
-                                                                ),
-                                  'REQUIRED_PRIVACY' => array('en' =>  array('title'               => 'Privacy',
-                                                                             'alias'               => 'privacy',
-                                                                             'legal_notice_url'    => self::REQUIRED_LEGAL_NOTICE_ALIAS_EN,
-                                                                             'sec_off_title'       => 'Data Security Official of the FAU',
-                                                                             'sec_off_name'        => 'Klaus Hoogestraat',
-                                                                             'sec_off_add'         => 'c/o ITM Gesellschaft für IT-Management mbH',
-                                                                             'sec_off_city'        => 'Dresden',
-                                                                             'data_comm_title'     => 'Bavarian State Commissioner for Data Protection',
-                                                                             'data_comm_city'      => 'Munich',
-                                                                            ),
-                                                               'de' =>  array('title'                 => 'Datenschutz',
-                                                                              'alias'                 => 'datenschutz',
-                                                                              'legal_notice_url'      => self::REQUIRED_LEGAL_NOTICE_ALIAS_DE,
-                                                                              'sec_off_title'         => 'Datenschutzbeauftragter der FAU',
-                                                                              'sec_off_name'          => 'Klaus Hoogestraat',
-                                                                              'sec_off_add'           => 'c/o ITM Gesellschaft für IT-Management mbH',
-                                                                              'sec_off_city'          => 'Dresden',
-                                                                              'data_comm_title'       => 'der Bayerische Landesbeauftragte für den Datenschutz',
-                                                                              'data_comm_city'        => 'München',
-                                                                             ),
-                                                               'intl' => array('sec_off_address'       => 'Bürgerstraße 81',
-                                                                               'sec_off_plz'           => '01127',
-                                                                               'sec_off_phone'         => '+49 9131 85-25860',
-                                                                               'sec_off_fax'           => '',
-                                                                               'sec_off_email'         => 'datenschutzbeauftragter@fau.de',
-                                                                               'data_comm_address'     => 'Wagmüllerstraße 18',
-                                                                               'data_comm_plz'         => '80538',
-                                                                               'date'                  => '',
-                                                                               ),
-                                                            ),
-  ];
-
 
    /**
    * Check if All Values Required for Page Generation Were Passed and Are Valid
@@ -193,7 +70,46 @@ class LegalGenerator {
         return $invalid_data;
     }
 
+    // If User Provided Invalid E-mail Address Return Key for This Value
+    $invalid_email = \Drupal::service('legalgen.generator')->validateEmail($data, $page_name);
+    if(!empty($invalid_email)){
+      return $invalid_email;
+    }
+
     return NULL;
+  }
+
+
+  function validateEmail(array $data, String $page_name): String {
+
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $ymldata = Yaml::parse($file_contents);
+
+    $email_keys = $ymldata['KEYS_EMAIL_VALUES'];
+
+    $to_check = $email_keys[$page_name];
+
+    $wrong_email = [];
+
+    for($i = 0; $i < count($to_check); $i++){
+
+      $mail_current = $to_check[$i];
+
+      $mail_value = $data[$mail_current];
+
+      if(!filter_var($mail_value, FILTER_VALIDATE_EMAIL)) {
+          array_push($wrong_email, $mail_current);
+      };
+    }
+
+    if(!empty($wrong_email)){
+
+      return 'Format for e-mail(s) incorrect: '.(implode(", ", $wrong_email));
+    } else {
+      return '';
+    }
+
   }
 
 
@@ -218,7 +134,7 @@ class LegalGenerator {
     // Check if Language is Configured
     $key_exists = array_key_exists($lang, $options);
 
-    // Condition(Language NOT Specified in Config: Return Error Message Gernation for Language NOT Possible
+    // Condition(Language NOT Specified in Config: Return Error Message Generation for Language NOT Possible
     if(!$key_exists){
         return 'Not configured';
     } else {
@@ -290,27 +206,36 @@ class LegalGenerator {
    */
   function validateKeys(String $required_key, String $lang, array $state_keys_lang, array $state_keys_intl): String {
 
-    // Get Required Keys
-    $required_lang = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
-    $required_intl = LegalGenerator::REQUIRED_DATA_ALL[$required_key]['intl'];
+    // Get Required Keys from YAML File
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $ymldata = Yaml::parse($file_contents);
+
+    $required_lang = $ymldata[$required_key][$lang];
+    $required_intl = $ymldata[$required_key]['intl'];
 
     // Empty Array to Store Missing/Empty Required Values
     $missing_keys = [];
 
     // 1) Lang Array
     foreach ($required_lang as $req_k => $va){
-        $required_key_in_lang = array_key_exists($req_k, $state_keys_lang);
+      $required_key_in_lang = array_key_exists($req_k, $state_keys_lang);
 
-        if($required_key_in_lang === FALSE){
+      if($required_key_in_lang === FALSE){
+      }
+
+
+
+        if($required_key_in_lang === FALSE and $req_k !== 'title' and $req_k !== 'alias'){
             array_push($missing_keys, $req_k);
         }
     }
 
     // 2) Intl Array
     foreach ($required_intl as $req_key => $var){
-      $required_key_in_Intl = array_key_exists($req_key, $state_keys_intl);
+      $required_key_in_intl = array_key_exists($req_key, $state_keys_intl);
 
-    if($required_key_in_Intl === FALSE and $req_key !== 'title' and $req_key !== 'alias'){
+    if($required_key_in_intl === FALSE and $req_key !== 'title' and $req_key !== 'alias'){
         array_push($missing_keys, $req_key);
         }
     }
@@ -327,15 +252,18 @@ class LegalGenerator {
     // Empty Array to Store Missing/Empty Required Values
     $missing_values = [];
 
-    $missing_kKeys = [];
+    $missing_keys = [];
 
-    // Get Keys for Required Values from Constant
-    $required_lang = LegalGenerator::REQUIRED_DATA_ALL[$required_key][$lang];
-    $required_intl = LegalGenerator::REQUIRED_DATA_ALL[$required_key]['intl'];
+    // Get Required Keys from YAML File
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $ymldata = Yaml::parse($file_contents);
+
+    $required_lang = $ymldata[$required_key][$lang];
+    $required_intl = $ymldata[$required_key]['intl'];
 
     // Merge Language-Specific and International Array
     $required = array_merge($required_lang, $required_intl);
-
 
     // Loop Over Required Array: Check if Value Exists and Not Empty
     foreach ($required as $k => $v){
@@ -345,7 +273,7 @@ class LegalGenerator {
       // Add to Missing Values if Key from Required Array not in Data and is NOT Title and is NOT Alias
       if($required_key_in_data === FALSE and $k !== 'title' and $k !== 'alias'){
 
-        // Condition( Status = "Completely compliant"): Arrays Do NOT Need to Contain Information
+        // Condition( Status = "Completely compliant"): Skip Issues, Statement and Alternatives, as Those Arrays Do NOT Need to Contain Information in This Case
         if($page_name === 'accessibility'){
 
           if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
@@ -380,24 +308,11 @@ class LegalGenerator {
         array_push($missing_values, 'cust_licence_txt');
       }
 
-      // Condition (Licence URL for Metadata Given but NO Licence Title)
-      if (!empty($data['licence_url_meta']) and empty($data['licence_title_meta'])) {
-        array_push($missing_values, 'licence_title_meta');
+      // Condition (Licence URL Given but NO Licence Title)
+      if (!empty($data['licence_url']) and empty($data['licence_title'])) {
+        array_push($missing_values, 'licence_title');
       }
-
-      // Condition (Licence URL for Images Given but NO Licence Title)
-      if (!empty($data['licence_url_imgs']) and empty($data['licence_title_imgs'])) {
-        array_push($missing_values, 'licence_title_imgs');
-      }
-
-      // Ensure E-mail Addresses Have Correct Format
-
     }
-
-    // For Accessibility
-    /*if($page_name === 'accessibility'){
-      // Ensure E-mail Addresses Have Correct Format
-    }*/
 
     // For Privacy
     if($page_name === 'privacy'){
@@ -572,9 +487,20 @@ class LegalGenerator {
     // Get Required Values from State
     $state_key = 'legalgen.'.$page_name;
     $stored_values = \Drupal::state()->get($state_key);
-    $default_values = LegalGenerator::REQUIRED_DATA_ALL[$required_key];
-    $title = $stored_values[$default_lang]['title'] ?? $default_values[$default_lang]['title'];
-    $alias = $stored_values[$default_lang]['alias'] ?? $default_values[$default_lang]['alias'];
+
+
+
+    // Get Default Values from YAML File
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $ymldata = Yaml::parse($file_contents);
+
+    $default_values = $ymldata[$required_key][$default_lang];
+
+    $title = $stored_values[$default_lang]['title'] ?? $default_values['title'];
+
+    // Alias is Stored in Subarray in YAML File ($default_values), Ensure to only get String for Page Generation
+    $alias = $stored_values[$default_lang]['alias'] ?? $default_values['alias']['name'];
 
     // Generate Page Displaying "Empty" Info
     $node = Node::create([
@@ -587,7 +513,7 @@ class LegalGenerator {
           'format'    => 'full_html',
         ),
       // set alias for page
-      'path'     => array('alias' => "/$alias"),
+      'path'     => array('alias' => "/$alias']"),
     ]);
 
     // Save Changes and Pass on ID
@@ -739,7 +665,6 @@ class LegalGenerator {
       unset($template['#lang']);
       unset($template['#overwrite']);
 
-
       // Render Page Body
       $body = \Drupal::service('renderer')->renderPlain($template);
 
@@ -849,7 +774,7 @@ class LegalGenerator {
           $url_object = $node->toUrl();
           $url_string = $url_object->toString();
 
-          $message = t('<a href=":href" target="_blank" rel="noopener noreferer">Empty default language page created</a> ('.$default_lang.') <b>Please ensure to manually generate this page again with all required values</b>', array(':href' => $url_string));
+          $message = t('<a href=":href" target="_blank" rel="noopener noreferer">Empty default language page created</a> ('.$default_lang.') <b>Please ensure to manually generate this page again after entering all required values</b>', array(':href' => $url_string));
 
           \Drupal::messenger()->addStatus($message, 'status', TRUE);
 
@@ -872,4 +797,5 @@ class LegalGenerator {
     \Drupal::messenger()->addError('Unable to generate page! '.$validated, 'status', TRUE);
   }
   }
+
 }

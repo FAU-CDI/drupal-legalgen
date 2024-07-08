@@ -8,6 +8,14 @@ use Drupal\Core\State\StateInterface;
 use Drupal\legalgen\Generator\LegalGenerator;
 use \Drupal\node\Entity\Node;
 use \Drupal\Core\Language;
+use Symfony\Component\Yaml\Yaml;
+use \Drupal\Core\Url;
+use \Drupal\Core\Ajax;
+use \Drupal\Core\Ajax\AjaxResponse;
+use \Drupal\Core\Ajax\CommandInterface;
+use \Drupal\Core\Ajax\OpenModalDialogCommand;
+use \Drupal\Core\Ajax\CloseModalDialogCommand;
+use \Drupal\Core\Ajax\RedirectCommand;
 
 /**
  * Configure example settings for this site.
@@ -63,8 +71,13 @@ class WissKIAccessibilityForm extends FormBase {
     // see https://api.drupal.org/api/drupal/elements/8.2.x for available elements
 
     // Get State Values for Form
-    $storedValues = $this->getStateValues();
-    $defaultValues = LegalGenerator::REQUIRED_DATA_ALL['REQUIRED_ACCESSIBILITY'];
+    $stored_values = $this->getStateValues();
+
+    $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
+    $file_contents = file_get_contents($file_path);
+    $default_values_all = Yaml::parse($file_contents);
+    $default_values = $default_values_all['REQUIRED_ACCESSIBILITY'];
+
 
     // Check if Node Already Exists (Condition for Overwrite Checkbox Display)
     $state_vals = \Drupal::state()->get('legalgen.accessibility');
@@ -118,7 +131,7 @@ class WissKIAccessibilityForm extends FormBase {
 
       $form['Select_Language']['Chosen_Language'] = array(
         '#type'          => 'select',
-        '#title'         => t('Choose the language in which the accessibility notice should be generated<br />Please note: Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
+        '#title'         => t('Choose the language in which the accessibility notice should be generated<br /><br />Please note:<br />Changes made here will NOT automatically be applied to already existing pages in other languages. Please make sure to generate them again<br /><br />'),
         '#options'       => $options,
         '#ajax'          => [
           'callback'        => '::ajaxCallback',
@@ -179,20 +192,17 @@ class WissKIAccessibilityForm extends FormBase {
           $form['Lang_Specific_Form']['General']['Title'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Page Title'),
-            '#required'      => TRUE,
             );
 
           $form['Lang_Specific_Form']['General']['WissKI_URL'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Accessibility Statement Applies to Content Under the Following URL(s)'),
-            '#required'      => TRUE,
             );
 
 
           $form['Lang_Specific_Form']['General']['Alias'] = array(
             '#type'          => 'textfield',
             '#title'         => t('Page Alias'),
-            '#required'      => TRUE,
             );
 
 
@@ -211,7 +221,6 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Conformity']['Conformity_Status'] = array(
         '#type'          => 'select',
         '#title'         => t('Conformity Status'),
-        '#required'      => TRUE,
         '#id'          => 'conformity_status',
         '#options'       => [
           'Completely compliant' => 'Completely compliant',
@@ -222,25 +231,21 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Conformity']['Assessment_Methodology'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Assessment Methodology'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Conformity']['Creation_Date'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Report Creation Date'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Conformity']['Last_Revision_Date'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Last Revision Date'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Conformity']['Report_URL'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Report URL'),
-        '#required'      => FALSE,
         );
 
 
@@ -332,19 +337,16 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Contact Person'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone'] = array(
         '#type'          => 'tel',
         '#title'         => t('Phone Contact Person'),
-        '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Contact Person'),
-        '#required'      => TRUE,
         );
 
 
@@ -358,37 +360,32 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Institute'),
-        '#required'      => TRUE,
         );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
           '#type'          => 'textfield',
           '#title'         => t('URL Support and Hosting'),
-          '#required'      => TRUE,
+
           );
 
         $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address'] = array(
           '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
-        '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Support and Hosting'),
-        '#required'      => TRUE,
         );
 
 
@@ -402,49 +399,41 @@ class WissKIAccessibilityForm extends FormBase {
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Oversight Agency'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Dept'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Department'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Address'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
-        '#required'      => TRUE,
       );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone'] = array(
         '#type'          => 'tel',
         '#title'         => t('Phone Oversight Agency'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Oversight Agency'),
-        '#required'      => TRUE,
         );
 
       $form['Lang_Specific_Form']['Oversight Body']['Oversight_URL'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Website Oversight Agency '),
-        '#required'      => TRUE,
         );
 
 
@@ -462,7 +451,6 @@ class WissKIAccessibilityForm extends FormBase {
         $form['Lang_Specific_Form']['Timestamp']['Date'] = array(
           '#type'          => 'date',
           '#title'         => t('Date of Page Generation'),
-          '#required'      => TRUE,
         );
 
 
@@ -472,7 +460,7 @@ $form['Lang_Specific_Form']['Notice'] = array(
 '#prefix' => '<br /><p><strong>',
 '#suffix' => '</strong></p>',
 '#markup' => t('No liability is assumed for the correctness of the data entered or the legal statement generated.<br />
-                Please verify the accuracy of the generated pages.'),
+                Please verify the accuracy of the generated page.'),
 );
 
 
@@ -520,56 +508,124 @@ $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent'] = array(
         );
 
 
-// Button: Reset Form Contents to Default
-$form['Lang_Specific_Form']['reset_button'] = array(
-  '#class' => 'button',
-  '#type' => 'submit',
-  '#value' => t('Reset to default'),
-  '#submit' => [[$this, 'resetAllValues']],
+  // Button: Opens Modal with Info on Reset to Default, 'Continue' Button and 'Return' Button
+  $form['Lang_Specific_Form']['Modal_Reset_Button'] = array (
+    '#class'  => 'button',
+    '#type'   => 'button',
+    '#value'  => t('Reset to Default'),
+    // Ensure Reset Button Bypasses Required Values Validation
+    '#limit_validation_errors' => array(),
+    // AJAX Callback Handler on Button Click
+    '#ajax' => array(
+      'callback' => '::ajax_modal_popup',
+    ),
   );
 
 
+
 // Populate Fields with Default Values
-$form['Lang_Specific_Form']['General']['Title']['#default_value'] = $storedValues[$lang]['title']?? $defaultValues[$lang]['title'];
-$form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $storedValues['intl']['wisski_url']?? \Drupal::request()->getSchemeAndHttpHost();
-$form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $storedValues[$lang]['alias']?? $defaultValues[$lang]['alias'];
+$form['Lang_Specific_Form']['General']['Title']['#default_value'] = $stored_values[$lang]['title']?? $default_values[$lang]['title'];
+$form['Lang_Specific_Form']['General']['WissKI_URL']['#default_value'] = $stored_values['intl']['wisski_url']?? \Drupal::request()->getSchemeAndHttpHost();
+$form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias']?? $default_values[$lang]['alias'];
 
-$form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $storedValues['intl']['status']?? $defaultValues['intl']['status'];
-$form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#default_value'] = $storedValues[$lang]['methodology']?? $defaultValues[$lang]['methodology'];
-$form['Lang_Specific_Form']['Conformity']['Creation_Date']['#default_value'] = $storedValues['intl']['creation_date']?? $defaultValues['intl']['creation_date'];
-$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#default_value'] = $storedValues['intl']['last_revis_date']?? $defaultValues['intl']['last_revis_date'];
-$form['Lang_Specific_Form']['Conformity']['Report_URL']['#default_value'] = $storedValues['intl']['report_url']?? t('');
+$form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $stored_values['intl']['status']?? $default_values['intl']['status'];
+$form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#default_value'] = $stored_values[$lang]['methodology']?? $default_values[$lang]['methodology'];
+$form['Lang_Specific_Form']['Conformity']['Creation_Date']['#default_value'] = $stored_values['intl']['creation_date']?? $default_values['intl']['creation_date'];
+$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#default_value'] = $stored_values['intl']['last_revis_date']?? $default_values['intl']['last_revis_date'];
+$form['Lang_Specific_Form']['Conformity']['Report_URL']['#default_value'] = $stored_values['intl']['report_url']?? t('');
 
-$form['Lang_Specific_Form']['Issues']['Known_Issues']['#default_value']  = $storedValues[$lang]['issues_array']?? t('');
-$form['Lang_Specific_Form']['Issues']['Justification_Statement']['#default_value']  = $storedValues[$lang]['statement_array']?? t('');
-$form['Lang_Specific_Form']['Issues']['Alternative_Access']['#default_value']  = $storedValues[$lang]['alternatives_array']?? t('');
+$form['Lang_Specific_Form']['Issues']['Known_Issues']['#default_value']  = $stored_values[$lang]['issues_array']?? t('');
+$form['Lang_Specific_Form']['Issues']['Justification_Statement']['#default_value']  = $stored_values[$lang]['statement_array']?? t('');
+$form['Lang_Specific_Form']['Issues']['Alternative_Access']['#default_value']  = $stored_values[$lang]['alternatives_array']?? t('');
 
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name']['#default_value'] = $storedValues[$lang]['contact_access_name']?? $defaultValues[$lang]['contact_access_name'];
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone']['#default_value'] = $storedValues['intl']['contact_access_phone']?? $defaultValues['intl']['contact_access_phone'];
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email']['#default_value'] = $storedValues['intl']['contact_access_email']?? $defaultValues['intl']['contact_access_email'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name']['#default_value'] = $stored_values[$lang]['contact_access_name']?? $default_values[$lang]['contact_access_name'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone']['#default_value'] = $stored_values['intl']['contact_access_phone']?? $default_values['intl']['contact_access_phone'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email']['#default_value'] = $stored_values['intl']['contact_access_email']?? $default_values['intl']['contact_access_email'];
 
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $storedValues[$lang]['sup_institute']?? $defaultValues[$lang]['sup_institute'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $storedValues['intl']['sup_url']?? $defaultValues['intl']['sup_url'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address']['#default_value'] = $storedValues['intl']['sup_address']?? $defaultValues['intl']['sup_address'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ']['#default_value'] = $storedValues['intl']['sup_plz']?? $defaultValues['intl']['sup_plz'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City']['#default_value'] = $storedValues[$lang]['sup_city']?? $defaultValues[$lang]['sup_city'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $storedValues['intl']['sup_email']?? $defaultValues['intl']['sup_email'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $stored_values[$lang]['sup_institute']?? $default_values[$lang]['sup_institute'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $stored_values['intl']['sup_url']?? $default_values['intl']['sup_url'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address']['#default_value'] = $stored_values['intl']['sup_address']?? $default_values['intl']['sup_address'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ']['#default_value'] = $stored_values['intl']['sup_plz']?? $default_values['intl']['sup_plz'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City']['#default_value'] = $stored_values[$lang]['sup_city']?? $default_values[$lang]['sup_city'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $stored_values['intl']['sup_email']?? $default_values['intl']['sup_email'];
 
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Name']['#default_value'] = $storedValues[$lang]['overs_name']?? $defaultValues[$lang]['overs_name'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Dept']['#default_value'] = $storedValues[$lang]['overs_dept']?? $defaultValues[$lang]['overs_dept'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#default_value'] = $storedValues['intl']['overs_address']?? $defaultValues['intl']['overs_address'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#default_value'] = $storedValues['intl']['overs_plz']?? $defaultValues['intl']['overs_plz'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#default_value'] = $storedValues[$lang]['overs_city']?? $defaultValues[$lang]['overs_city'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#default_value'] = $storedValues['intl']['overs_phone']?? $defaultValues['intl']['overs_phone'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#default_value'] = $storedValues['intl']['overs_email']?? $defaultValues['intl']['overs_email'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#default_value'] = $storedValues['intl']['overs_url']?? $defaultValues['intl']['overs_url'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Name']['#default_value'] = $stored_values[$lang]['overs_name']?? $default_values[$lang]['overs_name'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Dept']['#default_value'] = $stored_values[$lang]['overs_dept']?? $default_values[$lang]['overs_dept'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#default_value'] = $stored_values['intl']['overs_address']?? $default_values['intl']['overs_address'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#default_value'] = $stored_values['intl']['overs_plz']?? $default_values['intl']['overs_plz'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#default_value'] = $stored_values[$lang]['overs_city']?? $default_values[$lang]['overs_city'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#default_value'] = $stored_values['intl']['overs_phone']?? $default_values['intl']['overs_phone'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#default_value'] = $stored_values['intl']['overs_email']?? $default_values['intl']['overs_email'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#default_value'] = $stored_values['intl']['overs_url']?? $default_values['intl']['overs_url'];
 
 $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
 
 $form['Lang_Specific_Form']['Overwrite']['Overwrite_Consent']['#default_value'] = FALSE;
 
+
+// Set Fields to Required/NOT Required Dependent on required.yml
+  // !!! 'Known_Issues', 'Justification_Statement', and 'Alternative_Access' Managed Separately: Directly in Form Via #states
+  // !!! 'Overwrite' Managed Separately: Directly in Form Via Condition
+
+// Get Required Values From YAML File (Default Values ≙ Required Values)
+$req_lang = $default_values[$lang];
+$req_intl = $default_values['intl'];
+
+// Join Lang and Intl Array
+$req_all = array_merge($req_lang, $req_intl);
+
+// Set Mandatory Fields to Required
+$form['Lang_Specific_Form']['General']['Title']['#required'] = $this->isItRequired('title', $req_all);
+$form['Lang_Specific_Form']['General']['WissKI_URL']['#required'] = $this->isItRequired('wisski_url', $req_all);
+$form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequired('alias', $req_all);
+
+$form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#required'] = $this->isItRequired('status', $req_all);
+$form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#required'] = $this->isItRequired('methodology', $req_all);
+$form['Lang_Specific_Form']['Conformity']['Creation_Date']['#required'] = $this->isItRequired('creation_date', $req_all);
+$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#required'] = $this->isItRequired('last_revis_date', $req_all);
+$form['Lang_Specific_Form']['Conformity']['Report_URL']['#required'] = $this->isItRequired('report_url', $req_all);
+
+// 'Known_Issues', 'Justification_Statement', and 'Alternative_Access' Managed Separately: Directly in Form Via #states
+
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name']['#required'] = $this->isItRequired('contact_access_name', $req_all);
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone']['#required'] = $this->isItRequired('contact_access_phone', $req_all);
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email']['#required'] = $this->isItRequired('contact_access_email', $req_all);
+
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#required'] = $this->isItRequired('sup_institute', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#required'] = $this->isItRequired('sup_url', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address']['#required'] = $this->isItRequired('sup_address', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ']['#required'] = $this->isItRequired('sup_plz', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City']['#required'] = $this->isItRequired('sup_city', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#required'] = $this->isItRequired('sup_email', $req_all);
+
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Name']['#required'] = $this->isItRequired('overs_name', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Agency_Dept']['#required'] = $this->isItRequired('overs_dept', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#required'] = $this->isItRequired('overs_address', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#required'] = $this->isItRequired('overs_plz', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#required'] = $this->isItRequired('overs_city', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#required'] = $this->isItRequired('overs_phone', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#required'] = $this->isItRequired('overs_email', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#required'] = $this->isItRequired('overs_url', $req_all);
+
+$form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);
+
+// 'Overwrite' Managed Separately: Directly in Form Via Condition
+
+
 return $form;
  }
+}
+
+  /**
+ * Check in YAML File if Value is Required
+ */
+function isItRequired($key, $req_all): bool {
+
+  if(array_key_exists($key, $req_all)){
+          return TRUE;
+  } else {
+    return false;
+  }
 }
 
 
@@ -583,36 +639,56 @@ public function ajaxCallback(array $form, FormStateInterface $form_state){
 }
 
 
-/**
- * Called when user hits reset button
- * {@inheritdoc}
+  /**
+ * AJAX Callback Handler
+ * Called When User Clicks on 'Reset to Default'-Button
  */
-public function resetAllValues(array &$values_stored_in_state, FormStateInterface $form_state) {
+public function ajax_modal_popup($form, &$form_state){
 
-  // Get Array from State
-  $content_state = \Drupal::state()->get('legalgen.accessibility');
+  // Set Title and Size of Modal
+  $title = t("Reset Values to Default");
+  $options = [
+    'width' => '70%'
+  ];
 
-  // Get Language Code Of Selected Form
-  $language = $values_stored_in_state['Select_Language']['Chosen_Language'];
+  $content['#markup'] = "<br />Resetting values CANNOT be undone. Non language-specific values (such as phone numbers, postal codes, e-mail addresses etc.) will be reset for all other language versions of this form as well.<br />Already generated pages are NOT affected.<br /><br />Do you wish to continue?<br />";
+  $content['Close_Button'] = array (
+    '#class'  => 'button',
+    '#type'   => 'button',
+    '#value'  => t('Return to Form'),
+    '#prefix' => '<br />',
+    '#attributes' => [
+      'onclick' => "Drupal.dialog(document.getElementById('drupal-modal')).close(); return false;",
+    ],
+  );
 
-  $lang = $language['#value'];
+  // Build URL to Link to Controller with Query String
+  $lang_name = $form_state->getValue('Chosen_Language');
+  $page_name = 'accessibility';
+  $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pn" => $page_name));
 
-  // Condition (Already Values Stored in State): Replace with Default Values
-  if(!empty($content_state[$lang])){
+  // Button to Confirm Reset to Default
+  // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
+  $content['Controller_Reset_Button'] = array (
+    '#type'   => 'link',
+    '#title'  => $this->t('Reset to Default'),
+    '#url'    => $url,
+    '#attributes' => [
+      'class' => [
+        'button',
+      ],
+    ],
+  );
 
-    unset($content_state[$lang]);
+  // Create Modal
+  $response = new AjaxResponse();
+  $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
 
-    if(!empty($content_state['intl'])){
-
-      unset($content_state['intl']);
-
-      $new_state_vars = array('legalgen.accessibility' => $content_state);
-
-      \Drupal::state()->setMultiple($new_state_vars);
-
-    }
-  }
+  return $response;
 }
+
+
+
 
 
   /**
@@ -704,7 +780,7 @@ public function resetAllValues(array &$values_stored_in_state, FormStateInterfac
       'date'                     => $date,
       'overwrite_consent'        => $overwrite_consent
     ];
-
+;
     // Parameters to Call Service:
 
     // a) Key to Select Correct Template for Page Generation

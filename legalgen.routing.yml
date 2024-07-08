@@ -1,35 +1,53 @@
-# path name
+# Path Name
 wisski.legalgen.legalnotice:
   # URL suffix of the path that will be accessed by the user
   path: '/admin/wisski/legalnotice'
   defaults:
     # handler that is called when accessing the path above
     _form: '\Drupal\legalgen\Form\WissKILegalnoticeForm'
-    # page title
+    # Page Title
     _title: "Legal Notice"
   requirements:
+    # Permissions that Need to Be Met to Access this Route
     _permission: 'administer wisski'
 
-# path name
+# Path Name
 wisski.legalgen.accessibility:
   # URL suffix of the path that will be accessed by the user
   path: '/admin/wisski/accessibility'
   defaults:
     # handler that is called when accessing the path above
     _form: '\Drupal\legalgen\Form\WissKIAccessibilityForm'
-    # page title
+    # Page Title
     _title: "Accessibility"
   requirements:
+    # Permissions that Need to Be Met to Access this Route
     _permission: 'administer wisski'
 
-# path name
+# Path Name
 wisski.legalgen.privacy:
   # URL suffix of the path that will be accessed by the user
   path: '/admin/wisski/privacy'
+  # Defines the default properties of Route
   defaults:
-    # handler that is called when accessing the path above
+    # Handler that is Called when Accessing the Path above
     _form: '\Drupal\legalgen\Form\WissKIPrivacyForm'
-    # page title
+    # Page Title
     _title: "Privacy"
   requirements:
+    # Permissions that Need to Be Met to Access this Route
+    _permission: 'administer wisski'
+
+
+# Controller
+wisski.legalgen.reset:
+  # URL suffix of the path that will be accessed when clicking the reset button in the reset dialog modal
+  path: '/admin/wisski/reset'
+  defaults:
+    # Handler that is Called when Accesing the Path above
+    _controller: 'Drupal\legalgen\Controller\LegalgenController::content'
+    # Page Title
+    _title: 'Reset all values'
+  requirements:
+    # Permissions that Need to Be Met to Acces This Route
     _permission: 'administer wisski'

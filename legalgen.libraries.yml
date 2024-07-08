@@ -4,5 +4,10 @@ legalpages_library:
   theme:
    css/legalpages_library.css: {}
  js:
-
  drupalSettings: null
+ dependencies:
+  - core/jquery
+  - core/drupal.dialog.ajax # Required for Dialogs
+  - core/drupal.ajax
+  - core/jquery.form # Required for AJAX Form Operations
+  - core/once

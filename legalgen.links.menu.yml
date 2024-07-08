@@ -1,5 +1,5 @@
 wisski.legalgen:
-  title: 'LegalGenerator'
+  title: 'Legal Generator'
   description: 'Generate legal notice, accessibility statement, and privacy policy'
   parent: wisski.content
   # the route name of the route that should be accessed when clicking the menu link

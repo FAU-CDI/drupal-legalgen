@@ -1,4 +1,4 @@
-/*Identification Numbers 'Table'*/
+/* Gives Identification Numbers a 'Table'-like Structure While Avoiding Using a Table for Accessibility Reasons */
 .rTable {
     display: table;
 }
@@ -16,7 +16,33 @@
 
 .vat{ margin-bottom: 20px;}
 
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
 
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+/* Style of Accessibility Conformity (SHOULD BE MOVED TO OVERALL THEME*/
 .accessibility__conformity-complete {
     text-align: left;
     padding-top: 15px;
