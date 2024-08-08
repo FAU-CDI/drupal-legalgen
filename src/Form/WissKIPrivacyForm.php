@@ -155,7 +155,7 @@ class WissKIPrivacyForm extends FormBase{
       $unset_key = array('Title', 'Alias', 'Not_FAU', 'Legal_Notice_URL', 'Sec_Off_Title', 'Sec_Off_Name', 'Sec_Off_Add', 'Sec_Off_Address', 'Sec_Off_PLZ', 'Sec_Off_City', 'Sec_Off_Phone', 'Sec_Off_Fax', 'Sec_Off_Email', 'Third_Service_Provider', 'Third_Descr_Data_Coll', 'Third_Legal_Basis_Data_Coll', 'Third_Objection_Data_Coll', 'Data_Comm_Title', 'Data_Comm_Address', 'Data_Comm_PLZ', 'Data_Comm_City', 'Date', 'Overwrite_Consent');
 
       foreach ($unset_key as $key) {
-      unset($input[$key]);
+        unset($input[$key]);
       }
 
       $form_state->setUserInput($input);
