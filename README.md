@@ -17,27 +17,37 @@ We give no guarantee and assume no liability for the topicality and legal correc
 
 ## Table of Contents
 1. [Service: LegalGenerator](#paragraph1)
-    1. [Parameters](#subparagraph1)
-    2. [Keys and Values](#subparagraph2)
+    1. [Parameters](#subparagraph1.1)
+    2. [Keys and Values](#subparagraph1.2)
+       1. [Legal Notice](#subparagraph1.2.1)
+          1. [Data Array](#subparagraph1.2.1.1)
+          2. [Lang Array](#subparagraph1.2.1.2)
+          3. [Intl Array](#subparagraph1.2.1.3)
+       2. [Accessibility](#subparagraph1.2.2)
+          1. [Data Array](#subparagraph1.2.2.1)
+          2. [Lang Array](#subparagraph1.2.2.2)
+          3. [Intl Array](#subparagraph1.2.2.3)
+       3. [Privacy](#subparagraph1.2.3)
+          1. [Data Array](#subparagraph1.2.3.1)
+          2. [Lang Array](#subparagraph1.2.3.2)
+          3. [Intl Array](#subparagraph1.2.3.3)
+
 2. [Forms](#paragraph2)
 3. [Required and Default Values](#paragraph3)
 4. [Controller](#paragraph4)
 5. [Config](#paragraph5)
 6. [CSS](#paragraph6)
-7. [Test.php](#paragraph7)
 
 <br />
 <br />
 
 ## 1. Service: LegalGenerator
 
-Each of the three legal statements can be generated through the following function:
+Each of the three legal statements can be generated using the following function:
 
 ```PHP
-generatePage(array $data, string $title, string $alias, string $page_name, string $lang, array $state_keys_lang, array $state_keys_intl)
+generatePage(array $data, string $title, string $alias, string $page_type, string $lang, array $state_keys_lang, array $state_keys_intl)
 ```
-
-!!!!!!!!!!!!!!!!!!!!!!!!! Add some more information about functioning here
 
 </br>
 
@@ -45,13 +55,13 @@ generatePage(array $data, string $title, string $alias, string $page_name, strin
 
 |Type|Key|Description|
 |----:|----|---|
-|array|**$data**|Should contain all values to be added to the page identified by the keys specified below<br /> See 2.[123]. a)|
+|array|**$data**|Should contain all values to be added to the page identified by the keys specified below<br /> See 1.2.[123]. a)|
 |string|**$title**|Page title|
 |string|**$alias**|URL Path|
-|string|**$page_name**|Page type to be generated<br />Use: `'legal_notice'`, `'accessibility'` or `'privacy'`|
+|string|**$page_type**|Page type to be generated<br />Use: `'legal_notice'`, `'accessibility'` or `'privacy'`|
 |string|**$lang**|Language code<br />Use: `'en'` or `'de'`|
-|array|**$state_keys_lang**|All keys for language-specific values. See 2.[123]. b)|
-|array|**$state_keys_intl**|All keys for language non-specific values. See 2.[123]. c)|
+|array|**$state_keys_lang**|All keys for language-specific values. See 1.2.[123]. b)|
+|array|**$state_keys_intl**|All keys for language non-specific values. See 1.2.[123]. c)|
 
 <br />
 
@@ -61,7 +71,7 @@ generatePage(array $data, string $title, string $alias, string $page_name, strin
 
 #### 1.2.1. Legal Notice
 
-##### a) <u>Data Array</u>
+##### 1.2.1.1. <u>Data Array</u>
 
 |Section|Type|Key|Description|Required|Key Array|Example|
 |----|----|----|-----|:---:|----|---|
@@ -104,7 +114,7 @@ generatePage(array $data, string $title, string $alias, string $page_name, strin
 |**Overwrite Consent**|**`Boolean`**|overwrite_consent|**`Checkbox:`** Permission to overwrite existing page|<span style="color:IndianRed">&#x2612;</span>|'lang'|FALSE|
 <br />
 
-##### **b) <u>Lang Array</u>**
+##### **1.2.1.2. <u>Lang Array</u>**
 
 ```PHP
 $state_keys_lang = array('title'              => '',
@@ -131,7 +141,7 @@ $state_keys_lang = array('title'              => '',
 
 <br />
 
-##### **c) <u>Intl Array</u>**
+##### **1.2.1.3. <u>Intl Array</u>**
 
 ```PHP
 $state_keys_intl = array('wisski_url'      => '',
@@ -156,7 +166,7 @@ $state_keys_intl = array('wisski_url'      => '',
 
 #### **1.2.2. Accessibility**
 
-##### **a) <u>Data Array</u>**
+##### **1.2.2.1. <u>Data Array</u>**
 
 |Section|Type|Key|Description|Required|Key Array|Example|
 |----|----|----|----|:----:|----|---|
@@ -190,7 +200,7 @@ $state_keys_intl = array('wisski_url'      => '',
 |**Overwrite Consent**|**`Boolean`**|overwrite_consent|**`Checkbox:`** Permission to overwrite existing page|<span style="color:IndianRed">&#x2612;</span>|'lang'|FALSE|
 <br />
 
-##### **b) <u>Lang Keys Array</u>**
+##### **1.2.2.2. <u>Lang Keys Array</u>**
 
 ```PHP
 $state_keys_lang = array('title'                => '',
@@ -211,7 +221,7 @@ $state_keys_lang = array('title'                => '',
 
 <br />
 
-##### **c) <u>Intl Keys Array</u>**
+##### **1.2.2.3. <u>Intl Keys Array</u>**
 
 ```PHP
 $state_keys_intl = array('wisski_url'            => '',
@@ -239,7 +249,7 @@ $state_keys_intl = array('wisski_url'            => '',
 
 #### **1.2.3. Privacy**
 
-##### **a) <u>Data Array</u>**
+##### **1.2.3.1. <u>Data Array</u>**
 
 |Section|Type|Key|Description|Required|Key Array|Example|
 |----|----|----|----|:----:|----|---|
@@ -265,7 +275,7 @@ $state_keys_intl = array('wisski_url'            => '',
 |**Overwrite Consent**|**`Boolean`**|overwrite_consent|**`Checkbox:`** Permission to overwrite existing page|<span style="color:IndianRed">&#x2612;</span>|'lang'|FALSE|
 <br />
 
-##### **b) <u>Lang Keys Array</u>**
+##### **1.2.3.2. <u>Lang Keys Array</u>**
 
 ```PHP
 $state_keys_lang = array('title'                        => '',
@@ -287,7 +297,7 @@ $state_keys_lang = array('title'                        => '',
 
 <br />
 
-##### **c) <u>Intl Keys Array</u>**
+##### **1.2.3.3. <u>Intl Keys Array</u>**
 
 ```PHP
 $state_keys_intl = array('sec_off_address'    => '',
@@ -338,8 +348,3 @@ The file **legalgen.languages.yml** specifies all languages available for genera
 
 ## 6. CSS
 For accessibility reasons, the identification numbers (`VAT_Number`,`Tax_Number`, `DUNS_Number` and `EORI_Number`) in the legal notice are given a 'table'-like structure via CSS, thus avoiding the use of a table.
-
-<br />
-
-## 7. Test.php
-This file contains all variables and arrays with required keys and values necessary to test page generation via the service. All values provided are dummy variables only ment for testing purposes.
