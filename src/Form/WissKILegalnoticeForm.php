@@ -44,8 +44,10 @@ class WissKILegalnoticeForm extends FormBase {
     return \Drupal::state();
   }
 
-    /**
+  /**
    * {@inheritdoc}
+   *
+   * Gets Values Stored in State for this Page Type.
    */
   public function getStateValues(){
     if(!empty(\Drupal::state()->get('legalgen.legal_notice'))){
@@ -58,6 +60,19 @@ class WissKILegalnoticeForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * Builds the Form to Generate an Accessibility Statement. When Clicking the 'Accessibility' Tab, at First only a Select Object will be displayed asking the User to Choose the Language for which
+   * the Form should be displayed. This Selection does not Impact the Form Itself but the Values to be Displayed in the Fields as well as the Generation Upon Clicking "Generate".
+   * The Values Shown in the Fields are Retrieved from the State in Case the Form has been Previously Submitted and Values were not Reset. If the State for this Page in the Specified Language is Empty
+   * Default Values will be Loaded from required.and.email.yml where Available. All Other Fields will remain empty.
+   * Values Required for Page Generation will be Marked as Such based on the required.and.email.yml file.
+   *
+   * Be Aware that for Some Fields Whether They are Required or not is Implemented Differently Either Through a Condition or #state Directly in the Form.
+   *
+   * Default Values as well as the State are Accessed Using Keys Hard Coded in this Function.
+   *
+   * @param array $form
+   * @param FormStateInterface $form_state
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
@@ -651,8 +666,8 @@ class WissKILegalnoticeForm extends FormBase {
    }
   }
 
-    /**
-   * Check in YAML File if Value is Required
+  /**
+   * Checks in YAML File if Value is Required.
    */
   function isItRequired($key, $req_all): bool {
 
@@ -664,68 +679,79 @@ class WissKILegalnoticeForm extends FormBase {
   }
 
   /**
-   * Called When User Selects Language
-   * Build Form with Default Values for Selected Language
    * {@inheritdoc}
+   * AJAX Callback Handler for Language Selection:
+   * Called when the User Selects a Language.
+   * Builds Form for the Language Selected by the User and Fills Fields either with Values from the State, Default Values or Leaves them Empty if Neither of Both is Available.
    */
   public function ajaxCallback(array $form, FormStateInterface $form_state){
     return $form['Lang_Specific_Form'];
   }
 
-
   /**
- * AJAX Callback Handler
- * Called When User Clicks on 'Reset to Default'-Button
- */
- public function ajax_modal_popup($form, &$form_state){
+   * AJAX Callback Handler for Reset Modal:
+   * Called when the User Clicks on the "Reset to Default"-Button.
+   * Opens a Modal Informing the User About the Consequences of Resetting all Values to Default. Gives them the Option to Return to the Form Without Performing any Action or Proceding to Reset all Values
+   * to Default. When the User clicks "Reset to Default" in the Modal, they will be Forwarded to the LegalgenController which Executes the Reset and Sends the User Back to the Form.
+   */
+  public function ajax_modal_popup($form, &$form_state){
 
-      // Set Title and Size of Modal
-      $title = t("Reset Values to Default");
-      $options = [
-        'width' => '70%'
-      ];
+        // Set Title and Size of Modal
+        $title = t("Reset Values to Default");
+        $options = [
+          'width' => '70%'
+        ];
 
-      $content['#markup'] = "<br />Resetting values CANNOT be undone. Non language-specific values (such as phone numbers, postal codes, e-mail addresses etc.) will be reset for all other language versions of this form as well.<br />Already generated pages are NOT affected.<br /><br />Do you wish to continue?<br />";
-      $content['Close_Button'] = array (
-        '#class'  => 'button',
-        '#type'   => 'button',
-        '#value'  => t('Return to Form'),
-        '#prefix' => '<br />',
-        '#attributes' => [
-          'onclick' => "Drupal.dialog(document.getElementById('drupal-modal')).close(); return false;",
-        ],
-      );
-
-      // Build URL to Link to Controller with Query String
-      $lang_name = $form_state->getValue('Chosen_Language');
-      $page_type = 'legal_notice';
-      $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pt" => $page_type));
-
-      // Button to Confirm Reset to Default
-      // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
-      $content['Controller_Reset_Button'] = array (
-        '#type'   => 'link',
-        '#title'  => $this->t('Reset to Default'),
-        '#url'    => $url,
-        '#attributes' => [
-          'class' => [
-            'button',
+        $content['#markup'] = "<br />Resetting values CANNOT be undone. Non language-specific values (such as phone numbers, postal codes, e-mail addresses etc.) will be reset for all other language versions of this form as well.<br />Already generated pages are NOT affected.<br /><br />Do you wish to continue?<br />";
+        $content['Close_Button'] = array (
+          '#class'  => 'button',
+          '#type'   => 'button',
+          '#value'  => t('Return to Form'),
+          '#prefix' => '<br />',
+          '#attributes' => [
+            'onclick' => "Drupal.dialog(document.getElementById('drupal-modal')).close(); return false;",
           ],
-        ],
-      );
+        );
 
-      // Create Modal
-      $response = new AjaxResponse();
-      $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
+        // Build URL to Link to Controller with Query String
+        $lang_name = $form_state->getValue('Chosen_Language');
+        $page_type = 'legal_notice';
+        $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pt" => $page_type));
 
-      return $response;
-    }
+        // Button to Confirm Reset to Default
+        // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
+        $content['Controller_Reset_Button'] = array (
+          '#type'   => 'link',
+          '#title'  => $this->t('Reset to Default'),
+          '#url'    => $url,
+          '#attributes' => [
+            'class' => [
+              'button',
+            ],
+          ],
+        );
+
+        // Create Modal
+        $response = new AjaxResponse();
+        $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
+
+        return $response;
+      }
 
 
 
   /**
-   * Called When User Hits Submit Button
    * {@inheritdoc}
+   * Called When the User Hits the Submit Button.
+   *
+   * Creates Three Arrays, One Containing all Data As Submitted by the User ($data), One Containing all Keys Pertaining to the Language Dependent Values ($state_keys_lang), and One with all Keys for
+   * Values that are not Language Dependent ($state_keys_intl). The Keys Arrays are Used to Store the Data with Which the Page was Successfully Generated in the State.
+   *
+   * Some of the Values for the Data Array are adjusted:
+   * - Format of the Date is Changed to the One Commonly Used in Germany.
+   * - Information on Staff in Charge is Converted to an Array to then Display them in Form of a List on the Page.
+   *
+   * The String Indicating the Page Type is Hard Coded in this Function. This Information will be Passed on to the LegalGenerator of it to Chose the Correct Template for Generation.
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 

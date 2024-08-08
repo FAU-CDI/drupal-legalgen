@@ -44,6 +44,8 @@ class WissKIAccessibilityForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * Gets Values Stored in State for this Page Type.
    */
   public function getStateValues(){
     if (!empty(\Drupal::state()->get('legalgen.accessibility'))) {
@@ -62,6 +64,8 @@ class WissKIAccessibilityForm extends FormBase {
    * The Values Shown in the Fields are Retrieved from the State in Case the Form has been Previously Submitted and Values were not Reset. If the State for this Page in the Specified Language is Empty
    * Default Values will be Loaded from required.and.email.yml where Available. All Other Fields will remain empty.
    * Values Required for Page Generation will be Marked as Such based on the required.and.email.yml file.
+   *
+   * Be Aware that for Some Fields Whether They are Required or not is Implemented Differently Either Through a Condition or #state Directly in the Form.
    *
    * Default Values as well as the State are Accessed Using Keys Hard Coded in this Function.
    *
@@ -621,7 +625,7 @@ return $form;
 }
 
   /**
- * Check in YAML File if Value is Required
+ * Checks in YAML File if Value is Required.
  */
 function isItRequired($key, $req_all): bool {
 
@@ -634,17 +638,17 @@ function isItRequired($key, $req_all): bool {
 
 
 /**
+ * {@inheritdoc}
  * AJAX Callback Handler for Language Selection:
  * Called when the User Selects a Language.
  * Builds Form for the Language Selected by the User and Fills Fields either with Values from the State, Default Values or Leaves them Empty if Neither of Both is Available.
- * {@inheritdoc}
  */
 public function ajaxCallback(array $form, FormStateInterface $form_state){
   return $form['Lang_Specific_Form'];
 }
 
 
-  /**
+/**
  * AJAX Callback Handler for Reset Modal:
  * Called when the User Clicks on the "Reset to Default"-Button.
  * Opens a Modal Informing the User About the Consequences of Resetting all Values to Default. Gives them the Option to Return to the Form Without Performing any Action or Proceding to Reset all Values
@@ -695,9 +699,6 @@ public function ajax_modal_popup($form, &$form_state){
 }
 
 
-
-
-
   /**
    * {@inheritdoc}
    * Called When the User Hits the Submit Button.
@@ -710,9 +711,6 @@ public function ajax_modal_popup($form, &$form_state){
    * - Information on Accessibility Issues, the Respective Justification and Alternative Ways of Access is Converted to an Array to then Display them in Form of a List on the Page.
    *
    * The String Indicating the Page Type is Hard Coded in this Function. This Information will be Passed on to the LegalGenerator of it to Chose the Correct Template for Generation.
-   *
-   * This Function will Display a Success Message to the User Indicating whether the Page Generation was Completed. If it was Unsuccessful, Information is Provided Whether the Reason were Missing
-   * Values or an Invalid Language.
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 
