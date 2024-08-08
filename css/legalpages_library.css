@@ -1,20 +1,16 @@
 /* Gives Identification Numbers a 'Table'-like Structure While Avoiding Using a Table for Accessibility Reasons */
-.rTable {
-    display: table;
-}
-
-.rTableRow { display: table-row;}
-
-.rTableBody { display: table-row-group;}
-
-.rTableCell {
-    display: table-cell;
-    border-right-width: 15px;
-    border-right-style: solid;
-    border-right-color: transparent;
-}
-
 .vat{ margin-bottom: 20px;}
+
+.divTableCell {
+    float: left;
+}
+
+/* Clear floats after the columns */
+.divTableRow:after {
+    content: "";
+    display: table;
+    clear: both;
+}
 
 
 /* Style of Accessibility Conformity (SHOULD BE MOVED TO OVERALL THEME*/
