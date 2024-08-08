@@ -10,9 +10,20 @@ use Symfony\Component\Yaml\Yaml;
 class LegalGenerator {
 
    /**
-   * Check if All Values Required for Page Generation Were Passed and Are Valid
+   * Checks if All Values Required for Page Generation Were Passed and are Valid
+   *
+   * @param array $data An Array containing all Key Value Pairs as Handed Over During Form Submission.
+   * @param string $title Title of the Page to be Generated.
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param string $page_type The type of Page (either 'legal_notice', 'accessibility' or 'privacy').
+   * @param string $lang Language in which the Page should be Generated.
+   * @param array $state_keys_lang Array with the Keys for all Language Specific Values.
+   * @param array $state_keys_intl Array Containing Solely the Keys for All not Language Specific Values.
+   *
+   * @return string or NULL An Error Message Specifying why the Page Cannot be Generated.
+   *
    */
-  public function validateBeforeGeneration(array $data, String $title, String $alias, String $page_name, String $lang, array $state_keys_lang, array $state_keys_intl): String|NULL {
+  public function validateBeforeGeneration(array $data, string $title, string $alias, string $page_type, string $lang, array $state_keys_lang, array $state_keys_intl): string|NULL {
 
     // Check That Title and Alias Are NOT Empty
     if($title === ''){
@@ -34,7 +45,7 @@ class LegalGenerator {
 
 
     // If Page Name Is Valid Return Required Key to Check Arrays
-    $required_key = \Drupal::service('legalgen.generator')->validatePage($page_name);
+    $required_key = \Drupal::service('legalgen.generator')->validatePage($page_type);
 
     // If Page Name NOT Valid Return Error Message
     if($required_key === NULL){
@@ -43,7 +54,7 @@ class LegalGenerator {
 
 
     // If Template Does NOT Exist Return Error Message
-    $template_exists = \Drupal::service('legalgen.generator')->validateTemplate($page_name, $lang);
+    $template_exists = \Drupal::service('legalgen.generator')->validateTemplate($page_type, $lang);
     if($template_exists === FALSE ){
         return 'Template NOT available';
     }
@@ -57,13 +68,13 @@ class LegalGenerator {
 
 
     // If Values in Data Array Invalid Return Keys for Those Values
-    $invalid_data = \Drupal::service('legalgen.generator')->validateData($data, $required_key, $title, $alias, $page_name, $lang);
+    $invalid_data = \Drupal::service('legalgen.generator')->validateData($data, $required_key, $title, $alias, $page_type, $lang);
     if(!empty($invalid_data)){
         return $invalid_data;
     }
 
     // If User Provided Invalid E-mail Address Return Key for This Value
-    $invalid_email = \Drupal::service('legalgen.generator')->validateEmail($data, $page_name);
+    $invalid_email = \Drupal::service('legalgen.generator')->validateEmail($data, $page_type);
     if(!empty($invalid_email)){
       return $invalid_email;
     }
@@ -71,8 +82,16 @@ class LegalGenerator {
     return NULL;
   }
 
-
-  function validateEmail(array $data, String $page_name): String {
+  /**
+   * Checks Whether All Email Addresses are Formatted Correctly.
+   *
+   * @param array $data
+   * @param string $page_type Type of the Page to be Generated.
+   *
+   * @return string Either an Error Message Indicating the Email Addresses with Incorrect Format or an Empty String in Case All Emails are Fromatted Correctly.
+   *
+   */
+  function validateEmail(array $data, string $page_type): string {
 
     $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
     $file_contents = file_get_contents($file_path);
@@ -80,7 +99,7 @@ class LegalGenerator {
 
     $email_keys = $ymldata['KEYS_EMAIL_VALUES'];
 
-    $to_check = $email_keys[$page_name];
+    $to_check = $email_keys[$page_type];
 
     $wrong_email = [];
 
@@ -106,9 +125,13 @@ class LegalGenerator {
 
 
   /**
-  * Check if Valid Language is Passed
-  */
-  function validateLang(String $lang): String {
+   * Checks if a Valid Language was Passed.
+   *
+   * @param string $lang The Language in Which the Page Should be Generated.
+   *
+   * @return string Either a String Informing the User that the Language has not been Configured or an Empty String in Case the Language is Valid.
+   */
+  function validateLang(string $lang): string {
 
     // 1) Ensure Language is NOT Empty
     if(empty($lang)){
@@ -136,20 +159,23 @@ class LegalGenerator {
 
 
   /**
-  * Check if Page Name is Valid
-  * If so Returns Key to Access Array with Keys for Required Values
-  */
-  function validatePage(String $page_name): String|NULL {
+   * Checks if a Valid Page Type is Used for Generation.
+   *
+   * @param string $page_type Type of Page to be Generated.
+   *
+   * @return string or NULL In Case the Page Type is Valid, the Key to Access the Respective Required Values Array, Else Returns NULL.
+   */
+  function validatePage(string $page_type): string|NULL {
 
     // 1) Check if Page Name is Valid
     // Get Key to Access Required Data and Default Data for Page Type
-    if($page_name === 'legal_notice'){
+    if($page_type === 'legal_notice'){
         return 'REQUIRED_LEGALNOTICE';
 
-    } else if ($page_name === 'accessibility'){
+    } else if ($page_type === 'accessibility'){
         return'REQUIRED_ACCESSIBILITY';
 
-    } else if ($page_name === 'privacy'){
+    } else if ($page_type === 'privacy'){
         return 'REQUIRED_PRIVACY';
 
     } else {
@@ -160,15 +186,20 @@ class LegalGenerator {
 
 
   /**
-  * Check if Template for Page in Language Specified Exists
-  */
-  function validateTemplate(String $page_name, String $lang): Bool {
+   * Checks if Template for Page to be Generated Exits in Language Specified.
+   *
+   * @param string $page_type Type of the Page to be Generated.
+   * @param string $lang Language of the Page to be Generated.
+   *
+   * @return bool Either TRUE if Template Exits or FALSE if it does not exist.
+   */
+  function validateTemplate(string $page_type, string $lang): bool {
 
     // Get Languages from Config
     $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
     // Get Template File Name from Config
-    $template_name = $options[$lang][$page_name];
+    $template_name = $options[$lang][$page_type];
 
     // Switch _ with -
     $templ_name = str_replace('_', '-', $template_name);
@@ -194,9 +225,16 @@ class LegalGenerator {
 
 
   /**
-   * Check if All Keys Required for Page Generation Were Passed
+   * Checks if All Keys Required for Page Generation Were Passed.
+   *
+   * @param string $required_key Key to Access Array Specifying which Values are Required for Page Generation.
+   * @param string $lang Language in which the Page Should be Generated.
+   * @param array $state_keys_lang Contains the Keys for all Language Specific Values.
+   * @param array $state_keys_intl Contains the Keys for all non Language Specific Values.
+   *
+   * @return string Either a String containing all Required Keys Missing in the Key Arrays or an Empty String in Case all required Keys are Available.
    */
-  function validateKeys(String $required_key, String $lang, array $state_keys_lang, array $state_keys_intl): String {
+  function validateKeys(string $required_key, string $lang, array $state_keys_lang, array $state_keys_intl): string {
 
     // Get Required Keys from YAML File
     $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
@@ -237,9 +275,18 @@ class LegalGenerator {
 
 
   /**
-  * Check if All Values Required for Page Generation Were Passed and Are Valid
-  */
-  function validateData(array $data, String $required_key, String $title, String $alias, String $page_name, String $lang) : String {
+   * Checks if All Values Required for Page Generation Were Passed and Are Valid.
+   *
+   * @param array $data Contains all Data Submitted During Form Submission.
+   * @param string $required_key Key to Access the Array with All Required Keys.
+   * @param string $title Title of the Page to be Generated.
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param string $page_type Type of the Page to be Generated.
+   * @param string $lang Language in which the Page Should be Generated.
+   *
+   * @return string
+   */
+  function validateData(array $data, string $required_key, string $title, string $alias, string $page_type, string $lang) : string {
 
     // Empty Array to Store Missing/Empty Required Values
     $missing_values = [];
@@ -266,7 +313,7 @@ class LegalGenerator {
       if($required_key_in_data === FALSE and $k !== 'title' and $k !== 'alias'){
 
         // Condition( Status = "Completely compliant"): Skip Issues, Statement and Alternatives, as Those Arrays Do NOT Need to Contain Information in This Case
-        if($page_name === 'accessibility'){
+        if($page_type === 'accessibility'){
 
           if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
 
@@ -293,7 +340,7 @@ class LegalGenerator {
     // Check if All Conditionally Required Values Are Provided
 
     // For Legal Notice
-    if($page_name === 'legal_notice'){
+    if($page_type === 'legal_notice'){
 
       // Condition (Default Text Should NOT Be Displayed && Custom Text Empty)
       if ($data['no_default_txt'] == TRUE and $data['cust_licence_txt'] === '') {
@@ -307,7 +354,7 @@ class LegalGenerator {
     }
 
     // For Privacy
-    if($page_name === 'privacy'){
+    if($page_type === 'privacy'){
 
       // Condition (3rd Party Service Provider is Named): Legal Information on Data Collection is Provided
       if(!empty($data['third_service_provider'])){
@@ -356,10 +403,17 @@ class LegalGenerator {
   public $template;
 
 
-   /**
-   * Generates Node if None Exists Yet
+  /**
+   * Generates Node if None Exists Yet.
+   *
+   * @param string $title Title of the Page to be Generated.
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param object $body Rendered Page Body.
+   * @param string $lang Language in which the Page Should be Generated.
+   *
+   * @return Node Node Generated with Data Received Upon Submit.
    */
-  function generateNode(string $title, string $alias, $body, string $lang): Node {
+  function generateNode(string $title, string $alias, object $body, string $lang): Node {
 
     $node = Node::create([
         'type'    => 'page',
@@ -380,10 +434,17 @@ class LegalGenerator {
   }
 
 
-   /**
-   * Update Already Existing Node
+  /**
+   * Updates an Already Existing Node.
+   *
+   * @param string $title Title for the Page to be Updated.
+   * @param string $alias URL Alias for the Page to be Updated.
+   * @param object $body Rendered Page Body.
+   * @param Node $node Node after Updating the Default Language Page.
+   *
+   * @return string
    */
-  function updateNode (string $title, string $alias, $body, Node $node): string {
+  function updateNode (string $title, string $alias, object $body, Node $node): string {
 
     // Update Values for Body
     $node-> title =  $title;
@@ -405,10 +466,18 @@ class LegalGenerator {
   }
 
 
-   /**
-   * Generate Translation for Already Existing Node that Does Not Have Translation in Specified Language Yet
+  /**
+   * Generates a Translation for Already Existing Node that Does Not Have a Translation in the Specified Language Yet.
+   *
+   * @param string $title Title of the Page to be Generated
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param object $body Rendered Page Body.
+   * @param string $lang Language for the Translation to be Generated.
+   * @param Node $node Node After Specified Translation was Generated.
+   *
+   * @return string
    */
-  function generateTranslation(string $title, string $alias, $body, string $lang, Node $node): string {
+  function generateTranslation(string $title, string $alias, object $body, string $lang, Node $node): string {
 
         // Create Non Default Language Page
         $node_trans = $node->addTranslation($lang);
@@ -437,10 +506,18 @@ class LegalGenerator {
       return $node_id;
   }
 
-   /**
-   * Update Already Existing Translation in Specified Language
+  /**
+   * Updates an Already Existing Translation in the Specified Language.
+   *
+   * @param string $title Title of the Page to be Updated.
+   * @param string $alias URL Alias for the Page to be Updated.
+   * @param object $body Rendered Page Body.
+   * @param string $lang Language of the Page to be Updated.
+   * @param Node $node Node After Updating the Translation Specified.
+   *
+   * @return string
    */
-  function updateTranslation (string $title, string $alias, $body, string $lang, Node $node): string {
+  function updateTranslation (string $title, string $alias, object $body, string $lang, Node $node): string {
 
       // Access Available Translation in Specified Language
       $exist_trans = $node->getTranslation($lang);
@@ -465,10 +542,17 @@ class LegalGenerator {
   }
 
 
-   /**
-   * Generate Empty Default Language Page in Order to Be Able to Add Translation for Specified Language
+  /**
+   * Generates an Empty Default Language Page in Order to Allow for a Translation in the Specified Language to be Generated. This "Placeholder" Page will Display Information as Specified in the Config Letting the
+   * User Know that a Page in this Language Does Currently not Exist.
+   *
+   * @param string $default_lang Language Code for the Default Language.
+   * @param string $required_key Key to Access the Array with all Keys for Required Values.
+   * @param string $page_type Type of the Page to be Generated (either 'legal_notice', 'accessibility', or 'privacy').
+   *
+   * @return Node The Default Language Node on which the Translation Will be Saved.
    */
-  function generateEmptyDefault(string $default_lang, string $required_key, string $page_name): Node {
+  function generateEmptyDefault(string $default_lang, string $required_key, string $page_type): Node {
 
     // Access Data from Config
     $config = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
@@ -477,10 +561,8 @@ class LegalGenerator {
     $text = $config[$default_lang]['empty_text'];
 
     // Get Required Values from State
-    $state_key = 'legalgen.'.$page_name;
+    $state_key = 'legalgen.'.$page_type;
     $stored_values = \Drupal::state()->get($state_key);
-
-
 
     // Get Default Values from YAML File
     $file_path = dirname(__FILE__) . '/../../legalgen.required.and.email.yml';
@@ -500,11 +582,11 @@ class LegalGenerator {
       'title'   => t($title),
       'activeLangcode' => $default_lang,
       'body'    => array(
-        //'summary' => "this is the summary",
+          //'summary' => "this is the summary",
           'value'     => $text,
           'format'    => 'full_html',
         ),
-      // set alias for page
+      // Set Alias for Page
       'path'     => array('alias' => "/$alias']"),
     ]);
 
@@ -516,10 +598,21 @@ class LegalGenerator {
   }
 
 
-   /**
-   * Check if Node Already Exists and Generate Respective Page(s) Calling Functions Above
+  /**
+   * Checks if the Node Already Exists and Generates the Respective Page(s) Calling the Appropriate Functions Specified in this File.
+   *
+   * @param string $title Title of the Page to be Generated.
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param object $body Rendered Page Body.
+   * @param string $lang Language in which the Page Should be Generated.
+   * @param string $overwrite Value Indicating whether the "Allow Overwriting Existing Page" Checkbox is Ticked.
+   * @param string $page_type Type of the Page to be Generated.
+   * @param $node Node for which to Check whether the Spacified Page Does Exist.
+   *
+   * @return array or NULL In Case the Generation/Update of the Page was Successful, an Array Containing the Node ID and an Empty String, Else the Node ID and a String Indicating the Reason why the Generation/Update was not
+   * Successful.
    */
-  function checkPage (string $title, string $alias, $body, string $lang, string $overwrite, string $page_name, $node): array|NULL {
+  function checkPage (string $title, string $alias, object $body, string $lang, string $overwrite, string $page_type, $node): array|NULL {
 
     // Get Default Language
     $default_lang =  \Drupal::languageManager()->getDefaultLanguage()->getId();
@@ -542,9 +635,9 @@ class LegalGenerator {
       // B) Generate NON Default Language
 
         // a) Generate Empty Default Lang
-        $required_key = \Drupal::service('legalgen.generator')->validatePage($page_name);
+        $required_key = \Drupal::service('legalgen.generator')->validatePage($page_type);
 
-        $node = $this->generateEmptyDefault($default_lang, $required_key, $page_name);
+        $node = $this->generateEmptyDefault($default_lang, $required_key, $page_type);
 
 
         // b) Generate Non Default Lang
@@ -630,13 +723,22 @@ class LegalGenerator {
   }
 
 
-   /**
-   * Check Validity of Values Passed from Form, Prepare Body, Generate Page and Store Passed Values in State, Display Status or Error Message to User
+  /**
+   * Checks the Validity of the Values Passed from the Form and if Valid Prepares the Body, Generates the Page and Stores the Passed Values in State. Thereinafter Displays a Status or Error Message to
+   * the User. In Case at Least One Value Passed is not Valid, Generation will be not be Executed and an Error Message Indicating the Issues is displayed to the User.
+   *
+   * @param array $data Contains all Data as Recorded and Submitted by the User.
+   * @param string $title Title of the Page to be Generated.
+   * @param string $alias URL Alias for the Page to be Generated.
+   * @param string $page_type Type of the Page to be Generated.
+   * @param string $lang Language in which the Page Should be Generated.
+   * @param array $state_keys_lang Contains all Keys Pertaining to Language Specific Values.
+   * @param array $state_keys_intl Contains all Keys for Non Language Specific Values.
    */
-  public function generatePage(array $data, string $title, string $alias, string $page_name, string $lang, array $state_keys_lang, array $state_keys_intl) {
+  public function generatePage(array $data, string $title, string $alias, string $page_type, string $lang, array $state_keys_lang, array $state_keys_intl) {
 
     // Check That All Required Values Are Available
-    $validated = \Drupal::service('legalgen.generator')->validateBeforeGeneration($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
+    $validated = \Drupal::service('legalgen.generator')->validateBeforeGeneration($data, $title, $alias, $page_type, $lang, $state_keys_lang, $state_keys_intl);
 
     if($validated == NULL){
 
@@ -644,7 +746,7 @@ class LegalGenerator {
       $config_langs = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
       // Get Template Name from Config
-      $templ1 = $config_langs[$lang][$page_name];
+      $templ1 = $config_langs[$lang][$page_type];
 
       // Populate Template with Form Data from Data Array
       $template = ['#theme' => $templ1];
@@ -661,7 +763,7 @@ class LegalGenerator {
       $body = \Drupal::service('renderer')->renderPlain($template);
 
       // Access Page Info from State
-      $state_of_page = 'legalgen.'.$page_name;
+      $state_of_page = 'legalgen.'.$page_type;
       $state_vals = \Drupal::state()->get($state_of_page);
 
       // Get Node ID from State if Available
@@ -670,12 +772,13 @@ class LegalGenerator {
         $nid = (string) $state_vals['node_id'];
 
         $node = Node::load($nid);
+
         } else {
           $node = NULL;
       }
 
       // Generate or Update Page According to Circumstances
-      $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $page_name, $node);
+      $pageArray = $this->checkPage($title, $alias, $body, $lang, $data['overwrite_consent'], $page_type, $node);
 
       // Store Info from Page Generation in Variables to Later Display to User
       $node_id = $pageArray[0];
@@ -789,5 +892,4 @@ class LegalGenerator {
     \Drupal::messenger()->addError('Unable to generate page! '.$validated, 'status', TRUE);
   }
   }
-
 }
