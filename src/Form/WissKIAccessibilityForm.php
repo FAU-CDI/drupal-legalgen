@@ -11,7 +11,7 @@ use \Drupal\Core\Ajax\AjaxResponse;
 use \Drupal\Core\Ajax\OpenModalDialogCommand;
 
 /**
- * Configure example settings for this site.
+ * Configures example settings for this site.
  */
 class WissKIAccessibilityForm extends FormBase {
 
@@ -20,7 +20,7 @@ class WissKIAccessibilityForm extends FormBase {
    */
   protected $generator;
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public function __construct(){
@@ -35,14 +35,14 @@ class WissKIAccessibilityForm extends FormBase {
     return self::class;
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public function getState(){
     return \Drupal::state();
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public function getStateValues(){
@@ -56,6 +56,17 @@ class WissKIAccessibilityForm extends FormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * Builds the Form to Generate an Accessibility Statement. When Clicking the 'Accessibility' Tab, at First only a Select Object will be displayed asking the User to Choose the Language for which
+   * the Form should be displayed. This Selection does not Impact the Form Itself but the Values to be Displayed in the Fields as well as the Generation Upon Clicking "Generate".
+   * The Values Shown in the Fields are Retrieved from the State in Case the Form has been Previously Submitted and Values were not Reset. If the State for this Page in the Specified Language is Empty
+   * Default Values will be Loaded from required.and.email.yml where Available. All Other Fields will remain empty.
+   * Values Required for Page Generation will be Marked as Such based on the required.and.email.yml file.
+   *
+   * Default Values as well as the State are Accessed Using Keys Hard Coded in this Function.
+   *
+   * @param array $form
+   * @param FormStateInterface $form_state
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
@@ -623,8 +634,9 @@ function isItRequired($key, $req_all): bool {
 
 
 /**
- * Called when user selects language
- * Build Form with Default Values for Selected Language
+ * AJAX Callback Handler for Language Selection:
+ * Called when the User Selects a Language.
+ * Builds Form for the Language Selected by the User and Fills Fields either with Values from the State, Default Values or Leaves them Empty if Neither of Both is Available.
  * {@inheritdoc}
  */
 public function ajaxCallback(array $form, FormStateInterface $form_state){
@@ -633,8 +645,10 @@ public function ajaxCallback(array $form, FormStateInterface $form_state){
 
 
   /**
- * AJAX Callback Handler
- * Called When User Clicks on 'Reset to Default'-Button
+ * AJAX Callback Handler for Reset Modal:
+ * Called when the User Clicks on the "Reset to Default"-Button.
+ * Opens a Modal Informing the User About the Consequences of Resetting all Values to Default. Gives them the Option to Return to the Form Without Performing any Action or Proceding to Reset all Values
+ * to Default. When the User clicks "Reset to Default" in the Modal, they will be Forwarded to the LegalgenController which Executes the Reset and Sends the User Back to the Form.
  */
 public function ajax_modal_popup($form, &$form_state){
 
@@ -657,8 +671,8 @@ public function ajax_modal_popup($form, &$form_state){
 
   // Build URL to Link to Controller with Query String
   $lang_name = $form_state->getValue('Chosen_Language');
-  $page_name = 'accessibility';
-  $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pn" => $page_name));
+  $page_type = 'accessibility';
+  $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pt" => $page_type));
 
   // Button to Confirm Reset to Default
   // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
@@ -685,8 +699,20 @@ public function ajax_modal_popup($form, &$form_state){
 
 
   /**
-   * Called when the user hits submit button
    * {@inheritdoc}
+   * Called When the User Hits the Submit Button.
+   *
+   * Creates Three Arrays, One Containing all Data As Submitted by the User ($data), One Containing all Keys Pertaining to the Language Dependent Values ($state_keys_lang), and One with all Keys for
+   * Values that are not Language Dependent ($state_keys_intl). The Keys Arrays are Used to Store the Data with Which the Page was Successfully Generated in the State.
+   *
+   * Some of the Values for the Data Array are adjusted:
+   * - Format of the Date is Changed to the One Commonly Used in Germany.
+   * - Information on Accessibility Issues, the Respective Justification and Alternative Ways of Access is Converted to an Array to then Display them in Form of a List on the Page.
+   *
+   * The String Indicating the Page Type is Hard Coded in this Function. This Information will be Passed on to the LegalGenerator of it to Chose the Correct Template for Generation.
+   *
+   * This Function will Display a Success Message to the User Indicating whether the Page Generation was Completed. If it was Unsuccessful, Information is Provided Whether the Reason were Missing
+   * Values or an Invalid Language.
    */
   public function submitForm(array &$form, FormStateInterface $form_state){
 
@@ -773,11 +799,11 @@ public function ajax_modal_popup($form, &$form_state){
       'date'                     => $date,
       'overwrite_consent'        => $overwrite_consent
     ];
-;
+
     // Parameters to Call Service:
 
     // a) Key to Select Correct Template for Page Generation
-    $page_name = 'accessibility';
+    $page_type = 'accessibility';
 
     // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                 => '',
@@ -817,19 +843,7 @@ public function ajax_modal_popup($form, &$form_state){
     );
 
     // Let Service Generate Page
-    $success = \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
-
-    // Display Success Message:
-    if($success === 'success'){
-      \Drupal::messenger()->addMessage('<a href="/'.$alias.'">Legal notice in '.$lang.'generated successfully</a>', 'status', TRUE);
-    } else {
-      if($success === 'invalid'){
-        \Drupal::messenger()->addError('Unfortunately an error ocurred: Required Values Missing', 'status', TRUE);
-
-      } else if ($success === 'unable') {
-        \Drupal::messenger()->addError('Unfortunately an error ocurred: Unable to Generate Page for the Following Language: '.$lang, 'status', TRUE);
-      }
-    }
+    \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_type, $lang, $state_keys_lang, $state_keys_intl);
   }
 }
 

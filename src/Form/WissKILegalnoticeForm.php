@@ -698,8 +698,8 @@ class WissKILegalnoticeForm extends FormBase {
 
       // Build URL to Link to Controller with Query String
       $lang_name = $form_state->getValue('Chosen_Language');
-      $page_name = 'legal_notice';
-      $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pn" => $page_name));
+      $page_type = 'legal_notice';
+      $url = Url::fromRoute("wisski.legalgen.reset", array("lang" => $lang_name, "pt" => $page_type));
 
       // Button to Confirm Reset to Default
       // Links to Controller, Where Values are Reset and User is Sent back to Form They Came From
@@ -822,7 +822,7 @@ class WissKILegalnoticeForm extends FormBase {
     // Parameters to Call Service:
 
     // a) Key to Select Correct Template for Page Generation
-    $page_name = 'legal_notice';
+    $page_type = 'legal_notice';
 
     // b) Keys to Use for Storage in State
     $state_keys_lang = array('title'                 => '',
@@ -869,19 +869,6 @@ class WissKILegalnoticeForm extends FormBase {
 
 
     // Let Service Generate Page
-    $success =  \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_name, $lang, $state_keys_lang, $state_keys_intl);
-
-    // Display Success Message:
-    if($success === 'success'){
-      \Drupal::messenger()->addMessage('<a href="/'.$alias.'">Legal notice in '.$lang.'generated successfully</a>', 'status', TRUE);
-    } else {
-      // Display Error Message Related to Issue
-      if($success === 'invalid'){
-        \Drupal::messenger()->addError('Unfortunately an error ocurred: Required Values Missing', 'status', TRUE);
-
-      } else if ($success === 'unable') {
-        \Drupal::messenger()->addError("Unfortunately an error ocurred: Unable to Generate Page for the Following Language: {$lang}", 'status', TRUE);
-      }
-    }
+    \Drupal::service('legalgen.generator')->generatePage($data, $title, $alias, $page_type, $lang, $state_keys_lang, $state_keys_intl);
   }
 }
