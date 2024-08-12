@@ -3,7 +3,6 @@ legalpages_library:
  css:
   theme:
    css/legalpages_library.css: {}
- js:
  drupalSettings: null
  dependencies:
   - core/jquery
