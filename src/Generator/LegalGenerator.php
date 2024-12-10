@@ -315,7 +315,7 @@ class LegalGenerator {
         // Condition( Status = "Completely compliant"): Skip Issues, Statement and Alternatives, as Those Arrays Do NOT Need to Contain Information in This Case
         if($page_type === 'accessibility'){
 
-          if($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
+          if($k === 'issues_array' or $k === 'justification_array' or $k === 'alternatives_array'){
 
             if ($required['status'] === 'Completely compliant'){
               continue;
@@ -343,8 +343,8 @@ class LegalGenerator {
     if($page_type === 'legal_notice'){
 
       // Condition (Default Text Should NOT Be Displayed && Custom Text Empty)
-      if ($data['no_default_txt'] == TRUE and $data['cust_licence_txt'] === '') {
-        array_push($missing_values, 'cust_licence_txt');
+      if ($data['no_default_txt'] == TRUE and $data['custom_licence_txt'] === '') {
+        array_push($missing_values, 'custom_licence_txt');
       }
 
       // Condition (Licence URL Given but NO Licence Title)
@@ -360,7 +360,7 @@ class LegalGenerator {
       if(!empty($data['third_service_provider'])){
 
         // List of Keys for Required Values if 3rd Party Service Provider
-        $required_vals = ['third_descr_data_coll', 'third_legal_basis_data_coll', 'third_objection_data_coll'];
+        $required_vals = ['third_service_description_data_collection', 'third_service_legal_basis_data_collection', 'third_service_objection_data_collection'];
 
         foreach ($required_vals as $k){
 
@@ -805,12 +805,12 @@ class LegalGenerator {
             // Add Alias Value from Variable to Array
             $val_array[$k] = $alias;
 
-          } else if($k === 'sup_staff_array'){
+          } else if($k === 'support_staff_array'){
 
             // For Legal Notice: Change Staff Member List Back to String to Correctly Display in Form
             $val_array[$k] = implode("; ", $data[$k]);
 
-          } else if ($k === 'issues_array' or $k === 'statement_array' or $k === 'alternatives_array'){
+          } else if ($k === 'issues_array' or $k === 'justification_array' or $k === 'alternatives_array'){
 
             // For Accessibility Statement: Change Respective List Back to String to Correctly Display in Form
             $val_array[$k] = implode("; ", $data[$k]);

@@ -5,32 +5,32 @@
 
     <div>
         <p>
-            {% if pub_institute %}
-            {{ pub_institute }}<br />
+            {% if publisher_institute %}
+            {{ publisher_institute }}<br />
             {% endif %}
-            {{ pub_name }}<br />
-            {{ pub_address }}<br />
-            {{ pub_plz }} {{ pub_city }}<br />
-            E-mail: <a href="mailto:{{ pub_email }}">{{ pub_email }}</a>
+            {{ publisher_name }}<br />
+            {{ publisher_address }}<br />
+            {{ publisher_plz }} {{ publisher_city }}<br />
+            E-mail: <a href="mailto:{{ publisher_email }}">{{ publisher_email }}</a>
         </p>
 
         <br />
 
         <h3>Legal form and representation</h3>
-        {% if cust_legal_form == '' %}
+        {% if custom_legal_form == '' %}
             <div>
                 <p>
                     The <a href="https://www.fau.eu/">Friedrich-Alexander-Universität Erlangen-Nürnberg</a> (FAU) is a state institution and also a legal personality under public law according to Art. 4 Para. 1 BayHIG.
                     It is legally represented by the President.
                 </p>
                 <p>
-                    The content of this virtual research environment is provided by: {{ pub_institute }}.
+                    The content of this virtual research environment is provided by: {{ publisher_institute }}.
                 </p>
             </div>
         {% else %}
             <div>
                 <p>
-                    {{ cust_legal_form }}
+                    {{ custom_legal_form }}
                 </p>
             </div>
         {% endif %}
@@ -61,14 +61,14 @@
 
             <div>
                 <p>
-                    {{ sup_institute }}<br />
-                    Website: <a href="{{ sup_url }}">{{ sup_url  }}</a>
+                    {{ support_institute }}<br />
+                    Website: <a href="{{ support_url }}">{{ support_url  }}</a>
                     <br />
-                    Mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                    Mail: <a href="mailto:{{ support_email }}">{{ support_email }}</a>
                     <br />
                     <br />
                     Staff: <ul>
-                                {% for staff in sup_staff_array %}
+                                {% for staff in support_staff_array %}
                                     <li>{{ staff }}</li>
                                 {% endfor %}
                            </ul>
@@ -133,10 +133,10 @@
                 {% endif %}
 
                 <p>
-                    {{ cust_licence_txt }}
+                    {{ custom_licence_txt }}
                 </p>
 
-                {% if use_fau_temp == true %}
+                {% if uses_fau_design == true %}
 
                     <p>
                         This virtual research environment uses the official FAU design templates (with some modifications).
@@ -152,7 +152,7 @@
                     Unless specified otherwise, all pages of this application are protected by copyright.
                     This applies, in particular, to texts, images, charts, and files containing style, sound, video, or animation data.
 
-                {% if use_fau_temp == true %}
+                {% if uses_fau_design == true %}
                     And also includes the design.
                 </p>
 
@@ -177,10 +177,10 @@
                 {% endif %}
 
 
-                {% if cust_licence_txt %}
+                {% if custom_licence_txt %}
 
                     <p>
-                        {{ cust_licence_txt }}
+                        {{ custom_licence_txt }}
                     </p>
 
                 {% endif %}
@@ -255,16 +255,16 @@
                 The operator expressly reserves the right to change, amend, or delete individual web pages, services, or the entire application or to cease the publication temporarily or permanently without prior notice.
             </p>
 
-            {% if cust_exclusion %}
+            {% if custom_exclusion %}
             <p>
-                {{ cust_exclusion }}
+                {{ custom_exclusion }}
             </p>
             {% endif %}
         </div>
     </div>
     </details>
 
-    {% if hide_disclaim == FALSE %}
+    {% if hide_disclaimer == FALSE %}
     <details>
         <summary>
             Disclaimer
@@ -273,9 +273,9 @@
             <h2>Links and references (disclaimer)</h2>
 
             <div>
-            {% if cust_disclaim %}
+            {% if custom_disclaimer %}
                 <p>
-                    {{ cust_disclaim }}
+                    {{ custom_disclaimer }}
                 </p>
             {% else %}
                 <p>

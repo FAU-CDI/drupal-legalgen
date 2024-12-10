@@ -163,7 +163,7 @@ class WissKIAccessibilityForm extends FormBase {
     $input = $form_state->getUserInput();
 
     // Reset All Form Values EXCEPT Chosen_Language
-    $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Conformity_Status', 'Assessment_Methodology', 'Creation_Date', 'Last_Revision_Date', 'Report_URL', 'Known_Issues', 'Justification_Statement', 'Alternative_Access', 'Contact_Access_Name', 'Contact_Access_Phone', 'Contact_Access_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Address', 'Sup_PLZ', 'Sup_City', 'Sup_Email', 'Oversight_Name', 'Oversight_Dept', 'Oversight_Address', 'Oversight_PLZ', 'Oversight_City', 'Oversight_Phone', 'Oversight_Email', 'Oversight_URL', 'Date', 'Overwrite_Consent');
+    $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Conformity_Status', 'Assessment_Methodology', 'Creation_Date', 'Last_Revision_Date', 'Report_URL', 'Known_Issues', 'Justification_Statement', 'Alternative_Access', 'Contact_Accessibility_Name', 'Contact_Accessibility_Phone', 'Contact_Accessibility_Email', 'Support_Institute', 'Support_URL', 'Support_Address', 'Support_PLZ', 'Support_City', 'Support_Email', 'Oversight_Name', 'Oversight_Dept', 'Oversight_Address', 'Oversight_PLZ', 'Oversight_City', 'Oversight_Phone', 'Oversight_Email', 'Oversight_URL', 'Date', 'Overwrite_Consent');
 
     foreach ($unset_key as $key) {
       unset($input[$key]);
@@ -342,17 +342,17 @@ class WissKIAccessibilityForm extends FormBase {
       '#open'  => TRUE,
       );
 
-      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name'] = array(
+      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Contact Person'),
         );
 
-      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone'] = array(
+      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Phone'] = array(
         '#type'          => 'tel',
         '#title'         => t('Phone Contact Person'),
       );
 
-      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email'] = array(
+      $form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Contact Person'),
         );
@@ -365,33 +365,33 @@ class WissKIAccessibilityForm extends FormBase {
       '#open'   => TRUE,
       );
 
-      $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute'] = array(
+      $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Institute'),
         );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL'] = array(
           '#type'          => 'textfield',
           '#title'         => t('URL Support and Hosting'),
 
           );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Address'] = array(
           '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
         );
 
-      $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ'] = array(
+      $form['Lang_Specific_Form']['Support_and_Hosting']['Support_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
         );
 
-      $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City'] = array(
+      $form['Lang_Specific_Form']['Support_and_Hosting']['Support_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
       );
 
-      $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
+      $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Support and Hosting'),
         );
@@ -539,32 +539,32 @@ $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_valu
 $form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#default_value'] = $stored_values['intl']['status']?? $default_values['intl']['status'];
 $form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#default_value'] = $stored_values[$lang]['methodology']?? $default_values[$lang]['methodology'];
 $form['Lang_Specific_Form']['Conformity']['Creation_Date']['#default_value'] = $stored_values['intl']['creation_date']?? $default_values['intl']['creation_date'];
-$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#default_value'] = $stored_values['intl']['last_revis_date']?? $default_values['intl']['last_revis_date'];
+$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#default_value'] = $stored_values['intl']['last_revision_date']?? $default_values['intl']['last_revision_date'];
 $form['Lang_Specific_Form']['Conformity']['Report_URL']['#default_value'] = $stored_values['intl']['report_url']?? t('');
 
 $form['Lang_Specific_Form']['Issues']['Known_Issues']['#default_value']  = $stored_values[$lang]['issues_array']?? t('');
-$form['Lang_Specific_Form']['Issues']['Justification_Statement']['#default_value']  = $stored_values[$lang]['statement_array']?? t('');
+$form['Lang_Specific_Form']['Issues']['Justification_Statement']['#default_value']  = $stored_values[$lang]['justification_array']?? t('');
 $form['Lang_Specific_Form']['Issues']['Alternative_Access']['#default_value']  = $stored_values[$lang]['alternatives_array']?? t('');
 
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name']['#default_value'] = $stored_values[$lang]['contact_access_name']?? $default_values[$lang]['contact_access_name'];
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone']['#default_value'] = $stored_values['intl']['contact_access_phone']?? $default_values['intl']['contact_access_phone'];
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email']['#default_value'] = $stored_values['intl']['contact_access_email']?? $default_values['intl']['contact_access_email'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Name']['#default_value'] = $stored_values[$lang]['contact_accessibility_name']?? $default_values[$lang]['contact_accessibility_name'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Phone']['#default_value'] = $stored_values['intl']['contact_accessibility_phone']?? $default_values['intl']['contact_accessibility_phone'];
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Email']['#default_value'] = $stored_values['intl']['contact_accessibility_email']?? $default_values['intl']['contact_accessibility_email'];
 
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $stored_values[$lang]['sup_institute']?? $default_values[$lang]['sup_institute'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $stored_values['intl']['sup_url']?? $default_values['intl']['sup_url'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address']['#default_value'] = $stored_values['intl']['sup_address']?? $default_values['intl']['sup_address'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ']['#default_value'] = $stored_values['intl']['sup_plz']?? $default_values['intl']['sup_plz'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City']['#default_value'] = $stored_values[$lang]['sup_city']?? $default_values[$lang]['sup_city'];
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $stored_values['intl']['sup_email']?? $default_values['intl']['sup_email'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#default_value'] = $stored_values[$lang]['support_institute']?? $default_values[$lang]['support_institute'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#default_value'] = $stored_values['intl']['support_url']?? $default_values['intl']['support_url'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Address']['#default_value'] = $stored_values['intl']['support_address']?? $default_values['intl']['support_address'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_PLZ']['#default_value'] = $stored_values['intl']['support_plz']?? $default_values['intl']['support_plz'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_City']['#default_value'] = $stored_values[$lang]['support_city']?? $default_values[$lang]['support_city'];
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email']['#default_value'] = $stored_values['intl']['support_email']?? $default_values['intl']['support_email'];
 
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Name']['#default_value'] = $stored_values[$lang]['overs_name']?? $default_values[$lang]['overs_name'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Dept']['#default_value'] = $stored_values[$lang]['overs_dept']?? $default_values[$lang]['overs_dept'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#default_value'] = $stored_values['intl']['overs_address']?? $default_values['intl']['overs_address'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#default_value'] = $stored_values['intl']['overs_plz']?? $default_values['intl']['overs_plz'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#default_value'] = $stored_values[$lang]['overs_city']?? $default_values[$lang]['overs_city'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#default_value'] = $stored_values['intl']['overs_phone']?? $default_values['intl']['overs_phone'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#default_value'] = $stored_values['intl']['overs_email']?? $default_values['intl']['overs_email'];
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#default_value'] = $stored_values['intl']['overs_url']?? $default_values['intl']['overs_url'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Name']['#default_value'] = $stored_values[$lang]['oversight_name']?? $default_values[$lang]['oversight_name'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Dept']['#default_value'] = $stored_values[$lang]['oversight_dept']?? $default_values[$lang]['oversight_dept'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#default_value'] = $stored_values['intl']['oversight_address']?? $default_values['intl']['oversight_address'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#default_value'] = $stored_values['intl']['oversight_plz']?? $default_values['intl']['oversight_plz'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#default_value'] = $stored_values[$lang]['oversight_city']?? $default_values[$lang]['oversight_city'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#default_value'] = $stored_values['intl']['oversight_phone']?? $default_values['intl']['oversight_phone'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#default_value'] = $stored_values['intl']['oversight_email']?? $default_values['intl']['oversight_email'];
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#default_value'] = $stored_values['intl']['oversight_url']?? $default_values['intl']['oversight_url'];
 
 $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
 
@@ -590,30 +590,30 @@ $form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequir
 $form['Lang_Specific_Form']['Conformity']['Conformity_Status']['#required'] = $this->isItRequired('status', $req_all);
 $form['Lang_Specific_Form']['Conformity']['Assessment_Methodology']['#required'] = $this->isItRequired('methodology', $req_all);
 $form['Lang_Specific_Form']['Conformity']['Creation_Date']['#required'] = $this->isItRequired('creation_date', $req_all);
-$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#required'] = $this->isItRequired('last_revis_date', $req_all);
+$form['Lang_Specific_Form']['Conformity']['Last_Revision_Date']['#required'] = $this->isItRequired('last_revision_date', $req_all);
 $form['Lang_Specific_Form']['Conformity']['Report_URL']['#required'] = $this->isItRequired('report_url', $req_all);
 
 // 'Known_Issues', 'Justification_Statement', and 'Alternative_Access' Managed Separately: Directly in Form Via #states
 
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Name']['#required'] = $this->isItRequired('contact_access_name', $req_all);
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Phone']['#required'] = $this->isItRequired('contact_access_phone', $req_all);
-$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Access_Email']['#required'] = $this->isItRequired('contact_access_email', $req_all);
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Name']['#required'] = $this->isItRequired('contact_accessibility_name', $req_all);
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Phone']['#required'] = $this->isItRequired('contact_accessibility_phone', $req_all);
+$form['Lang_Specific_Form']['Contact_Accessibility']['Contact_Accessibility_Email']['#required'] = $this->isItRequired('contact_accessibility_email', $req_all);
 
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#required'] = $this->isItRequired('sup_institute', $req_all);
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#required'] = $this->isItRequired('sup_url', $req_all);
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Address']['#required'] = $this->isItRequired('sup_address', $req_all);
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_PLZ']['#required'] = $this->isItRequired('sup_plz', $req_all);
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_City']['#required'] = $this->isItRequired('sup_city', $req_all);
-$form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#required'] = $this->isItRequired('sup_email', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#required'] = $this->isItRequired('support_institute', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#required'] = $this->isItRequired('support_url', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Address']['#required'] = $this->isItRequired('support_address', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_PLZ']['#required'] = $this->isItRequired('support_plz', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_City']['#required'] = $this->isItRequired('support_city', $req_all);
+$form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email']['#required'] = $this->isItRequired('support_email', $req_all);
 
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Name']['#required'] = $this->isItRequired('overs_name', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Dept']['#required'] = $this->isItRequired('overs_dept', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#required'] = $this->isItRequired('overs_address', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#required'] = $this->isItRequired('overs_plz', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#required'] = $this->isItRequired('overs_city', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#required'] = $this->isItRequired('overs_phone', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#required'] = $this->isItRequired('overs_email', $req_all);
-$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#required'] = $this->isItRequired('overs_url', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Name']['#required'] = $this->isItRequired('oversight_name', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Dept']['#required'] = $this->isItRequired('oversight_dept', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Address']['#required'] = $this->isItRequired('oversight_address', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_PLZ']['#required'] = $this->isItRequired('oversight_plz', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_City']['#required'] = $this->isItRequired('oversight_city', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Phone']['#required'] = $this->isItRequired('oversight_phone', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_Email']['#required'] = $this->isItRequired('oversight_email', $req_all);
+$form['Lang_Specific_Form']['Oversight Body']['Oversight_URL']['#required'] = $this->isItRequired('oversight_url', $req_all);
 
 $form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);
 
@@ -717,46 +717,46 @@ public function ajax_modal_popup($form, &$form_state){
     // Get Values Entered by User
     $values = $form_state->getValues();
 
-    $lang                  = $values['Chosen_Language'];
-    $title                 = $values['Title'];
-    $wisski_url            = $values['WissKI_URL'];
-    $alias                 = $values['Alias'];
-    $status                = $values['Conformity_Status'];
-    $methodology           = $values['Assessment_Methodology'];
-    $creation_date         = $values['Creation_Date'];
-    $last_revis_date       = $values['Last_Revision_Date'];
-    $report_url            = $values['Report_URL'];
-    $known_issues          = $values['Known_Issues'];
-    $statement             = $values['Justification_Statement'];
-    $alternatives          = $values['Alternative_Access'];
-    $contact_access_name   = $values['Contact_Access_Name'];
-    $contact_access_phone  = $values['Contact_Access_Phone'];
-    $contact_access_email  = $values['Contact_Access_Email'];
-    $sup_institute         = $values['Sup_Institute'];
-    $sup_url               = $values['Sup_URL'];
-    $sup_address           = $values['Sup_Address'];
-    $sup_plz               = $values['Sup_PLZ'];
-    $sup_city              = $values['Sup_City'];
-    $sup_email             = $values['Sup_Email'];
-    $overs_name            = $values['Oversight_Name'];
-    $overs_dept            = $values['Oversight_Dept'];
-    $overs_address         = $values['Oversight_Address'];
-    $overs_plz             = $values['Oversight_PLZ'];
-    $overs_city            = $values['Oversight_City'];
-    $overs_phone           = $values['Oversight_Phone'];
-    $overs_email           = $values['Oversight_Email'];
-    $overs_url             = $values['Oversight_URL'];
-    $date                  = $values['Date'];
-    $overwrite_consent     = $values['Overwrite_Consent'];
+    $lang                         = $values['Chosen_Language'];
+    $title                        = $values['Title'];
+    $wisski_url                   = $values['WissKI_URL'];
+    $alias                        = $values['Alias'];
+    $status                       = $values['Conformity_Status'];
+    $methodology                  = $values['Assessment_Methodology'];
+    $creation_date                = $values['Creation_Date'];
+    $last_revision_date           = $values['Last_Revision_Date'];
+    $report_url                   = $values['Report_URL'];
+    $known_issues                 = $values['Known_Issues'];
+    $justification                = $values['Justification_Statement'];
+    $alternatives                 = $values['Alternative_Access'];
+    $contact_accessibility_name   = $values['Contact_Accessibility_Name'];
+    $contact_accessibility_phone  = $values['Contact_Accessibility_Phone'];
+    $contact_accessibility_email  = $values['Contact_Accessibility_Email'];
+    $support_institute            = $values['Support_Institute'];
+    $support_url                  = $values['Support_URL'];
+    $support_address              = $values['Support_Address'];
+    $support_plz                  = $values['Support_PLZ'];
+    $support_city                 = $values['Support_City'];
+    $support_email                = $values['Support_Email'];
+    $oversight_name               = $values['Oversight_Name'];
+    $oversight_dept               = $values['Oversight_Dept'];
+    $oversight_address            = $values['Oversight_Address'];
+    $oversight_plz                = $values['Oversight_PLZ'];
+    $oversight_city               = $values['Oversight_City'];
+    $oversight_phone              = $values['Oversight_Phone'];
+    $oversight_email              = $values['Oversight_Email'];
+    $oversight_url                = $values['Oversight_URL'];
+    $date                         = $values['Date'];
+    $overwrite_consent            = $values['Overwrite_Consent'];
 
     // Convert Info in String to Array to Display as Unordered List on Page
     $issues_array = explode(';', $known_issues);
     var_dump($issues_array);
     $issues_array = array_map('trim', $issues_array);
 
-    $statement_array = explode(';', $statement);
-    var_dump($statement_array);
-    $statement_array = array_map('trim', $statement_array);
+    $justification_array = explode(';', $justification);
+    var_dump($justification_array);
+    $justification_array = array_map('trim', $justification_array);
 
     $alternatives_array = explode(';', $alternatives);
     var_dump($alternatives_array);
@@ -767,35 +767,35 @@ public function ajax_modal_popup($form, &$form_state){
 
 
     $data = [
-      'lang'                     => $lang,
-      'wisski_url'               => $wisski_url,
-      'status'                   => $status,
-      'methodology'              => $methodology,
-      'creation_date'            => $creation_date,
-      'last_revis_date'          => $last_revis_date,
-      'report_url'               => $report_url,
-      'issues_array'             => $issues_array,
-      'statement_array'          => $statement_array,
-      'alternatives_array'       => $alternatives_array,
-      'contact_access_name'      => $contact_access_name,
-      'contact_access_phone'     => $contact_access_phone,
-      'contact_access_email'     => $contact_access_email,
-      'sup_institute'            => $sup_institute,
-      'sup_url'                  => $sup_url,
-      'sup_address'              => $sup_address,
-      'sup_plz'                  => $sup_plz,
-      'sup_city'                 => $sup_city,
-      'sup_email'                => $sup_email,
-      'overs_name'               => $overs_name,
-      'overs_dept'               => $overs_dept,
-      'overs_address'            => $overs_address,
-      'overs_plz'                => $overs_plz,
-      'overs_city'               => $overs_city,
-      'overs_phone'              => $overs_phone,
-      'overs_email'              => $overs_email,
-      'overs_url'                => $overs_url,
-      'date'                     => $date,
-      'overwrite_consent'        => $overwrite_consent
+      'lang'                            => $lang,
+      'wisski_url'                      => $wisski_url,
+      'status'                          => $status,
+      'methodology'                     => $methodology,
+      'creation_date'                   => $creation_date,
+      'last_revision_date'              => $last_revision_date,
+      'report_url'                      => $report_url,
+      'issues_array'                    => $issues_array,
+      'justification_array'             => $justification_array,
+      'alternatives_array'              => $alternatives_array,
+      'contact_accessibility_name'      => $contact_accessibility_name,
+      'contact_accessibility_phone'     => $contact_accessibility_phone,
+      'contact_accessibility_email'     => $contact_accessibility_email,
+      'support_institute'               => $support_institute,
+      'support_url'                     => $support_url,
+      'support_address'                 => $support_address,
+      'support_plz'                     => $support_plz,
+      'support_city'                    => $support_city,
+      'support_email'                   => $support_email,
+      'oversight_name'                  => $oversight_name,
+      'oversight_dept'                  => $oversight_dept,
+      'oversight_address'               => $oversight_address,
+      'oversight_plz'                   => $oversight_plz,
+      'oversight_city'                  => $oversight_city,
+      'oversight_phone'                 => $oversight_phone,
+      'oversight_email'                 => $oversight_email,
+      'oversight_url'                   => $oversight_url,
+      'date'                            => $date,
+      'overwrite_consent'               => $overwrite_consent
     ];
 
     // Parameters to Call Service:
@@ -804,40 +804,40 @@ public function ajax_modal_popup($form, &$form_state){
     $page_type = 'accessibility';
 
     // b) Keys to Use for Storage in State
-    $state_keys_lang = array('title'                 => '',
-                             'alias'                 => '',
-                             'methodology'           => '',
-                             'issues_array'          => '',
-                             'statement_array'       => '',
-                             'alternatives_array'    => '',
-                             'contact_access_name'   => '',
-                             'sup_institute'         => '',
-                             'sup_city'              => '',
-                             'overs_name'            => '',
-                             'overs_dept'            => '',
-                             'overs_city'            => '',
-                             'overwrite_consent'     => '',
+    $state_keys_lang = array('title'                        => '',
+                             'alias'                        => '',
+                             'methodology'                  => '',
+                             'issues_array'                 => '',
+                             'justification_array'          => '',
+                             'alternatives_array'           => '',
+                             'contact_accessibility_name'   => '',
+                             'support_institute'            => '',
+                             'support_city'                 => '',
+                             'oversight_name'               => '',
+                             'oversight_dept'               => '',
+                             'oversight_city'               => '',
+                             'overwrite_consent'            => '',
                             );
 
 
     // c) Keys to Use for Storage in State
-    $state_keys_intl = array('wisski_url'            => '',
-                             'status'                => '',
-                             'creation_date'         => '',
-                             'last_revis_date'       => '',
-                             'report_url'            => '',
-                             'contact_access_phone'  => '',
-                             'contact_access_email'  => '',
-                             'sup_url'               => '',
-                             'sup_address'           => '',
-                             'sup_plz'               => '',
-                             'sup_email'             => '',
-                             'overs_address'         => '',
-                             'overs_plz'             => '',
-                             'overs_phone'           => '',
-                             'overs_email'           => '',
-                             'overs_url'             => '',
-                             'date'                  => '',
+    $state_keys_intl = array('wisski_url'                   => '',
+                             'status'                       => '',
+                             'creation_date'                => '',
+                             'last_revision_date'           => '',
+                             'report_url'                   => '',
+                             'contact_accessibility_phone'  => '',
+                             'contact_accessibility_email'  => '',
+                             'support_url'                  => '',
+                             'support_address'              => '',
+                             'support_plz'                  => '',
+                             'support_email'                => '',
+                             'oversight_address'            => '',
+                             'oversight_plz'                => '',
+                             'oversight_phone'              => '',
+                             'oversight_email'              => '',
+                             'oversight_url'                => '',
+                             'date'                         => '',
     );
 
     // Let Service Generate Page

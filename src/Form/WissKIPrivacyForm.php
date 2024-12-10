@@ -152,7 +152,7 @@ class WissKIPrivacyForm extends FormBase{
 
 
       // Reset All Form Values EXCEPT Chosen_Language
-      $unset_key = array('Title', 'Alias', 'Not_FAU', 'Legal_Notice_URL', 'Sec_Off_Title', 'Sec_Off_Name', 'Sec_Off_Add', 'Sec_Off_Address', 'Sec_Off_PLZ', 'Sec_Off_City', 'Sec_Off_Phone', 'Sec_Off_Fax', 'Sec_Off_Email', 'Third_Service_Provider', 'Third_Descr_Data_Coll', 'Third_Legal_Basis_Data_Coll', 'Third_Objection_Data_Coll', 'Data_Comm_Title', 'Data_Comm_Address', 'Data_Comm_PLZ', 'Data_Comm_City', 'Date', 'Overwrite_Consent');
+      $unset_key = array('Title', 'Alias', 'Not_FAU', 'Legal_Notice_URL', 'Security_Official_Title', 'Security_Official_Name', 'Security_Official_Add', 'Security_Official_Address', 'Security_Official_PLZ', 'Security_Official_City', 'Security_Official_Phone', 'Security_Official_Fax', 'Security_Official_Email', 'Third_Service_Provider', 'Third_Service_Description_Data_Collection', 'Third_Service_Legal_Basis_Data_Collection', 'Third_Service_Objection_Data_Collection', 'Data_Commissioner_Title', 'Data_Commissioner_Address', 'Data_Commissioner_PLZ', 'Data_Commissioner_City', 'Date', 'Overwrite_Consent');
 
       foreach ($unset_key as $key) {
         unset($input[$key]);
@@ -219,48 +219,48 @@ class WissKIPrivacyForm extends FormBase{
         '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Title Security Official'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Name'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Data Security Official'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Add'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Name Line 2'),
           // Might Not be Required When Data Security Official Changes
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Address'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Street Name and House Number'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_PLZ'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_PLZ'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Postal Code'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_City'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_City'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Phone'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Phone'] = array(
           '#type'          => 'tel',
           '#title'         => t('Phone'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Fax'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Fax'] = array(
           '#type'     => 'tel',
           '#title'    => t('Fax'),
         );
 
-        $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Email'] = array(
+        $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Email'] = array(
           '#type'          => 'email',
           '#title'         => t('E-Mail Data Security Official'),
         );
@@ -282,7 +282,7 @@ class WissKIPrivacyForm extends FormBase{
           '#id'            => 'third_party',
         );
 
-        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Descr_Data_Coll'] = array(
+        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Description_Data_Collection'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Description and Scope Data Processing'),
           // Condition (Third Party Service Provider Exists): Input Required
@@ -296,7 +296,7 @@ class WissKIPrivacyForm extends FormBase{
           ],
         );
 
-        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Legal_Basis_Data_Coll'] = array(
+        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Legal_Basis_Data_Collection'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Legal Basis for Processing of Personal Data'),
           // Condition (Third Party Service Provider Exists): Input Required
@@ -310,7 +310,7 @@ class WissKIPrivacyForm extends FormBase{
           ],
         );
 
-        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Objection_Data_Coll'] = array(
+        $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Objection_Data_Collection'] = array(
           '#type'          => 'textarea',
           '#title'         => t('Objection and Elimination'),
           // Condition (Third Party Service Provider Exists): Input Required
@@ -332,22 +332,22 @@ class WissKIPrivacyForm extends FormBase{
         '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title'] = array(
+        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Title'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Title Bavarian State Commissioner for Data Protection'),
         );
 
-        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address'] = array(
+        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Address'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Street Name and House Number'),
         );
 
-        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ'] = array(
+        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_PLZ'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Postal Code'),
         );
 
-        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_City'] = array(
+        $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_City'] = array(
           '#type'          => 'textfield',
           '#title'         => t('City'),
         );
@@ -445,25 +445,25 @@ class WissKIPrivacyForm extends FormBase{
 
       $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#default_value'] = $values_from_legalnotice[$lang]['alias'] ?? $default_values[$lang]['legal_notice_url']['name'];
 
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title']['#default_value'] = $stored_values[$lang]['sec_off_title'] ?? $default_values[$lang]['sec_off_title'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name']['#default_value'] = $stored_values[$lang]['sec_off_name'] ?? $default_values[$lang]['sec_off_name'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add']['#default_value'] = $stored_values[$lang]['sec_off_add'] ?? $default_values[$lang]['sec_off_add'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address']['#default_value'] = $stored_values['intl']['sec_off_address'] ?? $default_values['intl']['sec_off_address'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_PLZ']['#default_value'] = $stored_values['intl']['sec_off_plz'] ?? $default_values['intl']['sec_off_plz'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_City']['#default_value'] = $stored_values[$lang]['sec_off_city'] ?? $default_values[$lang]['sec_off_city'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Phone']['#default_value'] = $stored_values['intl']['sec_off_phone'] ?? $default_values['intl']['sec_off_phone'];
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Fax']['#default_value'] = $stored_values['intl']['sec_off_fax'] ?? t('');
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Email']['#default_value'] = $stored_values['intl']['sec_off_email'] ?? $default_values['intl']['sec_off_email'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Title']['#default_value'] = $stored_values[$lang]['security_official_title'] ?? $default_values[$lang]['security_official_title'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Name']['#default_value'] = $stored_values[$lang]['security_official_name'] ?? $default_values[$lang]['security_official_name'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Add']['#default_value'] = $stored_values[$lang]['security_official_add'] ?? $default_values[$lang]['security_official_add'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Address']['#default_value'] = $stored_values['intl']['security_official_address'] ?? $default_values['intl']['security_official_address'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_PLZ']['#default_value'] = $stored_values['intl']['security_official_plz'] ?? $default_values['intl']['security_official_plz'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_City']['#default_value'] = $stored_values[$lang]['security_official_city'] ?? $default_values[$lang]['security_official_city'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Phone']['#default_value'] = $stored_values['intl']['security_official_phone'] ?? $default_values['intl']['security_official_phone'];
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Fax']['#default_value'] = $stored_values['intl']['security_official_fax'] ?? t('');
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Email']['#default_value'] = $stored_values['intl']['security_official_email'] ?? $default_values['intl']['security_official_email'];
 
       $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Provider']['#default_value'] = $stored_values[$lang]['third_service_provider'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Descr_Data_Coll']['#default_value'] = $stored_values[$lang]['third_descr_data_coll'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Legal_Basis_Data_Coll']['#default_value'] = $stored_values[$lang]['third_legal_basis_data_coll'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Objection_Data_Coll']['#default_value'] = $stored_values[$lang]['third_objection_data_coll'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Descr_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_description_data_collection'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Legal_Basis_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_legal_basis_data_collection'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Objection_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_objection_data_collection'] ?? t('');
 
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title']['#default_value'] = $stored_values[$lang]['data_comm_title'] ?? $default_values[$lang]['data_comm_title'];
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address']['#default_value'] = $stored_values['intl']['data_comm_address'] ?? $default_values['intl']['data_comm_address'];
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ']['#default_value'] = $stored_values['intl']['data_comm_plz'] ?? $default_values['intl']['data_comm_plz'];
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_City']['#default_value'] = $stored_values[$lang]['data_comm_city'] ?? $default_values[$lang]['data_comm_city'];
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Title']['#default_value'] = $stored_values[$lang]['data_commissioner_title'] ?? $default_values[$lang]['data_commissioner_title'];
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Address']['#default_value'] = $stored_values['intl']['data_commissioner_address'] ?? $default_values['intl']['data_commissioner_address'];
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_PLZ']['#default_value'] = $stored_values['intl']['data_commissioner_plz'] ?? $default_values['intl']['data_commissioner_plz'];
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_City']['#default_value'] = $stored_values[$lang]['data_commissioner_city'] ?? $default_values[$lang]['data_commissioner_city'];
 
       $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
 
@@ -489,22 +489,22 @@ class WissKIPrivacyForm extends FormBase{
 
       $form['Lang_Specific_Form']['General']['Legal_Notice_URL']['#required'] = $this->isItRequired('legal_notice_url', $req_all);
 
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Title']['#required'] = $this->isItRequired('sec_off_title', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Name']['#required'] = $this->isItRequired('sec_off_name', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Add']['#required'] = $this->isItRequired('sec_off_add', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Address']['#required'] = $this->isItRequired('sec_off_address', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_PLZ']['#required'] = $this->isItRequired('sec_off_plz', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_City']['#required'] = $this->isItRequired('sec_off_city', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Phone']['#required'] = $this->isItRequired('sec_off_phone', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Fax']['#required'] = $this->isItRequired('sec_off_fax', $req_all);
-      $form['Lang_Specific_Form']['Data_Security_Official']['Sec_Off_Email']['#required'] = $this->isItRequired('sec_off_email', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Title']['#required'] = $this->isItRequired('security_official_title', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Name']['#required'] = $this->isItRequired('security_official_name', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Add']['#required'] = $this->isItRequired('security_official_add', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Address']['#required'] = $this->isItRequired('security_official_address', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_PLZ']['#required'] = $this->isItRequired('security_official_plz', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_City']['#required'] = $this->isItRequired('security_official_city', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Phone']['#required'] = $this->isItRequired('security_official_phone', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Fax']['#required'] = $this->isItRequired('security_official_fax', $req_all);
+      $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Email']['#required'] = $this->isItRequired('security_official_email', $req_all);
 
       // 'Third_Party_Service' Managed Separately: Directly in Form Via #states
 
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Title']['#required'] = $this->isItRequired('data_comm_title', $req_all);
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_Address']['#required'] = $this->isItRequired('data_comm_address', $req_all);
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_PLZ']['#required'] = $this->isItRequired('data_comm_plz', $req_all);
-      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Comm_City']['#required'] = $this->isItRequired('data_comm_city', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Title']['#required'] = $this->isItRequired('data_commissioner_title', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Address']['#required'] = $this->isItRequired('data_commissioner_address', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_PLZ']['#required'] = $this->isItRequired('data_commissioner_plz', $req_all);
+      $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_City']['#required'] = $this->isItRequired('data_commissioner_city', $req_all);
 
       $form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);;
 
@@ -607,57 +607,57 @@ class WissKIPrivacyForm extends FormBase{
     // Get Values Entered by User
     $values = $form_state->getValues();
 
-    $lang                               = $values['Chosen_Language'];
-    $title                              = $values['Title'];
-    $alias                              = $values['Alias'];
-    $not_fau                            = $values['Not_FAU'];
-    $legal_notice_url                   = $values['Legal_Notice_URL'];
-    $sec_off_title                      = $values['Sec_Off_Title'];
-    $sec_off_name                       = $values['Sec_Off_Name'];
-    $sec_off_add                        = $values['Sec_Off_Add'];
-    $sec_off_address                    = $values['Sec_Off_Address'];
-    $sec_off_plz                        = $values['Sec_Off_PLZ'];
-    $sec_off_city                       = $values['Sec_Off_City'];
-    $sec_off_phone                      = $values['Sec_Off_Phone'];
-    $sec_off_fax                        = $values['Sec_Off_Fax'];
-    $sec_off_email                      = $values['Sec_Off_Email'];
-    $third_service_provider             = $values['Third_Service_Provider'];
-    $third_descr_data_coll              = $values['Third_Descr_Data_Coll'];
-    $third_legal_basis_data_coll        = $values['Third_Legal_Basis_Data_Coll'];
-    $third_objection_data_coll          = $values['Third_Objection_Data_Coll'];
-    $data_comm_title                    = $values['Data_Comm_Title'];
-    $data_comm_address                  = $values['Data_Comm_Address'];
-    $data_comm_plz                      = $values['Data_Comm_PLZ'];
-    $data_comm_city                     = $values['Data_Comm_City'];
-    $date                               = $values['Date'];
-    $overwrite_consent                  = $values['Overwrite_Consent'];
+    $lang                                        = $values['Chosen_Language'];
+    $title                                       = $values['Title'];
+    $alias                                       = $values['Alias'];
+    $not_fau                                     = $values['Not_FAU'];
+    $legal_notice_url                            = $values['Legal_Notice_URL'];
+    $security_official_title                     = $values['Security_Official_Title'];
+    $security_official_name                      = $values['Security_Official_Name'];
+    $security_official_add                       = $values['Security_Official_Add'];
+    $security_official_address                   = $values['Security_Official_Address'];
+    $security_official_plz                       = $values['Security_Official_PLZ'];
+    $security_official_city                      = $values['Security_Official_City'];
+    $security_official_phone                     = $values['Security_Official_Phone'];
+    $security_official_fax                       = $values['Security_Official_Fax'];
+    $security_official_email                     = $values['Security_Official_Email'];
+    $third_service_provider                      = $values['Third_Service_Provider'];
+    $third_service_description_data_collection   = $values['Third_Service_Description_Data_Collection'];
+    $third_service_legal_basis_data_collection   = $values['Third_Service_Legal_Basis_Data_Collection'];
+    $third_service_objection_data_collection     = $values['Third_Service_Objection_Data_Collection'];
+    $data_commissioner_title                     = $values['Data_Commissioner_Title'];
+    $data_commissioner_address                   = $values['Data_Commissioner_Address'];
+    $data_commissioner_plz                       = $values['Data_Commissioner_PLZ'];
+    $data_commissioner_city                      = $values['Data_Commissioner_City'];
+    $date                                        = $values['Date'];
+    $overwrite_consent                           = $values['Overwrite_Consent'];
 
     // Change Date Format
     $date = date('d.m.Y', strtotime($date));
 
     $data = [
-      'lang'                           => $lang,
-      'not_fau'                        => $not_fau,
-      'legal_notice_url'               => $legal_notice_url,
-      'sec_off_title'                  => $sec_off_title,
-      'sec_off_name'                   => $sec_off_name,
-      'sec_off_add'                    => $sec_off_add,
-      'sec_off_address'                => $sec_off_address,
-      'sec_off_plz'                    => $sec_off_plz,
-      'sec_off_city'                   => $sec_off_city,
-      'sec_off_phone'                  => $sec_off_phone,
-      'sec_off_fax'                    => $sec_off_fax,
-      'sec_off_email'                  => $sec_off_email,
-      'third_service_provider'         => $third_service_provider,
-      'third_descr_data_coll'          => $third_descr_data_coll,
-      'third_legal_basis_data_coll'    => $third_legal_basis_data_coll,
-      'third_objection_data_coll'      => $third_objection_data_coll,
-      'data_comm_title'                => $data_comm_title,
-      'data_comm_address'              => $data_comm_address,
-      'data_comm_plz'                  => $data_comm_plz,
-      'data_comm_city'                 => $data_comm_city,
-      'date'                           => $date,
-      'overwrite_consent'              => $overwrite_consent
+      'lang'                                       => $lang,
+      'not_fau'                                    => $not_fau,
+      'legal_notice_url'                           => $legal_notice_url,
+      'security_official_title'                    => $security_official_title,
+      'security_official_name'                     => $security_official_name,
+      'security_official_add'                      => $security_official_add,
+      'security_official_address'                  => $security_official_address,
+      'security_official_plz'                      => $security_official_plz,
+      'security_official_city'                     => $security_official_city,
+      'security_official_phone'                    => $security_official_phone,
+      'security_official_fax'                      => $security_official_fax,
+      'security_official_email'                    => $security_official_email,
+      'third_service_provider'                     => $third_service_provider,
+      'third_service_description_data_collection'  => $third_service_description_data_collection,
+      'third_service_legal_basis_data_collection'  => $third_service_legal_basis_data_collection,
+      'third_service_objection_data_collection'    => $third_service_objection_data_collection,
+      'data_commissioner_title'                    => $data_commissioner_title,
+      'data_commissioner_address'                  => $data_commissioner_address,
+      'data_commissioner_plz'                      => $data_commissioner_plz,
+      'data_commissioner_city'                     => $data_commissioner_city,
+      'date'                                       => $date,
+      'overwrite_consent'                          => $overwrite_consent
     ];
 
 
@@ -667,31 +667,31 @@ class WissKIPrivacyForm extends FormBase{
     $page_type = 'privacy';
 
     // b) Keys to Use for Storage in State
-    $state_keys_lang = array('title'                          => '',
-                             'alias'                          => '',
-                             'legal_notice_url'               => '',
-                             'not_fau'                        => '',
-                             'sec_off_title'                  => '',
-                             'sec_off_name'                   => '',
-                             'sec_off_add'                    => '',
-                             'sec_off_city'                   => '',
-                             'third_service_provider'         => '',
-                             'third_descr_data_coll'          => '',
-                             'third_legal_basis_data_coll'    => '',
-                             'third_objection_data_coll'      => '',
-                             'data_comm_title'                => '',
-                             'data_comm_city'                 => '',
-                             'overwrite_consent'              => '',
+    $state_keys_lang = array('title'                                        => '',
+                             'alias'                                        => '',
+                             'legal_notice_url'                             => '',
+                             'not_fau'                                      => '',
+                             'security_official_title'                      => '',
+                             'security_official_name'                       => '',
+                             'security_official_add'                        => '',
+                             'security_official_city'                       => '',
+                             'third_service_provider'                       => '',
+                             'third_service_description_data_collection'    => '',
+                             'third_service_legal_basis_data_collection'    => '',
+                             'third_service_objection_data_collection'      => '',
+                             'data_commissioner_title'                      => '',
+                             'data_commissioner_city'                       => '',
+                             'overwrite_consent'                            => '',
     	                      );
 
     // c) Keys to Use for Storage in State
-    $state_keys_intl = array('sec_off_address'                => '',
-                             'sec_off_plz'                    => '',
-                             'sec_off_phone'                  => '',
-                             'sec_off_fax'                    => '',
-                             'sec_off_email'                  => '',
-                             'data_comm_address'              => '',
-                             'data_comm_plz'                  => '',
+    $state_keys_intl = array('security_official_address'      => '',
+                             'security_official_plz'          => '',
+                             'security_official_phone'        => '',
+                             'security_official_fax'          => '',
+                             'security_official_email'        => '',
+                             'data_commissioner_address'      => '',
+                             'data_commissioner_plz'          => '',
                              'date'                           => '',
   	                        );
 

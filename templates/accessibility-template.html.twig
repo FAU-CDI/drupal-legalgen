@@ -46,7 +46,7 @@
 
         <div class="rTableRow">
         <div class="rTableCell"><strong>Letzte Überprüfung:</strong></div>
-        <div class="rTableCell">{{ last_revis_date }}</div>
+        <div class="rTableCell">{{ last_revision_date }}</div>
         </div>
 
         {% if report_url %}
@@ -82,8 +82,8 @@
             <div>
                 <p>
                     <ul>
-                        {% for statement in statement_array %}
-                            <li>{{ statement }}</li>
+                        {% for justification in justification_array %}
+                            <li>{{ justification }}</li>
                         {% endfor %}
                     </ul>
                 </p>
@@ -123,20 +123,20 @@
 
         <div>
             <p>
-                {{ contact_access_name }}<br />
-                Phone: {{ contact_access_phone }}<br />
-                E-mail: <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a>
+                {{ contact_accessibility_name }}<br />
+                Phone: {{ contact_accessibility_phone }}<br />
+                E-mail: <a href="mailto:{{ contact_accessibility_email }}">{{ contact_accessibility_email }}</a>
             </p>
 
             <hr />
 
             <p>
-                <a href="{{ sup_url }}">{{ sup_institute }}</a>
+                <a href="{{ support_url }}">{{ support_institute }}</a>
                 <br />
 
-                {{ sup_address }}<br />
-                {{ sup_plz }} {{ sup_city }}<br />
-                E-mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                {{ support_address }}<br />
+                {{ support_plz }} {{ support_city }}<br />
+                E-mail: <a href="mailto:{{ support_email }}">{{ support_email }}</a>
             </p>
         </div>
 
@@ -152,16 +152,16 @@
         <p>Contact information of the supervisory authority:</p>
 
         <p>
-            <div><strong>{{ overs_name }}</strong><br />
-            {{ overs_dept }}<br />
-            {{ overs_address }}<br />
-            {{ overs_plz }} {{ overs_city }}<br />
+            <div><strong>{{ oversight_name }}</strong><br />
+            {{ oversight_dept }}<br />
+            {{ oversight_address }}<br />
+            {{ oversight_plz }} {{ oversight_city }}<br />
         </p>
 
         <p>
-            Phone: {{ overs_phone }}<br />
-            E-mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a><br />
-            Website: <a href="{{ overs_url }}">{{ overs_url }}</a><br />
+            Phone: {{ oversight_phone }}<br />
+            E-mail: <a href="mailto:{{ oversight_email }}">{{ oversight_email }}</a><br />
+            Website: <a href="{{ oversight_url }}">{{ oversight_url }}</a><br />
             <br />
         </p>
     </div>

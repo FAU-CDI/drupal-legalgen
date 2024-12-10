@@ -6,19 +6,19 @@
 
     <div>
         <p>
-            {% if pub_institute %}
-            {{ pub_institute }}<br />
+            {% if publisher_institute %}
+            {{ publisher_institute }}<br />
             {% endif %}
-            {{ pub_name }}<br />
-            {{ pub_address }} <br />
-            {{ pub_plz }} {{ pub_city }}<br />
-            E-Mail: <a href="mailto":{{ pub_email }}> {{ pub_email }}</a>
+            {{ publisher_name }}<br />
+            {{ publisher_address }} <br />
+            {{ publisher_plz }} {{ publisher_city }}<br />
+            E-Mail: <a href="mailto":{{ publisher_email }}> {{ publisher_email }}</a>
         </p>
 
         <br />
 
         <h3>Rechtsform und Vertretung</h3>
-        {% if cust_legal_form == '' %}
+        {% if custom_legal_form == '' %}
             <div>
                 <p>
                     Die <a href="https://www.fau.de">Friedrich-Alexander-Universität Erlangen-Nürnberg</a> (FAU) ist eine staatliche Einrichtung und daneben eine rechtsfähige Personalkörperschaft des öffentlichen
@@ -26,13 +26,13 @@
                     (BayHIG). Sie wird gesetzlich vertreten durch den Präsidenten.
                 </p>
                 <p>
-                    Die inhaltliche Bereitstellung dieser virtuellen Forschungsumgebung erfolgt durch: {{ pub_institute }}.
+                    Die inhaltliche Bereitstellung dieser virtuellen Forschungsumgebung erfolgt durch: {{ publisher_institute }}.
                 </p>
             </div>
         {% else %}
             <div>
                 <p>
-                    {{ cust_legal_form }}
+                    {{ custom_legal_form }}
                 </p>
             </div>
         {% endif %}
@@ -62,14 +62,14 @@
 
             <div>
                 <p>
-                    {{ sup_institute }}<br />
-                    Webseite: <a href="{{ sup_url }}">{{ sup_url  }}</a>
+                    {{ support_institute }}<br />
+                    Webseite: <a href="{{ support_url }}">{{ support_url  }}</a>
                     <br />
-                    E-Mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                    E-Mail: <a href="mailto:{{ support_email }}">{{ support_email }}</a>
                     <br />
                     <br />
                     Mitarbeitende: <ul>
-                                        {% for staff in sup_staff_array %}
+                                        {% for staff in support_staff_array %}
                                             <li>{{ staff }}</li>
                                         {% endfor %}
                                    </ul>
@@ -138,10 +138,10 @@
                 {% endif %}
 
                 <p>
-                    {{ cust_licence_txt }}
+                    {{ custom_licence_txt }}
                 </p>
 
-                {% if use_fau_temp == true %}
+                {% if uses_fau_design == true %}
 
                     <p>
                         Die Gestaltung dieser Internetseiten verwendet das <abbr title="Friedrich-Alexander-Universität Erlangen-Nürnberg">FAU</abbr> Corporate Design (mit Modifikationen).
@@ -157,7 +157,7 @@
                     Sofern nicht anders angegeben, unterliegen alle Seiten dieser Anwendung dem Urheberrecht.
                     Dies gilt insbesondere für Texte, Bilder, Grafiken und Dateien, die Stil-, Ton-, Video- oder Animationsdaten enthalten.
 
-                {% if use_fau_temp == true %}
+                {% if uses_fau_design == true %}
                     Dies schließt auch das Design mit ein.
                 </p>
 
@@ -181,9 +181,9 @@
 
                 {% endif %}
 
-                {% if cust_licence_txt %}
+                {% if custom_licence_txt %}
                     <p>
-                        {{ cust_licence_txt }}
+                        {{ custom_licence_txt }}
                     </p>
                 {% endif %}
 
@@ -251,9 +251,9 @@
                 Der Betreiber behält es sich ausdrücklich vor, einzelne Webseiten, Web-Dienste oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.
             </p>
 
-            {% if cust_exclusion %}
+            {% if custom_exclusion %}
             <p>
-                {{ cust_exclusion }}
+                {{ custom_exclusion }}
             </p>
             {% endif %}
         </div>
@@ -261,7 +261,7 @@
     </details>
 
 
-    {% if hide_disclaim == FALSE %}
+    {% if hide_disclaimer == FALSE %}
     <details>
         <summary>
             Haftung für Links
@@ -270,9 +270,9 @@
             <h2>Haftung für Links</h2>
 
             <div>
-                {% if cust_disclaim %}
+                {% if custom_disclaimer %}
                     <p>
-                        {{ cust_disclaim }}
+                        {{ custom_disclaimer }}
                     </p>
 
                 {% else %}
@@ -303,8 +303,7 @@
     <br />
     <div>
         <p>
-            Stand:
-            {{ date }}
+            Zuletzt aktualisiert am: {{ date }}
         </p>
     </div>
 </div>

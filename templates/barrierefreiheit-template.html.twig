@@ -45,7 +45,7 @@
 
         <div class="rTableRow">
         <div class="rTableCell"><strong>Letzte Überprüfung:</strong></div>
-        <div class="rTableCell">{{ last_revis_date }}</div>
+        <div class="rTableCell">{{ last_revision_date }}</div>
         </div>
 
 
@@ -84,8 +84,8 @@
                 <div>
                     <p>
                         <ul>
-                            {% for statement in statement_array %}
-                                <li>{{ statement }}</li>
+                            {% for justification in justification_array %}
+                                <li>{{ justification }}</li>
                             {% endfor %}
                         </ul>
                     </p>
@@ -126,20 +126,20 @@
 
         <div>
             <p>
-                {{ contact_access_name }}<br />
-                {{ contact_access_phone }}<br />
-                E-Mail: <a href="mailto:{{ contact_access_email }}">{{ contact_access_email }}</a><br />
+                {{ contact_accessibility_name }}<br />
+                {{ contact_accessibility_phone }}<br />
+                E-Mail: <a href="mailto:{{ contact_accessibility_email }}">{{ contact_accessibility_email }}</a><br />
             </p>
 
             <hr />
 
             <p>
-                <a href="{{ sup_url }}">{{ sup_institute }} </a>
+                <a href="{{ support_url }}">{{ support_institute }} </a>
                 <br />
 
-                {{ sup_address }}<br />
-                {{ sup_plz }} {{ sup_city }}<br />
-                E-Mail: <a href="mailto:{{ sup_email }}">{{ sup_email }}</a>
+                {{ support_address }}<br />
+                {{ support_plz }} {{ support_city }}<br />
+                E-Mail: <a href="mailto:{{ support_email }}">{{ support_email }}</a>
             </p>
         </div>
 
@@ -154,23 +154,23 @@
         <p>Kontaktinformation der für das Durchsetzungsverfahren zuständigen Aufsicht:</p>
 
         <p>
-            <strong>{{ overs_name }}</strong><br />
-            {{ overs_dept }}<br />
-            {{ overs_address }}<br />
-            {{ overs_plz }} {{overs_city }}<br />
+            <strong>{{ oversight_name }}</strong><br />
+            {{ oversight_dept }}<br />
+            {{ oversight_address }}<br />
+            {{ oversight_plz }} {{oversight_city }}<br />
         </p>
 
         <p>
-            Telefon: {{ overs_phone }}<br />
-            E-Mail: <a href="mailto:{{ overs_email }}">{{ overs_email }}</a><br />
-            Webseite: <a href="{{ overs_url }}">{{ overs_url }}</a><br />
+            Telefon: {{ oversight_phone }}<br />
+            E-Mail: <a href="mailto:{{ oversight_email }}">{{ oversight_email }}</a><br />
+            Webseite: <a href="{{ oversight_url }}">{{ oversight_url }}</a><br />
             <br/>
         </p>
     </div>
 
     <div>
         <p>
-            Stand: {{ date }}
+            Zuletzt aktualisiert am: {{ date }}
         </p>
     </div>
 </div>

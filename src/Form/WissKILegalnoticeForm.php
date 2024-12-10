@@ -153,7 +153,7 @@ class WissKILegalnoticeForm extends FormBase {
   $input = $form_state->getUserInput();
 
   // Reset All Form Values EXCEPT Chosen_Language
-  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Pub_Institute', 'Pub_Name', 'Pub_Address', 'Pub_PLZ', 'Pub_City', 'Pub_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Sup_Institute', 'Sup_URL', 'Sup_Email', 'Sup_Staff', 'Auth_Name', 'Auth_Address', 'Auth_PLZ', 'Auth_City', 'Auth_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
+  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Publisher_Institute', 'Publisher_Name', 'Publisher_Address', 'Publisher_PLZ', 'Publisher_City', 'Publisher_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Support_Institute', 'Support_URL', 'Support_Email', 'Support_Staff', 'Authority_Name', 'Authority_Address', 'Authority_PLZ', 'Authority_City', 'Authority_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
 
   foreach ($unset_key as $key) {
     unset($input[$key]);
@@ -215,32 +215,32 @@ class WissKILegalnoticeForm extends FormBase {
       '#open'  => TRUE,
       );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_Institute'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_Institute'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Institute'),
         );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_Name'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Publisher'),
         );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_Address'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_Address'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
         );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_PLZ'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
         );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_City'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
         );
 
-      $form['Lang_Specific_Form']['Publisher']['Pub_Email'] = array(
+      $form['Lang_Specific_Form']['Publisher']['Publisher_Email'] = array(
         '#type'          => 'email',
         '#title'         => t('E-Mail Publisher'),
         );
@@ -290,22 +290,22 @@ class WissKILegalnoticeForm extends FormBase {
       '#open'  => TRUE,
       );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Institute'),
           );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Homepage Support and Hosting'),
           );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email'] = array(
           '#type'          => 'email',
           '#title'         => t('E-Mail Support and Hosting'),
           );
 
-        $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff'] = array(
+        $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Staff'] = array(
           '#type'          => 'textfield',
           '#title'         => t('Staff'),
           '#description'   => t('USE ";" AS SEPARATOR - E.G. "Eda Employee;Sujin Staff;..."'),
@@ -319,27 +319,27 @@ class WissKILegalnoticeForm extends FormBase {
       '#open'  => TRUE,
       );
 
-      $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name'] = array(
+      $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Name'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Name Supervisory Authority'),
         );
 
-      $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address'] = array(
+      $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Address'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Street Name and House Number'),
         );
 
-      $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ'] = array(
+      $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_PLZ'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Postal Code'),
         );
 
-      $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City'] = array(
+      $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_City'] = array(
         '#type'          => 'textfield',
         '#title'         => t('City'),
         );
 
-      $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL'] = array(
+      $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_URL'] = array(
         '#type'          => 'textfield',
         '#title'         => t('Supervisory Authority URL'),
         );
@@ -557,29 +557,29 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias']?? $default_values[$lang]['alias'];
     $form['Lang_Specific_Form']['General']['Project_Name']['#default_value'] = $stored_values[$lang]['project_name']?? $default_values[$lang]['project_name'];
 
-    $form['Lang_Specific_Form']['Publisher']['Pub_Institute']['#default_value'] = $stored_values[$lang]['pub_institute']?? t('');
-    $form['Lang_Specific_Form']['Publisher']['Pub_Name']['#default_value'] = $stored_values[$lang]['pub_name']?? $default_values[$lang]['pub_name'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_Address']['#default_value'] = $stored_values['intl']['pub_address']?? $default_values['intl']['pub_address'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_PLZ']['#default_value'] = $stored_values['intl']['pub_plz']?? $default_values['intl']['pub_plz'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_City']['#default_value'] = $stored_values[$lang]['pub_city']?? $default_values[$lang]['pub_city'];
-    $form['Lang_Specific_Form']['Publisher']['Pub_Email']['#default_value'] = $stored_values['intl']['pub_email']?? $default_values['intl']['pub_email'];
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Institute']['#default_value'] = $stored_values[$lang]['publisher_institute']?? t('');
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Name']['#default_value'] = $stored_values[$lang]['publisher_name']?? $default_values[$lang]['publisher_name'];
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Address']['#default_value'] = $stored_values['intl']['publisher_address']?? $default_values['intl']['publisher_address'];
+    $form['Lang_Specific_Form']['Publisher']['Publisher_PLZ']['#default_value'] = $stored_values['intl']['publisher_plz']?? $default_values['intl']['publisher_plz'];
+    $form['Lang_Specific_Form']['Publisher']['Publisher_City']['#default_value'] = $stored_values[$lang]['publisher_city']?? $default_values[$lang]['publisher_city'];
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Email']['#default_value'] = $stored_values['intl']['publisher_email']?? $default_values['intl']['publisher_email'];
 
-    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['cust_legal_form']?? t('');
+    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['custom_legal_form']?? t('');
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $stored_values[$lang]['contact_name']?? $default_values[$lang]['contact_name'];
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#default_value'] = $stored_values['intl']['contact_phone']?? $default_values['intl']['contact_phone'];
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#default_value'] = $stored_values['intl']['contact_email']?? $default_values['intl']['contact_email'];
 
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#default_value'] = $stored_values[$lang]['sup_institute']?? $default_values[$lang]['sup_institute'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#default_value'] = $stored_values['intl']['sup_url']?? $default_values['intl']['sup_url'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#default_value'] = $stored_values['intl']['sup_email']?? $default_values['intl']['sup_email'];
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff']['#default_value'] =  $stored_values[$lang]['sup_staff_array']?? t('');
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#default_value'] = $stored_values[$lang]['support_institute']?? $default_values[$lang]['support_institute'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#default_value'] = $stored_values['intl']['support_url']?? $default_values['intl']['support_url'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email']['#default_value'] = $stored_values['intl']['support_email']?? $default_values['intl']['support_email'];
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Staff']['#default_value'] =  $stored_values[$lang]['support_staff_array']?? t('');
 
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name']['#default_value'] = $stored_values[$lang]['auth_name']?? $default_values[$lang]['auth_name'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address']['#default_value'] = $stored_values['intl']['auth_address']?? $default_values['intl']['auth_address'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ']['#default_value'] = $stored_values['intl']['auth_plz']?? $default_values['intl']['auth_plz'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#default_value'] = $stored_values[$lang]['auth_city']?? $default_values[$lang]['auth_city'];
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#default_value'] = $stored_values['intl']['auth_url']?? $default_values['intl']['auth_url'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Name']['#default_value'] = $stored_values[$lang]['authority_name']?? $default_values[$lang]['authority_name'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Address']['#default_value'] = $stored_values['intl']['authority_address']?? $default_values['intl']['authority_address'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_PLZ']['#default_value'] = $stored_values['intl']['authority_plz']?? $default_values['intl']['authority_plz'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_City']['#default_value'] = $stored_values[$lang]['authority_city']?? $default_values[$lang]['authority_city'];
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_URL']['#default_value'] = $stored_values['intl']['authority_url']?? $default_values['intl']['authority_url'];
 
     $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#default_value'] = $stored_values['intl']['id_vat']?? $default_values['intl']['id_vat'];
     $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#default_value'] = $stored_values['intl']['id_tax']?? $default_values['intl']['id_tax'];
@@ -588,14 +588,14 @@ class WissKILegalnoticeForm extends FormBase {
 
     $form['Lang_Specific_Form']['Copyright']['Licence_Title']['#default_value'] = $stored_values[$lang]['licence_title']?? t('');
     $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#default_value'] = $stored_values['intl']['licence_url']?? t('');
-    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $stored_values[$lang]['use_fau_temp']?? (FALSE);
-    $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $stored_values[$lang]['cust_licence_txt']?? t('');
+    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#default_value'] = $stored_values[$lang]['uses_fau_design']?? (FALSE);
+    $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text']['#default_value'] = $stored_values[$lang]['custom_licence_txt']?? t('');
     $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#default_value'] = $stored_values[$lang]['no_default_txt']?? (FALSE);
 
-    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#default_value'] = $stored_values[$lang]['cust_exclusion']?? t('');
+    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#default_value'] = $stored_values[$lang]['custom_exclusion']?? t('');
 
-    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#default_value'] = $stored_values['intl']['hide_disclaim']?? t('');
-    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#default_value'] = $stored_values[$lang]['cust_disclaim']?? t('');
+    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#default_value'] = $stored_values['intl']['hide_disclaimer']?? t('');
+    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#default_value'] = $stored_values[$lang]['custom_disclaimer']?? t('');
 
     $form['Lang_Specific_Form']['Timestamp']['Date']['#default_value'] = $todays_date;
 
@@ -619,29 +619,29 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequired('alias', $req_all);
     $form['Lang_Specific_Form']['General']['Project_Name']['#required'] = $this->isItRequired('project_name', $req_all);
 
-    $form['Lang_Specific_Form']['Publisher']['Pub_Institute']['#required'] = $this->isItRequired('pub_institute', $req_all);
-    $form['Lang_Specific_Form']['Publisher']['Pub_Name']['#required'] = $this->isItRequired('pub_name', $req_all);
-    $form['Lang_Specific_Form']['Publisher']['Pub_Address']['#required'] = $this->isItRequired('pub_address', $req_all);
-    $form['Lang_Specific_Form']['Publisher']['Pub_PLZ']['#required'] = $this->isItRequired('pub_plz', $req_all);
-    $form['Lang_Specific_Form']['Publisher']['Pub_City']['#required'] = $this->isItRequired('pub_city', $req_all);
-    $form['Lang_Specific_Form']['Publisher']['Pub_Email']['#required'] = $this->isItRequired('pub_email', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Institute']['#required'] = $this->isItRequired('publisher_institute', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Name']['#required'] = $this->isItRequired('publisher_name', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Address']['#required'] = $this->isItRequired('publisher_address', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_PLZ']['#required'] = $this->isItRequired('publisher_plz', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_City']['#required'] = $this->isItRequired('publisher_city', $req_all);
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Email']['#required'] = $this->isItRequired('publisher_email', $req_all);
 
-    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#required'] = $this->isItRequired('cust_legal_form', $req_all);
+    $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#required'] = $this->isItRequired('custom_legal_form', $req_all);
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#required'] = $this->isItRequired('contact_name', $req_all);
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#required'] = $this->isItRequired('contact_phone', $req_all);
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#required'] = $this->isItRequired('contact_email', $req_all);
 
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Institute']['#required'] = $this->isItRequired('sup_institute', $req_all);
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_URL']['#required'] = $this->isItRequired('sup_url', $req_all);
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Email']['#required'] = $this->isItRequired('sup_email', $req_all);
-    $form['Lang_Specific_Form']['Support_and_Hosting']['Sup_Staff']['#required'] =  $this->isItRequired('sup_staff_array', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#required'] = $this->isItRequired('support_institute', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#required'] = $this->isItRequired('support_url', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Email']['#required'] = $this->isItRequired('support_email', $req_all);
+    $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Staff']['#required'] =  $this->isItRequired('support_staff_array', $req_all);
 
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Name']['#required'] = $this->isItRequired('auth_name', $req_all);
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_Address']['#required'] = $this->isItRequired('auth_address', $req_all);
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_PLZ']['#required'] = $this->isItRequired('auth_plz', $req_all);
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_City']['#required'] = $this->isItRequired('auth_city', $req_all);
-    $form['Lang_Specific_Form']['Supervisory_Authority']['Auth_URL']['#required'] = $this->isItRequired('auth_url', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Name']['#required'] = $this->isItRequired('authority_name', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_Address']['#required'] = $this->isItRequired('authority_address', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_PLZ']['#required'] = $this->isItRequired('authority_plz', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_City']['#required'] = $this->isItRequired('authority_city', $req_all);
+    $form['Lang_Specific_Form']['Supervisory_Authority']['Authority_URL']['#required'] = $this->isItRequired('authority_url', $req_all);
 
     $form['Lang_Specific_Form']['ID_Numbers']['VAT_Number']['#required'] = $this->isItRequired('id_vat', $req_all);
     $form['Lang_Specific_Form']['ID_Numbers']['Tax_Number']['#required'] = $this->isItRequired('id_tax', $req_all);
@@ -650,13 +650,13 @@ class WissKILegalnoticeForm extends FormBase {
 
     // 'Licence_Title' and 'Custom_Licence_Text' Managed Separately: Directly in Form Via #states
     $form['Lang_Specific_Form']['Copyright']['Licence_URL']['#required'] = $this->isItRequired('licence_url', $req_all);
-    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#required'] = $this->isItRequired('use_fau_temp', $req_all);
+    $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template']['#required'] = $this->isItRequired('uses_fau_design', $req_all);
     $form['Lang_Specific_Form']['Copyright']['No_Default_Text']['#required'] = $this->isItRequired('no_default_txt', $req_all);
 
-    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#required'] = $this->isItRequired('cust_exclusion', $req_all);
+    $form['Lang_Specific_Form']['Exclusion_Liab']['Custom_Exclusion_Liab']['#required'] = $this->isItRequired('custom_exclusion', $req_all);
 
-    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#required'] = $this->isItRequired('hide_disclaim', $req_all);
-    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#required'] = $this->isItRequired('cust_disclaim', $req_all);
+    $form['Lang_Specific_Form']['Disclaimer']['Hide_Disclaimer']['#required'] = $this->isItRequired('hide_disclaimer', $req_all);
+    $form['Lang_Specific_Form']['Disclaimer']['Custom_Disclaimer']['#required'] = $this->isItRequired('custom_disclaimer', $req_all);
 
     $form['Lang_Specific_Form']['Timestamp']['Date']['#required'] = $this->isItRequired('date', $req_all);
 
@@ -763,44 +763,44 @@ class WissKILegalnoticeForm extends FormBase {
     $wisski_url           = $values['WissKI_URL'];
     $project_name         = $values['Project_Name'];
     $alias                = $values['Alias'];
-    $pub_institute        = $values['Pub_Institute'];
-    $pub_name             = $values['Pub_Name'];
-    $pub_address          = $values['Pub_Address'];
-    $pub_plz              = $values['Pub_PLZ'];
-    $pub_city             = $values['Pub_City'];
-    $pub_email            = $values['Pub_Email'];
-    $cust_legal_form      = $values['Custom_Legal_Form'];
+    $publisher_institute  = $values['Publisher_Institute'];
+    $publisher_name       = $values['Publisher_Name'];
+    $publisher_address    = $values['Publisher_Address'];
+    $publisher_plz        = $values['Publisher_PLZ'];
+    $publisher_city       = $values['Publisher_City'];
+    $publisher_email      = $values['Publisher_Email'];
+    $custom_legal_form    = $values['Custom_Legal_Form'];
     $contact_name         = $values['Contact_Name'];
     $contact_phone        = $values['Contact_Phone'];
     $contact_email        = $values['Contact_Email'];
-    $sup_institute        = $values['Sup_Institute'];
-    $sup_url              = $values['Sup_URL'];
-    $sup_email            = $values['Sup_Email'];
-    $sup_staff            = $values['Sup_Staff'];
-    $auth_name            = $values['Auth_Name'];
-    $auth_address         = $values['Auth_Address'];
-    $auth_plz             = $values['Auth_PLZ'];
-    $auth_city            = $values['Auth_City'];
-    $auth_url             = $values['Auth_URL'];
+    $support_institute    = $values['Support_Institute'];
+    $support_url          = $values['Support_URL'];
+    $support_email        = $values['Support_Email'];
+    $support_staff        = $values['Support_Staff'];
+    $authority_name       = $values['Authority_Name'];
+    $authority_address    = $values['Authority_Address'];
+    $authority_plz        = $values['Authority_PLZ'];
+    $authority_city       = $values['Authority_City'];
+    $authority_url        = $values['Authority_URL'];
     $id_vat               = $values['VAT_Number'];
     $id_tax               = $values['Tax_Number'];
     $id_duns              = $values['DUNS_Number'];
     $id_eori              = $values['EORI_Number'];
     $licence_title        = $values['Licence_Title'];
     $licence_url          = $values['Licence_URL'];
-    $use_fau_temp         = $values['Use_FAU_Design_Template'];
-    $cust_licence_txt     = $values['Custom_Licence_Text'];
+    $uses_fau_design      = $values['Use_FAU_Design_Template'];
+    $custom_licence_txt   = $values['Custom_Licence_Text'];
     $no_default_txt       = $values['No_Default_Text'];
-    $cust_exclusion       = $values['Custom_Exclusion_Liab'];
-    $hide_disclaim        = $values['Hide_Disclaimer'];
-    $cust_disclaim        = $values['Custom_Disclaimer'];
+    $custom_exclusion     = $values['Custom_Exclusion_Liab'];
+    $hide_disclaimer      = $values['Hide_Disclaimer'];
+    $custom_disclaimer    = $values['Custom_Disclaimer'];
     $date                 = $values['Date'];
     $overwrite_consent    = $values['Overwrite_Consent'];
 
     // Convert Staff Info in String to Array to Display as Unordered List on Page
-    $sup_staff_array = explode(';', $sup_staff);
-    var_dump($sup_staff_array);
-    $sup_staff_array = array_map('trim', $sup_staff_array);
+    $support_staff_array = explode(';', $support_staff);
+    var_dump($support_staff_array);
+    $support_staff_array = array_map('trim', $support_staff_array);
 
     // Change Date Format
     $date = date('d.m.Y', strtotime($date));
@@ -809,37 +809,37 @@ class WissKILegalnoticeForm extends FormBase {
     $data = [
               'wisski_url'             => $wisski_url,
               'project_name'           => $project_name,
-              'pub_institute'          => $pub_institute,
-              'pub_name'               => $pub_name,
-              'pub_address'            => $pub_address,
-              'pub_plz'                => $pub_plz,
-              'pub_city'               => $pub_city,
-              'pub_email'              => $pub_email,
-              'cust_legal_form'        => $cust_legal_form,
+              'publisher_institute'    => $publisher_institute,
+              'publisher_name'         => $publisher_name,
+              'publisher_address'      => $publisher_address,
+              'publisher_plz'          => $publisher_plz,
+              'publisher_city'         => $publisher_city,
+              'publisher_email'        => $publisher_email,
+              'custom_legal_form'      => $custom_legal_form,
               'contact_name'           => $contact_name,
               'contact_phone'          => $contact_phone,
               'contact_email'          => $contact_email,
-              'sup_institute'          => $sup_institute,
-              'sup_url'                => $sup_url,
-              'sup_email'              => $sup_email,
-              'sup_staff_array'        => $sup_staff_array,
-              'auth_name'              => $auth_name,
-              'auth_address'           => $auth_address,
-              'auth_plz'               => $auth_plz,
-              'auth_city'              => $auth_city,
-              'auth_url'               => $auth_url,
+              'support_institute'      => $support_institute,
+              'support_url'            => $support_url,
+              'support_email'          => $support_email,
+              'support_staff_array'    => $support_staff_array,
+              'authority_name'         => $authority_name,
+              'authority_address'      => $authority_address,
+              'authority_plz'          => $authority_plz,
+              'authority_city'         => $authority_city,
+              'authority_url'          => $authority_url,
               'id_vat'                 => $id_vat,
               'id_tax'                 => $id_tax,
               'id_duns'                => $id_duns,
               'id_eori'                => $id_eori,
               'licence_title'          => $licence_title,
               'licence_url'            => $licence_url,
-              'use_fau_temp'           => $use_fau_temp,
-              'cust_licence_txt'       => $cust_licence_txt,
+              'uses_fau_design'        => $uses_fau_design,
+              'custom_licence_txt'     => $custom_licence_txt,
               'no_default_txt'         => $no_default_txt,
-              'cust_exclusion'         => $cust_exclusion,
-              'hide_disclaim'          => $hide_disclaim,
-              'cust_disclaim'          => $cust_disclaim,
+              'custom_exclusion'       => $custom_exclusion,
+              'hide_disclaimer'        => $hide_disclaimer,
+              'custom_disclaimer'      => $custom_disclaimer,
               'date'                   => $date,
               'overwrite_consent'      => $overwrite_consent
     ];
@@ -854,42 +854,42 @@ class WissKILegalnoticeForm extends FormBase {
     $state_keys_lang = array('title'                 => '',
                              'alias'                 => '',
                              'project_name'          => '',
-                             'pub_institute'         => '',
-                             'pub_name'              => '',
-                             'pub_city'              => '',
-                             'cust_legal_form'       => '',
+                             'publisher_institute'   => '',
+                             'publisher_name'        => '',
+                             'publisher_city'        => '',
+                             'custom_legal_form'     => '',
                              'contact_name'          => '',
-                             'sup_institute'         => '',
-                             'sup_staff_array'       => '',
-                             'auth_name'             => '',
-                             'auth_city'             => '',
+                             'support_institute'     => '',
+                             'support_staff_array'   => '',
+                             'authority_name'        => '',
+                             'authority_city'        => '',
                              'licence_title'         => '',
-                             'use_fau_temp'          => '',
-                             'cust_licence_txt'      => '',
+                             'uses_fau_design'       => '',
+                             'custom_licence_txt'    => '',
                              'no_default_txt'        => '',
-                             'cust_exclusion'        => '',
-                             'cust_disclaim'         => '',
+                             'custom_exclusion'      => '',
+                             'custom_disclaimer'     => '',
                              'overwrite_consent'     => '',
     );
 
     // c) Keys to Use for Storage in State
     $state_keys_intl = array('wisski_url'            => '',
-                             'pub_address'           => '',
-                             'pub_plz'               => '',
-                             'pub_email'             => '',
+                             'publisher_address'     => '',
+                             'publisher_plz'         => '',
+                             'publisher_email'       => '',
                              'contact_phone'         => '',
                              'contact_email'         => '',
-                             'sup_url'               => '',
-                             'sup_email'             => '',
+                             'support_url'           => '',
+                             'support_email'         => '',
                              'licence_url'           => '',
-                             'auth_address'          => '',
-                             'auth_plz'              => '',
-                             'auth_url'              => '',
+                             'authority_address'     => '',
+                             'authority_plz'         => '',
+                             'authority_url'         => '',
                              'id_vat'                => '',
                              'id_tax'                => '',
                              'id_duns'               => '',
                              'id_eori'               => '',
-                             'hide_disclaim'         => '',
+                             'hide_disclaimer'       => '',
                              'date'                  => '',
     );
 
