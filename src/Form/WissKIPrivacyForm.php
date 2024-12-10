@@ -456,9 +456,9 @@ class WissKIPrivacyForm extends FormBase{
       $form['Lang_Specific_Form']['Data_Security_Official']['Security_Official_Email']['#default_value'] = $stored_values['intl']['security_official_email'] ?? $default_values['intl']['security_official_email'];
 
       $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Provider']['#default_value'] = $stored_values[$lang]['third_service_provider'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Descr_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_description_data_collection'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Legal_Basis_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_legal_basis_data_collection'] ?? t('');
-      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Objection_Data_Coll']['#default_value'] = $stored_values[$lang]['third_service_objection_data_collection'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Description_Data_Collection']['#default_value'] = $stored_values[$lang]['third_service_description_data_collection'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Legal_Basis_Data_Collection']['#default_value'] = $stored_values[$lang]['third_service_legal_basis_data_collection'] ?? t('');
+      $form['Lang_Specific_Form']['Third_Party_Services']['Third_Service_Objection_Data_Collection']['#default_value'] = $stored_values[$lang]['third_service_objection_data_collection'] ?? t('');
 
       $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Title']['#default_value'] = $stored_values[$lang]['data_commissioner_title'] ?? $default_values[$lang]['data_commissioner_title'];
       $form['Lang_Specific_Form']['Data_Protection_Commissioner']['Data_Commissioner_Address']['#default_value'] = $stored_values['intl']['data_commissioner_address'] ?? $default_values['intl']['data_commissioner_address'];
