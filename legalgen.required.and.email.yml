@@ -11,36 +11,36 @@ REQUIRED_LEGALNOTICE:
     title: Legal Notice
     alias: *alias-en
     project_name: ''
-    pub_name: ''
-    pub_city: ''
+    publisher_name: ''
+    publisher_city: ''
     contact_name: ''
-    sup_institute: ''
-    sup_staff_array: ''
-    auth_name: Bavarian State Ministry of Science and Art
-    auth_city: Munich
+    support_institute: ''
+    support_staff_array: ''
+    authority_name: Bavarian State Ministry of Science and Art
+    authority_city: Munich
   de:
     title: Impressum
     alias: *alias-de
     project_name: ''
-    pub_name: ''
-    pub_city: ''
+    publisher_name: ''
+    publisher_city: ''
     contact_name: ''
-    sup_institute: ''
-    sup_staff_array: ''
-    auth_name: Bayerisches Staatsministerium für Wissenschaft und Kunst
-    auth_city: München
+    support_institute: ''
+    support_staff_array: ''
+    authority_name: Bayerisches Staatsministerium für Wissenschaft und Kunst
+    authority_city: München
   intl:
     wisski_url: ''
-    pub_address: ''
-    pub_plz: ''
-    pub_email: ''
+    publisher_address: ''
+    publisher_plz: ''
+    publisher_email: ''
     contact_phone: ''
     contact_email: ''
-    sup_url: ''
-    sup_email: ''
-    auth_address: Salvatorstraße 2
-    auth_plz: '80327'
-    auth_url: www.stmwk.bayern.de
+    support_url: ''
+    support_email: ''
+    authority_address: Salvatorstraße 2
+    authority_plz: '80327'
+    authority_url: www.stmwk.bayern.de
     id_vat: DE 132507686
     id_tax: 216/114/20045 (Finanzamt Erlangen)
     id_duns: '327958716'
@@ -52,81 +52,81 @@ REQUIRED_ACCESSIBILITY:
     alias: accessibility
     methodology: ''
     issues_array: '' #Required if status == Partially compliant
-    statement_array: '' # Required if status == Partially compliant
+    justification_array: '' # Required if status == Partially compliant
     alternatives_array: '' # Required if status == Partially compliant
-    contact_access_name: ''
-    sup_institute: ''
-    sup_city: ''
-    overs_name: Agency for Digitalisation, High-Speed Internet and Surveying
-    overs_dept: IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology
-    overs_city: Munich
+    contact_accessibility_name: ''
+    support_institute: ''
+    support_city: ''
+    oversight_name: Agency for Digitalisation, High-Speed Internet and Surveying
+    oversight_dept: IT Service Center of the Free State of Bavaria Enforcement and Monitoring Body for Barrier-free Information Technology
+    oversight_city: Munich
   de:
     title: Barrierefreiheit
     alias: barrierefreiheit
     methodology:  ''
     issues_array: '' # Required if status == Partially compliant
-    statement_array: '' # Required if status == Partially compliant
+    justification_array: '' # Required if status == Partially compliant
     alternatives_array: '' # Required if status == Partially compliant
-    contact_access_name: ''
-    sup_institute: ''
-    sup_city: ''
-    overs_name: Landesamt für Digitalisierung, Breitband und Vermessung
-    overs_dept: IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik
-    overs_city: München
+    contact_accessibility_name: ''
+    support_institute: ''
+    support_city: ''
+    oversight_name: Landesamt für Digitalisierung, Breitband und Vermessung
+    oversight_dept: IT-Dienstleistungszentrum des Freistaats Bayern Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik
+    oversight_city: München
   intl:
     wisski_url: ''
     status: Partially compliant
     creation_date: ''
-    last_revis_date: ''
-    contact_access_phone: ''
-    contact_access_email: ''
-    sup_url: ''
-    sup_address: ''
-    sup_plz: ''
-    sup_email: ''
-    overs_address: St.-Martin-Straße 47
-    overs_plz: '81541'
-    overs_phone: +49 89 2129-1111
-    overs_email: bitv@bayern.de
-    overs_url: https://www.ldbv.bayern.de/digitalisierung/bitv.html
+    last_revision_date: ''
+    contact_accessibility_phone: ''
+    contact_accessibility_email: ''
+    support_url: ''
+    support_address: ''
+    support_plz: ''
+    support_email: ''
+    oversight_address: St.-Martin-Straße 47
+    oversight_plz: '81541'
+    oversight_phone: +49 89 2129-1111
+    oversight_email: bitv@bayern.de
+    oversight_url: https://www.ldbv.bayern.de/digitalisierung/bitv.html
     date: ''
 REQUIRED_PRIVACY:
   en:
     title: Privacy
     alias: privacy
     legal_notice_url: *alias-en
-    sec_off_title: Data Security Official of the FAU
-    sec_off_name: Klaus Hoogestraat
-    sec_off_add: c/o ITM Gesellschaft für IT-Management mbH
-    sec_off_city: Dresden
-    data_comm_title: Bavarian State Commissioner for Data Protection
-    data_comm_city: Munich
+    security_official_title: Data Security Official of the FAU
+    security_official_name: Klaus Hoogestraat
+    security_official_add: c/o ITM Gesellschaft für IT-Management mbH
+    security_official_city: Dresden
+    data_commissioner_title: Bavarian State Commissioner for Data Protection
+    data_commissioner_city: Munich
   de:
     title: Datenschutz
     alias: datenschutz
     legal_notice_url: *alias-de
-    sec_off_title: Datenschutzbeauftragter der FAU
-    sec_off_name: Klaus Hoogestraat
-    sec_off_add: c/o ITM Gesellschaft für IT-Management mbH
-    sec_off_city: Dresden
-    data_comm_title: der Bayerische Landesbeauftragte für den Datenschutz
-    data_comm_city: München
+    security_official_title: Datenschutzbeauftragter der FAU
+    security_official_name: Klaus Hoogestraat
+    security_official_add: c/o ITM Gesellschaft für IT-Management mbH
+    security_official_city: Dresden
+    data_commissioner_title: der Bayerische Landesbeauftragte für den Datenschutz
+    data_commissioner_city: München
   intl:
-    sec_off_address: Bürgerstraße 81
-    sec_off_plz: '01127'
-    sec_off_phone: +49 9131 85-25860
-    sec_off_email: datenschutzbeauftragter@fau.de
-    data_comm_address: Wagmüllerstraße 18
-    data_comm_plz: '80538'
+    security_official_address: Bürgerstraße 81
+    security_official_plz: '01127'
+    security_official_phone: +49 9131 85-25860
+    security_official_email: datenschutzbeauftragter@fau.de
+    data_commissioner_address: Wagmüllerstraße 18
+    data_commissioner_plz: '80538'
     date: ''
 KEYS_EMAIL_VALUES:
   legal_notice:
-    - pub_email
+    - publisher_email
     - contact_email
-    - sup_email
+    - support_email
   accessibility:
-    - contact_access_email
-    - sup_email
-    - overs_email
+    - contact_accessibility_email
+    - support_email
+    - oversight_email
   privacy:
-    - sec_off_email
+    - security_official_email
