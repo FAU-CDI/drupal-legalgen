@@ -590,8 +590,8 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['custom_legal_form']?? t('');
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $stored_values[$lang]['contact_name']?? $default_values[$lang]['contact_name'];
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#default_value'] = $stored_values['intl']['contact_phone']?? $default_values['intl']['contact_phone'];
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#default_value'] = $stored_values['intl']['contact_email']?? $default_values['intl']['contact_email'];
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#default_value'] = $stored_values['intl']['contact_method_1']?? $default_values['intl']['contact_method_1'];
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#default_value'] = $stored_values['intl']['contact_method_2']?? $default_values['intl']['contact_method_2'];
 
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#default_value'] = $stored_values[$lang]['support_institute']?? $default_values[$lang]['support_institute'];
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#default_value'] = $stored_values['intl']['support_url']?? $default_values['intl']['support_url'];
@@ -796,9 +796,9 @@ class WissKILegalnoticeForm extends FormBase {
     $custom_legal_form        = $values['Custom_Legal_Form'];
     $contact_name             = $values['Contact_Name'];
     $select_contact_method_1  = $values['Select_Contact_Method_1'];
-    $contact_method_1         = $values['Method_Contact_1'];
+    $contact_method_1         = $values['Contact_Method_1'];
     $select_contact_method_2  = $values['Select_Contact_Method_2'];
-    $contact_method_2         = $values['Method_Contact_2'];
+    $contact_method_2         = $values['Contact_Method_2'];
     $support_institute        = $values['Support_Institute'];
     $support_url              = $values['Support_URL'];
     $support_email            = $values['Support_Email'];
