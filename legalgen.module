@@ -12,6 +12,7 @@ function legalgen_theme($existing, $type, $theme, $path){
       'variables' => [
         'wisski_url'             => NULL,
         'project_name'           => NULL,
+        'publisher_institution'  => NULL,
         'publisher_institute'    => NULL,
         'publisher_name'         => NULL,
         'publisher_address'      => NULL,
@@ -52,6 +53,7 @@ function legalgen_theme($existing, $type, $theme, $path){
       'variables' => [
         'wisski_url'             => NULL,
         'project_name'           => NULL,
+        'publisher_institution'  => NULL,
         'publisher_institute'    => NULL,
         'publisher_name'         => NULL,
         'publisher_address'      => NULL,

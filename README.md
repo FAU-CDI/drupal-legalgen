@@ -77,7 +77,8 @@ generatePage(array $data, string $title, string $alias, string $page_type, strin
 |----|----|----|-----|:---:|----|---|
 |**General**|String|wisski_url|WissKI URL|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'https://projectname.wisski.data.fau.de/'|
 ||String|project_name|Name WissKI|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'WissKI Legalgen'|
-|**Publisher**|String|publisher_institute|Name institute publisher|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Beispielinstitut'|
+|**Publisher**|String|publisher_institution|Name institution publisher||<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Beispieluniversität'|
+||String|publisher_institute|Name institute publisher|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Beispielinstitut'|
 ||String|publisher_name|Name publisher|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Padmal Publisher'|
 ||String|publisher_address|Address publisher|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'Main Street'|
 ||String|publisher_plz|Postal code publisher|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'11011'|
