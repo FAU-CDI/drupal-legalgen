@@ -5,7 +5,9 @@
 
     <div>
         <p>
-            {% if publisher_institution %}<br />
+            {% if publisher_institution %}
+            {{ publisher_institution }}<br />
+            {% endif %}
             {% if publisher_institute %}
             {{ publisher_institute }}<br />
             {% endif %}
@@ -43,15 +45,17 @@
                 Responsible for the content is:<br />
                 {{ contact_name }}<br />
                 {% if select_contact_method_1 == '0' %}
-                    E-mail: <a href="mailto:{{ contact_method_1 }}">{{ contact_method_1 }}</a><br />
-                {% elif select_contact_method_1 == '1' %}
+                   E-mail: <a href="mailto:{{ contact_method_1 }}">{{ contact_method_1 }}</a><br />
+                {% endif %}
+                {% if select_contact_method_1 == '1' %}
                     Phone: {{ contact_method_1 }}<br />
                 {% endif %}
                 {% if select_contact_method_2 == '0' %}
-                    E-mail: <a href="mailto:{{ contact_method_2 }}">{{ contact_method_2 }}</a><br />
-                {{% elif select_contact_method_2 == '1' %}}
+                   E-mail: <a href="mailto:{{ contact_method_2 }}">{{ contact_method_2 }}</a><br />
+                {% endif %}
+                {% if select_contact_method_2 == '1' %}
                     Phone: {{ contact_method_2 }}<br />
-                {% endif %} 
+                {% endif %}
             <br />
             </p>
         </div>

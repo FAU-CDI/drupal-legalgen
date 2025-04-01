@@ -153,7 +153,7 @@ class WissKILegalnoticeForm extends FormBase {
   $input = $form_state->getUserInput();
 
   // Reset All Form Values EXCEPT Chosen_Language
-  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Publisher_Institute', 'Publisher_Name', 'Publisher_Address', 'Publisher_PLZ', 'Publisher_City', 'Publisher_Email', 'Custom_Legal_Form', 'Contact_Name', 'Contact_Phone', 'Contact_Email', 'Support_Institute', 'Support_URL', 'Support_Email', 'Support_Staff', 'Authority_Name', 'Authority_Address', 'Authority_PLZ', 'Authority_City', 'Authority_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
+  $unset_key = array('Title', 'WissKI_URL', 'Alias', 'Project_Name', 'Publisher_Institution', 'Publisher_Institute', 'Publisher_Name', 'Publisher_Address', 'Publisher_PLZ', 'Publisher_City', 'Publisher_Email', 'Custom_Legal_Form', 'Selector_Contact_Method_1', 'Contact_Method_1', 'Selector_Contact_Method_2', 'Contact_Method_2', 'Contact_Email', 'Support_Institute', 'Support_URL', 'Support_Email', 'Support_Staff', 'Authority_Name', 'Authority_Address', 'Authority_PLZ', 'Authority_City', 'Authority_URL', 'VAT_Number', 'Tax_Number','DUNS_Number','EORI_Number', 'Licence_Title', 'Licence_URL', 'Use_FAU_Design_Template', 'No_Default_Text', 'Custom_Licence_Text', 'Custom_Exclusion_Liab', 'Hide_Disclaimer', 'Custom_Disclaimer', 'Date', 'Overwrite_Consent');
 
   foreach ($unset_key as $key) {
     unset($input[$key]);
@@ -580,6 +580,7 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['General']['Alias']['#default_value'] = $stored_values[$lang]['alias']?? $default_values[$lang]['alias'];
     $form['Lang_Specific_Form']['General']['Project_Name']['#default_value'] = $stored_values[$lang]['project_name']?? $default_values[$lang]['project_name'];
 
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Institution']['#default_value'] = $stored_values[$lang]['publisher_institution']?? t('');
     $form['Lang_Specific_Form']['Publisher']['Publisher_Institute']['#default_value'] = $stored_values[$lang]['publisher_institute']?? t('');
     $form['Lang_Specific_Form']['Publisher']['Publisher_Name']['#default_value'] = $stored_values[$lang]['publisher_name']?? $default_values[$lang]['publisher_name'];
     $form['Lang_Specific_Form']['Publisher']['Publisher_Address']['#default_value'] = $stored_values['intl']['publisher_address']?? $default_values['intl']['publisher_address'];
@@ -590,8 +591,10 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['custom_legal_form']?? t('');
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $stored_values[$lang]['contact_name']?? $default_values[$lang]['contact_name'];
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#default_value'] = $stored_values['intl']['contact_method_1']?? $default_values['intl']['contact_method_1'];
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#default_value'] = $stored_values['intl']['contact_method_2']?? $default_values['intl']['contact_method_2'];
+    $form['Lang_Specific_Form']['Contact_Content']['Selecetor_Contact_Method_1']['#default_value'] = $stored_values['intl']['selector_contact_method_1']?? $default_values['intl']['selector_contact_method_1'];
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_1']['#default_value'] = $stored_values['intl']['contact_method_1']?? $default_values['intl']['contact_method_1'];
+    $form['Lang_Specific_Form']['Contact_Content']['Selecetor_Contact_Method_2']['#default_value'] = $stored_values['intl']['selector_contact_method_2']?? $default_values['intl']['selector_contact_method_2'];
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_2']['#default_value'] = $stored_values['intl']['contact_method_2']?? $default_values['intl']['contact_method_2'];
 
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#default_value'] = $stored_values[$lang]['support_institute']?? $default_values[$lang]['support_institute'];
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#default_value'] = $stored_values['intl']['support_url']?? $default_values['intl']['support_url'];
@@ -642,6 +645,7 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['General']['Alias']['#required'] = $this->isItRequired('alias', $req_all);
     $form['Lang_Specific_Form']['General']['Project_Name']['#required'] = $this->isItRequired('project_name', $req_all);
 
+    $form['Lang_Specific_Form']['Publisher']['Publisher_Institution']['#required'] = $this->isItRequired('publisher_institution', $req_all);
     $form['Lang_Specific_Form']['Publisher']['Publisher_Institute']['#required'] = $this->isItRequired('publisher_institute', $req_all);
     $form['Lang_Specific_Form']['Publisher']['Publisher_Name']['#required'] = $this->isItRequired('publisher_name', $req_all);
     $form['Lang_Specific_Form']['Publisher']['Publisher_Address']['#required'] = $this->isItRequired('publisher_address', $req_all);
@@ -652,8 +656,10 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#required'] = $this->isItRequired('custom_legal_form', $req_all);
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#required'] = $this->isItRequired('contact_name', $req_all);
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#required'] = $this->isItRequired('contact_phone', $req_all);
-    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#required'] = $this->isItRequired('contact_email', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Selector_Contact_Method_1']['#required'] = $this->isItRequired('selector_contact_method_1', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_1']['#required'] = $this->isItRequired('contact_method_1', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Selector_Contact_Method_2']['#required'] = $this->isItRequired('selector_contact_method_2', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_2']['#required'] = $this->isItRequired('contact_method_2', $req_all);
 
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#required'] = $this->isItRequired('support_institute', $req_all);
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#required'] = $this->isItRequired('support_url', $req_all);
@@ -873,7 +879,7 @@ class WissKILegalnoticeForm extends FormBase {
               'overwrite_consent'         => $overwrite_consent
     ];
 
-
+    
     // Parameters to Call Service:
 
     // a) Key to Select Correct Template for Page Generation
