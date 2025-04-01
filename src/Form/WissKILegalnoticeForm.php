@@ -403,8 +403,8 @@ class WissKILegalnoticeForm extends FormBase {
 
         $form['Lang_Specific_Form']['Copyright']['Use_FAU_Design_Template'] = array(
           '#type'          => 'checkbox',
-          '#title'         => t('Use of FAU Corporate Design'),
-          '#description'   => t('<i>IF USED EITHER WITH OR WITHOUT MODIFICATIONS</i>'),
+          '#title'         => t('We use the FAU Corporate Design (with or without modifications)'),
+          '#description'   => t('<i>IF SELECTED A DEFAULT PARAGRAPH ABOUT FAU DESIGN WILL BE DISPLAYED IN THE LEGAL NOTICE</i>'),
           );
 
         $form['Lang_Specific_Form']['Copyright']['Custom_Licence_Text'] = array(
