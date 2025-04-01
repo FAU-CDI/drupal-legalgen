@@ -44,8 +44,17 @@
             <p>
                 Die inhaltliche Bereitstellung erfolgt durch:<br />
                 {{ contact_name }}<br />
-                Telefon: {{ contact_phone }}<br />
-                E-Mail: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br />
+                {% if select_contact_method_1 == '0' %}
+                    E-Mail: <a href="mailto:{{ contact_method_1 }}">{{ contact_method_1 }}</a><br />
+                {% elif select_contact_method_1 == '1' %}
+                    Telefon: {{ contact_method_1 }}<br />
+                {% endif %}
+                {% if select_contact_method_2 == '0' %}
+                    E-Mail: <a href="mailto:{{ contact_method_2 }}">{{ contact_method_2 }}</a><br />
+                {{% elif select_contact_method_2 == '1' %}}
+                    Telefon: {{ contact_method_2 }}<br />
+                {% endif %} 
+                
             <br />
             </p>
         </div>

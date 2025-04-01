@@ -277,14 +277,32 @@ class WissKILegalnoticeForm extends FormBase {
         '#title'         => t('Name Contact Person'),
         );
 
-      $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone'] = array(
-        '#type'          => 'tel',
-        '#title'         => t('Phone Contact Person'),
+      $form['Lang_Specific_Form']['Contact_Content']['Select_Contact_Method_1'] = array(
+        '#type'          => 'select',
+        '#title'         => t('Please Select Contact Method 1'),
+        '#options' => [
+          '0' => t('E-mail'),
+          '1' => t('Phone'),
+        ],
       );
 
-      $form['Lang_Specific_Form']['Contact_Content']['Contact_Email'] = array(
-        '#type'          => 'email',
-        '#title'         => t('E-Mail Contact Person'),
+      $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_1'] = array(
+        '#type'          => 'textfield',
+        '#title'         => t('Method of Contact 1'),
+      );
+
+      $form['Lang_Specific_Form']['Contact_Content']['Select_Contact_Method_2'] = array(
+        '#type'          => 'select',
+        '#title'         => t('Please Select Contact Method 2'),
+        '#options' => [
+          '0' => t('E-mail'),
+          '1' => t('Phone'),
+        ],
+      );
+
+      $form['Lang_Specific_Form']['Contact_Content']['Contact_Method_2'] = array(
+        '#type'          => 'textfield',
+        '#title'         => t('Method of Contact 2'),
         );
 
 
@@ -572,8 +590,8 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#default_value'] = $stored_values[$lang]['custom_legal_form']?? t('');
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#default_value'] = $stored_values[$lang]['contact_name']?? $default_values[$lang]['contact_name'];
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#default_value'] = $stored_values['intl']['contact_phone']?? $default_values['intl']['contact_phone'];
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#default_value'] = $stored_values['intl']['contact_email']?? $default_values['intl']['contact_email'];
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#default_value'] = $stored_values['intl']['contact_phone']?? $default_values['intl']['contact_phone'];
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#default_value'] = $stored_values['intl']['contact_email']?? $default_values['intl']['contact_email'];
 
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#default_value'] = $stored_values[$lang]['support_institute']?? $default_values[$lang]['support_institute'];
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#default_value'] = $stored_values['intl']['support_url']?? $default_values['intl']['support_url'];
@@ -634,8 +652,8 @@ class WissKILegalnoticeForm extends FormBase {
     $form['Lang_Specific_Form']['Legal_Form_and_Representation']['Custom_Legal_Form']['#required'] = $this->isItRequired('custom_legal_form', $req_all);
 
     $form['Lang_Specific_Form']['Contact_Content']['Contact_Name']['#required'] = $this->isItRequired('contact_name', $req_all);
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Phone']['#required'] = $this->isItRequired('contact_phone', $req_all);
-    $form['Lang_Specific_Form']['Contact_Content']['Contact_Email']['#required'] = $this->isItRequired('contact_email', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_1']['#required'] = $this->isItRequired('contact_phone', $req_all);
+    $form['Lang_Specific_Form']['Contact_Content']['Method_Contact_2']['#required'] = $this->isItRequired('contact_email', $req_all);
 
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_Institute']['#required'] = $this->isItRequired('support_institute', $req_all);
     $form['Lang_Specific_Form']['Support_and_Hosting']['Support_URL']['#required'] = $this->isItRequired('support_url', $req_all);
@@ -763,45 +781,47 @@ class WissKILegalnoticeForm extends FormBase {
     // Get Values Entered by User
     $values = $form_state->getValues();
 
-    $lang                   = $values['Chosen_Language'];
-    $title                  = $values['Title'];
-    $wisski_url             = $values['WissKI_URL'];
-    $project_name           = $values['Project_Name'];
-    $alias                  = $values['Alias'];
-    $publisher_institution  = $values['Publisher_Institution'];
-    $publisher_institute    = $values['Publisher_Institute'];
-    $publisher_name         = $values['Publisher_Name'];
-    $publisher_address      = $values['Publisher_Address'];
-    $publisher_plz          = $values['Publisher_PLZ'];
-    $publisher_city         = $values['Publisher_City'];
-    $publisher_email        = $values['Publisher_Email'];
-    $custom_legal_form      = $values['Custom_Legal_Form'];
-    $contact_name           = $values['Contact_Name'];
-    $contact_phone          = $values['Contact_Phone'];
-    $contact_email          = $values['Contact_Email'];
-    $support_institute      = $values['Support_Institute'];
-    $support_url            = $values['Support_URL'];
-    $support_email          = $values['Support_Email'];
-    $support_staff          = $values['Support_Staff'];
-    $authority_name         = $values['Authority_Name'];
-    $authority_address      = $values['Authority_Address'];
-    $authority_plz          = $values['Authority_PLZ'];
-    $authority_city         = $values['Authority_City'];
-    $authority_url          = $values['Authority_URL'];
-    $id_vat                 = $values['VAT_Number'];
-    $id_tax                 = $values['Tax_Number'];
-    $id_duns                = $values['DUNS_Number'];
-    $id_eori                = $values['EORI_Number'];
-    $licence_title          = $values['Licence_Title'];
-    $licence_url            = $values['Licence_URL'];
-    $uses_fau_design        = $values['Use_FAU_Design_Template'];
-    $custom_licence_txt     = $values['Custom_Licence_Text'];
-    $no_default_txt         = $values['No_Default_Text'];
-    $custom_exclusion       = $values['Custom_Exclusion_Liab'];
-    $hide_disclaimer        = $values['Hide_Disclaimer'];
-    $custom_disclaimer      = $values['Custom_Disclaimer'];
-    $date                   = $values['Date'];
-    $overwrite_consent      = $values['Overwrite_Consent'];
+    $lang                     = $values['Chosen_Language'];
+    $title                    = $values['Title'];
+    $wisski_url               = $values['WissKI_URL'];
+    $project_name             = $values['Project_Name'];
+    $alias                    = $values['Alias'];
+    $publisher_institution    = $values['Publisher_Institution'];
+    $publisher_institute      = $values['Publisher_Institute'];
+    $publisher_name           = $values['Publisher_Name'];
+    $publisher_address        = $values['Publisher_Address'];
+    $publisher_plz            = $values['Publisher_PLZ'];
+    $publisher_city           = $values['Publisher_City'];
+    $publisher_email          = $values['Publisher_Email'];
+    $custom_legal_form        = $values['Custom_Legal_Form'];
+    $contact_name             = $values['Contact_Name'];
+    $select_contact_method_1  = $values['Select_Contact_Method_1'];
+    $contact_method_1         = $values['Method_Contact_1'];
+    $select_contact_method_2  = $values['Select_Contact_Method_2'];
+    $contact_method_2         = $values['Method_Contact_2'];
+    $support_institute        = $values['Support_Institute'];
+    $support_url              = $values['Support_URL'];
+    $support_email            = $values['Support_Email'];
+    $support_staff            = $values['Support_Staff'];
+    $authority_name           = $values['Authority_Name'];
+    $authority_address        = $values['Authority_Address'];
+    $authority_plz            = $values['Authority_PLZ'];
+    $authority_city           = $values['Authority_City'];
+    $authority_url            = $values['Authority_URL'];
+    $id_vat                   = $values['VAT_Number'];
+    $id_tax                   = $values['Tax_Number'];
+    $id_duns                  = $values['DUNS_Number'];
+    $id_eori                  = $values['EORI_Number'];
+    $licence_title            = $values['Licence_Title'];
+    $licence_url              = $values['Licence_URL'];
+    $uses_fau_design          = $values['Use_FAU_Design_Template'];
+    $custom_licence_txt       = $values['Custom_Licence_Text'];
+    $no_default_txt           = $values['No_Default_Text'];
+    $custom_exclusion         = $values['Custom_Exclusion_Liab'];
+    $hide_disclaimer          = $values['Hide_Disclaimer'];
+    $custom_disclaimer        = $values['Custom_Disclaimer'];
+    $date                     = $values['Date'];
+    $overwrite_consent        = $values['Overwrite_Consent'];
 
     // Convert Staff Info in String to Array to Display as Unordered List on Page
     $support_staff_array = explode(';', $support_staff);
@@ -813,42 +833,44 @@ class WissKILegalnoticeForm extends FormBase {
 
 
     $data = [
-              'wisski_url'             => $wisski_url,
-              'project_name'           => $project_name,
-              'publisher_institution'  => $publisher_institution,
-              'publisher_institute'    => $publisher_institute,
-              'publisher_name'         => $publisher_name,
-              'publisher_address'      => $publisher_address,
-              'publisher_plz'          => $publisher_plz,
-              'publisher_city'         => $publisher_city,
-              'publisher_email'        => $publisher_email,
-              'custom_legal_form'      => $custom_legal_form,
-              'contact_name'           => $contact_name,
-              'contact_phone'          => $contact_phone,
-              'contact_email'          => $contact_email,
-              'support_institute'      => $support_institute,
-              'support_url'            => $support_url,
-              'support_email'          => $support_email,
-              'support_staff_array'    => $support_staff_array,
-              'authority_name'         => $authority_name,
-              'authority_address'      => $authority_address,
-              'authority_plz'          => $authority_plz,
-              'authority_city'         => $authority_city,
-              'authority_url'          => $authority_url,
-              'id_vat'                 => $id_vat,
-              'id_tax'                 => $id_tax,
-              'id_duns'                => $id_duns,
-              'id_eori'                => $id_eori,
-              'licence_title'          => $licence_title,
-              'licence_url'            => $licence_url,
-              'uses_fau_design'        => $uses_fau_design,
-              'custom_licence_txt'     => $custom_licence_txt,
-              'no_default_txt'         => $no_default_txt,
-              'custom_exclusion'       => $custom_exclusion,
-              'hide_disclaimer'        => $hide_disclaimer,
-              'custom_disclaimer'      => $custom_disclaimer,
-              'date'                   => $date,
-              'overwrite_consent'      => $overwrite_consent
+              'wisski_url'                => $wisski_url,
+              'project_name'              => $project_name,
+              'publisher_institution'     => $publisher_institution,
+              'publisher_institute'       => $publisher_institute,
+              'publisher_name'            => $publisher_name,
+              'publisher_address'         => $publisher_address,
+              'publisher_plz'             => $publisher_plz,
+              'publisher_city'            => $publisher_city,
+              'publisher_email'           => $publisher_email,
+              'custom_legal_form'         => $custom_legal_form,
+              'contact_name'              => $contact_name,
+              'select_contact_method_1'   => $select_contact_method_1,
+              'contact_method_1'          => $contact_method_1,
+              'select_contact_method_2'   => $select_contact_method_2,
+              'contact_method_2'          => $contact_method_2,
+              'support_institute'         => $support_institute,
+              'support_url'               => $support_url,
+              'support_email'             => $support_email,
+              'support_staff_array'       => $support_staff_array,
+              'authority_name'            => $authority_name,
+              'authority_address'         => $authority_address,
+              'authority_plz'             => $authority_plz,
+              'authority_city'            => $authority_city,
+              'authority_url'             => $authority_url,
+              'id_vat'                    => $id_vat,
+              'id_tax'                    => $id_tax,
+              'id_duns'                   => $id_duns,
+              'id_eori'                   => $id_eori,
+              'licence_title'             => $licence_title,
+              'licence_url'               => $licence_url,
+              'uses_fau_design'           => $uses_fau_design,
+              'custom_licence_txt'        => $custom_licence_txt,
+              'no_default_txt'            => $no_default_txt,
+              'custom_exclusion'          => $custom_exclusion,
+              'hide_disclaimer'           => $hide_disclaimer,
+              'custom_disclaimer'         => $custom_disclaimer,
+              'date'                      => $date,
+              'overwrite_consent'         => $overwrite_consent
     ];
 
 
@@ -881,24 +903,26 @@ class WissKILegalnoticeForm extends FormBase {
     );
 
     // c) Keys to Use for Storage in State
-    $state_keys_intl = array('wisski_url'            => '',
-                             'publisher_address'     => '',
-                             'publisher_plz'         => '',
-                             'publisher_email'       => '',
-                             'contact_phone'         => '',
-                             'contact_email'         => '',
-                             'support_url'           => '',
-                             'support_email'         => '',
-                             'licence_url'           => '',
-                             'authority_address'     => '',
-                             'authority_plz'         => '',
-                             'authority_url'         => '',
-                             'id_vat'                => '',
-                             'id_tax'                => '',
-                             'id_duns'               => '',
-                             'id_eori'               => '',
-                             'hide_disclaimer'       => '',
-                             'date'                  => '',
+    $state_keys_intl = array('wisski_url'               => '',
+                             'publisher_address'        => '',
+                             'publisher_plz'            => '',
+                             'publisher_email'          => '',
+                             'select_contact_method_1'  => '',  
+                             'contact_method_1'         => '',
+                             'select_contact_method_2'  => '',
+                             'contact_method_2'         => '',
+                             'support_url'              => '',
+                             'support_email'            => '',
+                             'licence_url'              => '',
+                             'authority_address'        => '',
+                             'authority_plz'            => '',
+                             'authority_url'            => '',
+                             'id_vat'                   => '',
+                             'id_tax'                   => '',
+                             'id_duns'                  => '',
+                             'id_eori'                  => '',
+                             'hide_disclaimer'          => '',
+                             'date'                     => '',
     );
 
 

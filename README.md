@@ -86,8 +86,10 @@ generatePage(array $data, string $title, string $alias, string $page_type, strin
 ||email|publisher_email|E-mail publisher|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'padmal.publisher@mail.com'|
 ||String|custom_legal_form|**`Free text:`** `Leave empty if FAU specific text should be displayed.`</span><br /> `Custom text regarding legal form and representation`|<span style="color:IndianRed">&#x2612;</span>|'lang'|'Umiña University Anytown is a state institution and also a legal personality under public law according to Art. 4 Para. 1 BayHIG. It is legally represented by the President.'|
 |**Contact Person Content**|String|contact_name|Name contact person content|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Centola Contactperson'|
-||tel|contact_phone|Phone number contact person content|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'+49 171 123456'|
-||email|contact_email|E-mail contact person content|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'centola.contactperson@mail.de'|
+||String|select_contact_method_1|Select kind of contact method (either e-mail or phone)|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'+49 171 123456'|
+||String|contact_method_1|Based on select_contact_method_1 E-mail or phone contact person content|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'centola.contactperson@mail.de'|
+||String|select_contact_method_2|Select kind of contact method (either e-mail or phone)|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'+49 171 123456'|
+||String|contact_method_2|Based on select_contact_method_1 E-mail or phone contact person content|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'centola.contactperson@mail.de'|
 |**Support and Hosting**|String|support_institute|Name institute support and hosting|<span style="color:DarkCyan">&#x2611;</span>|'lang'|'Center for Support and Hosting'|
 ||String|support_url|Support and hosting URL|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'https://support.hosting.com/'|
 ||email|support_email|E-mail support and hosting|<span style="color:DarkCyan">&#x2611;</span>|'intl'|'support.hosting@mail.de'|
@@ -118,25 +120,26 @@ generatePage(array $data, string $title, string $alias, string $page_type, strin
 ##### **1.2.1.2. <u>Lang Array</u>**
 
 ```PHP
-$state_keys_lang = array('title'                => '',
-                         'alias'                => '',
-                         'project_name'         => '',
-                         'publisher_institute'  => '',
-                         'publisher_name'       => '',
-                         'publisher_city'       => '',
-                         'custom_legal_form'    => '',
-                         'contact_name'         => '',
-                         'support_institute'    => '',
-                         'support_staff_array'  => '',
-                         'authority_name'       => '',
-                         'authority_city'       => '',
-                         'licence_title'        => '',
-                         'uses_fau_design'      => '',
-                         'custom_licence_txt'   => '',
-                         'no_default_txt'       => '',
-                         'custom_exclusion'     => '',
-                         'custom_disclaimer'    => '',
-                         'overwrite_consent'    => '',
+$state_keys_lang = array('title'                   => '',
+                         'alias'                   => '',
+                         'project_name'            => '',
+                         'publisher_institution'   => '',
+                         'publisher_institute'     => '',
+                         'publisher_name'          => '',
+                         'publisher_city'          => '',
+                         'custom_legal_form'       => '',
+                         'contact_name'            => '',
+                         'support_institute'       => '',
+                         'support_staff_array'     => '',
+                         'authority_name'          => '',
+                         'authority_city'          => '',
+                         'licence_title'           => '',
+                         'uses_fau_design'         => '',
+                         'custom_licence_txt'      => '',
+                         'no_default_txt'          => '',
+                         'custom_exclusion'        => '',
+                         'custom_disclaimer'       => '',
+                         'overwrite_consent'       => '',
                         );
 ```
 
@@ -145,20 +148,22 @@ $state_keys_lang = array('title'                => '',
 ##### **1.2.1.3. <u>Intl Array</u>**
 
 ```PHP
-$state_keys_intl = array('wisski_url'         => '',
-                         'publisher_address'  => '',
-                         'publisher_plz'      => '',
-                         'publisher_email'    => '',
-                         'contact_phone'      => '',
-                         'contact_email'      => '',
-                         'support_url'        => '',
-                         'support_email'      => '',
-                         'licence_url'        => '',
-                         'authority_address'  => '',
-                         'authority_plz'      => '',
-                         'authority_url'      => '',
-                         'hide_disclaimer'    => '',
-                         'date'               => '',
+$state_keys_intl = array('wisski_url'                 => '',
+                         'publisher_address'          => '',
+                         'publisher_plz'              => '',
+                         'publisher_email'            => '',
+                         'select_contact_method_1'    => '',
+                         'contact_method_1'           => '',
+                         'select_contact_method_2'    => '',
+                         'contact_method_2'           => '',
+                         'support_url'                => '',
+                         'support_email'              => '',
+                         'licence_url'                => '',
+                         'authority_address'          => '',
+                         'authority_plz'              => '',
+                         'authority_url'              => '',
+                         'hide_disclaimer'            => '',
+                         'date'                       => '',
                         );
 ```
 

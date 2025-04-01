@@ -42,8 +42,16 @@
             <p>
                 Responsible for the content is:<br />
                 {{ contact_name }}<br />
-                Phone: {{ contact_phone }}<br />
-                E-mail: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a><br />
+                {% if select_contact_method_1 == '0' %}
+                    E-mail: <a href="mailto:{{ contact_method_1 }}">{{ contact_method_1 }}</a><br />
+                {% elif select_contact_method_1 == '1' %}
+                    Phone: {{ contact_method_1 }}<br />
+                {% endif %}
+                {% if select_contact_method_2 == '0' %}
+                    E-mail: <a href="mailto:{{ contact_method_2 }}">{{ contact_method_2 }}</a><br />
+                {{% elif select_contact_method_2 == '1' %}}
+                    Phone: {{ contact_method_2 }}<br />
+                {% endif %} 
             <br />
             </p>
         </div>
