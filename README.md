@@ -34,9 +34,10 @@ We give no guarantee and assume no liability for the topicality and legal correc
 
 2. [Forms](#paragraph2)
 3. [Required and Default Values](#paragraph3)
-4. [Controller](#paragraph4)
-5. [Config](#paragraph5)
-6. [CSS](#paragraph6)
+4. [Adding or Changing Fields](#paragraph4)
+5. [Controller](#paragraph5)
+6. [Config](#paragraph6)
+7. [CSS](#paragraph7)
 
 <br />
 <br />
@@ -340,17 +341,47 @@ There are a few exceptions: Whether those values are required or not depends on 
 
 <br />
 
-## 4. Controller
+## 4. Adding or Changing Fields
+In order to add a new field to one of the forms, it is necessary to add it in all the following places:
+
+- src/Form/WissKI<page name>Form.php:
+   - Language Specific Form: add a render array
+   - Populate Fields with Default Values: get default or already stored values from state
+   - Set Required Status: get information whether this field is required from legalgen.required.and.email.yml
+   - Submit form: In 3 places: i)   get values
+                               ii)  in the data array
+                               iii) in one of the state_keys arrays (either lang or intl)
+
+- src/legalgen.module:
+   - In both language versions of the array for the specific form/page (legal notice/accessibility/privacy)
+
+- src/legalgen.required.and.email.yml:
+   - For both languages of the respective page/form 
+
+- src/templates/<page name>-template.html.twig:
+   - In both language versions of the respective page
+   - This might also be in one of the templates included in the main template (see subfolders named after the specific page)
+
+- README.md:
+   - add key and information to the table for the specific page
+
+The same applies in case of changing the key(s) of a field.
+
+When adding a new field that should be validated, you might want to add a validation function in LegalGenerator.php
+
+<br />
+
+## 5. Controller
 The user is sent to the **LegalgenController** after clicking the reset button at the end of a form and subsequently confirming this choice in a modal dialog box. Through the query string information on the page type and chosen language is passed. The validity of those values will be checked before continuing. Thereafter, all values specific to the respective page in the chosen language as well as the international values for said page will be deleted from the state. The user is redirected to the page they initially came from and a success message will be displayed indicating whether the values were successfully reset or already the default values.
 
 <br />
 
-## 5. Config
+## 6. Config
 The file **legalgen.languages.yml** specifies all languages available for generation through stating the file name of each respective template for a page. Additionally, the specific language needs to be added to the language list. If this is not the case, the user will be prompted to do so when selecting the respective language instead of diplaying the form.<br />
 `option`: Specifies how this language option will be displayed in the language selector (drop down) when choosing the language to display the form.<br />
 `empty_text`: The text shown for a default language page generated "empty". This happens if the user generates a page for a non-default language when the page in the default language does currently not exist (either because it has never been generated or was deleted by the user). This happens as all language versions of a page are stored as translations in the node of the page in the default language.
 
 <br />
 
-## 6. CSS
+## 7. CSS
 For accessibility reasons, the identification numbers (`VAT_Number`,`Tax_Number`, `DUNS_Number` and `EORI_Number`) in the legal notice are given a 'table'-like structure via CSS, thus avoiding the use of a table.
