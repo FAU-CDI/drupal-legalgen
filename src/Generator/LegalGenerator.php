@@ -73,12 +73,6 @@ class LegalGenerator {
         return $invalid_data;
     }
 
-    // If User Provided Invalid E-mail Address Return Key for This Value
-    $invalid_email = \Drupal::service('legalgen.generator')->validateEmail($data, $page_type);
-    if(!empty($invalid_email)){
-      return $invalid_email;
-    }
-
     return NULL;
   }
 
@@ -195,6 +189,7 @@ class LegalGenerator {
    */
   function validateTemplate(string $page_type, string $lang): bool {
 
+
     // Get Languages from Config
     $options = \Drupal::configFactory()->get('legalgen.languages')->getRawData();
 
@@ -243,6 +238,7 @@ class LegalGenerator {
 
     $required_lang = $ymldata[$required_key][$lang];
     $required_intl = $ymldata[$required_key]['intl'];
+
 
     // Empty Array to Store Missing/Empty Required Values
     $missing_keys = [];
@@ -446,18 +442,19 @@ class LegalGenerator {
    */
   function updateNode (string $title, string $alias, object $body, Node $node): string {
 
+
     // Update Values for Body
     $node-> title =  $title;
     $node->set('body', array(
       'value' => $body,
       'format'  => 'full_html',
     ));
-
+    
     // Update Value for Path
     $node->set('path', array(
       'alias' => "/$alias",
     ));
-
+    
     // Save and Pass on Changes
     $node->save();
     $node_id = $node->id();
@@ -648,7 +645,7 @@ class LegalGenerator {
 
       }
     } else {
-
+  
     // 2) NODE EXISTS
 
       // A) Overwrite NOT Ticked
